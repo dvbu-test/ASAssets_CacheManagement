@@ -1,0 +1,826 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="CachingData" path="/shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateSqlServer/DataScripts/CachingData" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CachingDataType" type="TABLE" refId="1">
+        <element name="RUN_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="DROP_RECREATE_VIEW_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="DROP_RECREATE_TABLE_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="CACHE_TYPE">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="RESOURCE_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+        </element>
+        <element name="ORGANIZATION">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="APPLICATION_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="CONSTANTS_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+        </element>
+        <element name="ATTRIBUTES">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateSqlServer/Constants/Constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="ApplicationConstantsPathValue" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationConstantsType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_ERROR" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_INFO" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_AUDIT" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_DEBUG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_ENABLE_CIS_LOG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_ENABLE_AUDIT_LOG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LOGGING_TYPE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OrganizationName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ApplicationName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ApplicationScriptsBasePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationIncrScriptsPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationStageViewPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationTriggersPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationCacheProcPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationCacheProcImplPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPkgQryPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationRunDDLPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationObjectExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPkgQryTempDS" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationExecutePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationRefreshCachePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPurgeCachePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSFullPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheTablePrefix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultStageTablePrefix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheTableSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultStageTableSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultInitialLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultDeltaLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultSameLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultTriggerNameSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPurgeTriggerNameSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPreCallbackSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPreCallbackImplSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPostCallbackSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPostCallbackImplSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataScriptsPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataProcedure" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsertProcedure" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTableSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTableSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="cachePollingInterval" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* CachingData:
+
+	This script is used to hold data for the caching framework. This script returns a cursor output which is used by 
+	ConfigureCacheScript to orchestrate the scripting. The data populated in this script contains the following structure:
+		Column Name				Data Type		Description
+		RUN_YN 					CHAR(1),		-- Flag to filter what orchestrations should be run. &apos;Y&apos; to run N otherwise
+		DROP_RECREATE_VIEW_YN	CHAR(1),		-- Flag to drop and recreate views and scripts. Y=to Drop and Recreate, N =do not
+		DROP_RECREATE_TABLE_YN 	CHAR(1),		-- Flag to drop and recreate database cache tables.  Y=Drop and Recreate, N=do not
+		CACHE_TYPE 				VARCHAR(255),	-- Valid types include the list below.
+												--   FS=Full Single table cache, Optional Pre/Post callback scripts generated when using &quot;ConfigureCache&quot; procedure.
+												--   FM=Full Multi-table cache, Optional Pre/Post callback scripts generated when using &quot;ConfigureCache&quot; procedure.
+												--   IN=Incremental cache (no staging tables), Initial Load and Delta Load scripts generated.
+												--   HS=Hybrid with Delta Staging table, Initial and Delta use the same load script.
+												--   HN=Hybrid with Delta No Staging Table, Inital Load and Delta Load scripts generated.
+												--   MT1=Merge Type 1 using Deleted Table. Hybrid Merge Table with Initial and Delta staging table utilized and separate Initial and Delta load script.
+												--   MT2=Merge Type 2 using History table with Start and End Date (Bi-temporal)
+												--   MT4=Merge Type 4 using CDC style where there is an activity column specifying the action [I,U,D]. Hybrid Merge Column with Initial and Delta staging table utilized and separate Initial and Delta load script.
+		RESOURCE_PATH 			VARCHAR(2048),	-- Full path to the resource that will be cached.  This can be found on the INFO tab for a resource.  Copy it and paste it into this column.
+		ORGANIZATION            VARCHAR(255),	-- Name of the organization
+		APPLICATION_NAME        VARCHAR(255),	-- Name of the application
+ 		CONSTANTS_PATH          VARCHAR(2048),	-- Full path in CIS to the application constants procedure e.g. /shared/Common/CacheFramework/ApplicationCustom/Constants/Constants
+		ATTRIBUTES				LONGVARCHAR		-- Name/Value pair attributes
+
+&lt;attributes&gt;
+	&lt;!-- CONFIGURE: Netezza Distribution Column Attribute --&gt;
+    &lt;attribute&gt;&lt;name&gt;DISTRIBUTION_COLUMNS&lt;/name&gt;&lt;value&gt;NULL&lt;/value&gt;&lt;/attribute&gt; 					&lt;!-- Column(s) that can be used to create distribution key on NZ --&gt;
+
+	&lt;!-- CONFIGURE: Incremental Caching Attributes: --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- Incremental cache column name. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Incremental cache Composite column data type for the above column --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Incremental cache initial default value if history needs to be loaded --&gt;
+
+	&lt;!-- CONFIGURE: Incremental Caching Merge Attributes: --&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- Incremental Merge - This is a comma separated list of the names of the &quot;primary key&quot; of the cache view. --&gt;
+
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/shared/.../TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;&lt;!-- Incremental Merge Type 1, 2, 4 - The CIS path to the table/view containing history information about rows that were inserted, updated or deleted from the source table. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- Incremental Merge Type 1, 2, 4 - This is a comma separated list of the names of the “primary keys” of the history table. These columns need to match 1 for 1 in order with the key values in the Cache view. NOTE: If the history table has other columns in its primary key (such as deleted date) LEAVE THEM OUT. --&gt;
+
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_DELDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 1 - The column in the history table that indicates when the row was deleted. Similar to a “last updated” column. --&gt;
+
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_STARTDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal start date. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ENDDT_COL&lt;/name&gt;&lt;value&gt;EDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal end date. --&gt;
+
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITYDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity date column. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_COL&lt;/name&gt;&lt;value&gt;ACTIVITY&lt;/value&gt;&lt;/attribute&gt;&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity.  e.g. ACTIVITY=[I|U|D] --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_INS_VAL&lt;/name&gt;&lt;value&gt;I&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity insert value.  e.g. ACTIVITY=I --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_UPD_VAL&lt;/name&gt;&lt;value&gt;U&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity update value.  e.g. ACTIVITY=U --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_DEL_VAL&lt;/name&gt;&lt;value&gt;D&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity delete value.  e.g. ACTIVITY=D --&gt;
+
+	&lt;!-- CONFIGURE: Full Multi-Table Caching Attributes: --&gt;
+    &lt;attribute&gt;&lt;name&gt;MULTI_BUCKET_MODE&lt;/name&gt;&lt;value&gt;AUTO_GEN&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- AUTO_GEN or MANUAL.  Only AUTO_GEN is supported at this time. --&gt;
+    &lt;attribute&gt;&lt;name&gt;MULTI_BUCKET_TABLE_PREFIX&lt;/name&gt;&lt;value&gt;$DEFAULT_RES_NAME&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Provide an explicit name or the $DEFAULT_RES_NAME is extracted dynamically from the resource being cached --&gt;
+    &lt;attribute&gt;&lt;name&gt;MULTI_NUM_BUCKETS&lt;/name&gt;&lt;value&gt;3&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- Default is 3. The number of cache table buckets to create by appending 0, 1, 2... to the end of the bucket table prefix --&gt;
+    &lt;attribute&gt;&lt;name&gt;MULTI_DROP_CREATE_INDEX&lt;/name&gt;&lt;value&gt;true&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- true/false to drop and create any indexes associated with the cache view --&gt;
+
+	&lt;!-- CONFIGURE: Full Cache Pre/Post-Refresh Cache Procedures: --&gt;
+    &lt;attribute&gt;&lt;name&gt;FULL_PRE_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Explicit path to the pre-refresh callback implementation procedure or use the default application cache proc path defined in CONSTANTS along with a generated procedure name. --&gt;
+    &lt;attribute&gt;&lt;name&gt;FULL_POST_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Explicit path to the post-refresh callback implemenation procedure or use the default application cache proc path defined in CONSTANTS along with a generated procedure name. --&gt;
+
+	&lt;!-- CONFIGURE: Index Attributes: --&gt;
+    &lt;attribute&gt;&lt;name&gt;INDEX_PREFIX&lt;/name&gt;&lt;value&gt;IDX_&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- Index prefix overrides the use of the upper case cached view name for prefixing the index name found on the index tab of the cached view. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INDEX_TYPE&lt;/name&gt;&lt;value&gt;&lt;/value&gt;&lt;/attribute&gt;									&lt;!-- Index type is appended after the indexNameURL in the CREATE INDEX syntax and is database specific.  Syntax: CREATE INDEX &lt;indexNameURL&gt; [INDEX_TYPE] ON &lt;tableURL&gt;(&lt;columnList&gt;) [INDEX_OPTIONS] --&gt;
+    &lt;attribute&gt;&lt;name&gt;INDEX_OPTIONS&lt;/name&gt;&lt;value&gt;&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- Index options are appended to the end of the CREATE INDEX syntax and are database specific.  Syntax: CREATE INDEX &lt;indexNameURL&gt; [INDEX_TYPE] ON &lt;tableURL&gt;(&lt;columnList&gt;) [INDEX_OPTIONS] --&gt;
+
+	&lt;!-- REFRESH: Index/Statistics Attributes --&gt;
+    &lt;attribute&gt;&lt;name&gt;REFRESH_DROP_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Drop all indexes for the cache table. [ALL, &lt;comma separated list of indexes&gt;] --&gt;
+   &lt;attribute&gt;&lt;name&gt;REFRESH_CREATE_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Create all indexes for the cache table. [ALL, &lt;comma separated list of indexes&gt;] --&gt;
+    &lt;attribute&gt;&lt;name&gt;EXECUTE_STATISTICS&lt;/name&gt;&lt;value&gt;TABLE&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Execute table statistics. [TABLE, EXPRESS].  EXPRESS is only for Neteeza. --&gt;
+
+	&lt;!-- REFRESH: Schedule or Trigger --&gt;
+    &lt;attribute&gt;&lt;name&gt;REFRESH_MODE&lt;/name&gt;&lt;value&gt;SCHEDULED&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Schedule refresh mode [MANUAL, SCHEDULED, TRIGGER] --&gt; 
+																									&lt;!--	When refresh mode=MANUAL then set the cache view schedule to Manual.
+																											When refresh mode=SCHEDULED then set the cache view schedule to Periodic using the parameters below.
+																											When refresh mode=TRIGGER then set the cache view schedule to Manual and create a Trigger with the parameters below. --&gt;
+	&lt;!-- REFRESH: Schedule Attributes --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_START_TIME&lt;/name&gt;&lt;value&gt;2014-06-25 00:00:00&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- When refresh mode=SCHEDULED then a valid timestamp. --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_PERIOD&lt;/name&gt;&lt;value&gt;HOUR&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=SCHEDULED then values: SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;SCHEDULE_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- When refresh mode=SCHEDULED then the number of Period units in the interval between cache refreshes.  Values: Any positive integer. --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_EXPERIATION_PERIOD&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- When refresh mode=SCHEDULED the amount of time in milliseconds that the cache will be cleared after it is refreshed.  --&gt;
+           																							&lt;!--	Values: If less than zero, the period will be set to zero.  If zero then the cache will never expire.  
+                   																							If set to NULL, the enable setting will be left unaltered. e.g. 1 day = 1000 (milliseconds) * 60 (sec) * 60 (min) * 24 (hours) = 86400000 (milliseconds) --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_CLEAR_RULE&lt;/name&gt;&lt;value&gt;NONE&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- When refresh mode=SCHEDULED it indicates when old cache data should be cleared. --&gt;
+																								    &lt;!--     Values: One of &quot;NONE&quot;, &quot;ON_LOAD&quot;, or &quot;ON_FAILURE&quot;.  Normally old cache data is cleared on expiration and when 
+																								                a cache refresh successfully completes. In the latter case the old cache data is replaced by the new cached data.
+																								                If &quot;NONE&quot;, then the normal behavior will be used.  If &quot;ON_LOAD&quot;, in addition to the normal behavior 
+																								                the old cache data will be cleared when a refresh is started.  If &quot;ON_FAILURE&quot;, in addition to the 
+																								                normal behavior the old cache data will be cleared when a refresh fails.  If set to NULL, the
+																								                setting will be left unaltered. --&gt;
+	&lt;!-- REFRESH: Cache Trigger Schedule Attributes --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_START_TIME&lt;/name&gt;&lt;value&gt;2014-06-25 00:00:00&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- When refresh mode=TRIGGER then a valid timestamp. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_PERIOD&lt;/name&gt;&lt;value&gt;DAY&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=TRIGGER then values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- When refresh mode=TRIGGER then the number of Period units in the interval between cache refreshes.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_RECURRING_DAY&lt;/name&gt;&lt;value&gt;MON WED FRI&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- When refresh mode=TRIGGER NULL or a list of one or more items: [SUN, MON, TUE, WED, THU, FRI, SAT].  May be space or comma delimited. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_FROM_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;06:00:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- When refresh mode=TRIGGER NULL or The time of day to start the trigger between 00:00:00 and 23:30 in 30 min increments.  Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_END_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;23:59:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- When refresh mode=TRIGGER NULL or The time of day to end the trigger between 00:00:00 and 23:30 in 30 min increments.   Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_IS_CLUSTER&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=TRIGGER NULL or 0=not once per cluster, 1=only once per cluster --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_ANNOTATION&lt;/name&gt;&lt;value&gt;annotation&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- When refresh mode=TRIGGER NULL or an annotation for the trigger. --&gt;
+
+	&lt;!-- PURGE: Purge Trigger Schedule Attributes --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_WINDOW_PERIOD&lt;/name&gt;&lt;value&gt;WEEK&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- TRIGGER: defines the purge window that gets passed into the PurgeCacheData() procedure. (delete all rows WHERE PURGE_COLUMN_NAME &lt;= CURRENT_TIMESTAMP - (PURGE_WINDOW_COUNT * PURGE_WINDOW_PERIOD))  values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_WINDOW_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: the number of period units in for the purge window and the value passed into PurgeCacheData() procedure.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_START_TIME&lt;/name&gt;&lt;value&gt;2014-06-25 00:00:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- TRIGGER: a valid starting timestamp. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_COLUMN_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: the timestamp column used for purging rows. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_PERIOD&lt;/name&gt;&lt;value&gt;DAY&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- TRIGGER: defines the trigger interval period between purges. (how often the tirgger fires)  values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;									&lt;!-- TRIGGER: the number of Period units in the interval between purges.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_RECURRING_DAY&lt;/name&gt;&lt;value&gt;MON WED FRI&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- TRIGGER: NULL or a list of one or more items: [SUN, MON, TUE, WED, THU, FRI, SAT].  May be space or comma delimited. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_FROM_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;06:00:00&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- TRIGGER: NULL or The time of day to start the TRIGGER: between 00:00:00 and 23:30 in 30 min increments.  Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_END_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;23:59:00&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- TRIGGER: NULL or The time of day to end the TRIGGER: between 00:00:00 and 23:30 in 30 min increments.   Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_IS_CLUSTER&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: NULL or 0=not once per cluster, 1=only once per cluster --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_ANNOTATION&lt;/name&gt;&lt;value&gt;annotation&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- TRIGGER: NULL or an annotation for the trigger. --&gt;
+ &lt;/attributes&gt;
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	01/20/2014		Manny Bhatia		6.2.5			Created new
+	09/25/2014		Mike Tinius			6.2.6			Modified to make cache framework generic. 
+*/
+PROCEDURE CachingData(
+	OUT	result PIPE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CachingDataType
+)
+BEGIN
+	DECLARE constantsPath			 	VARCHAR(1024) DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateSqlServer/Constants/Constants.ApplicationConstantsPath;
+	DECLARE organizationName 			VARCHAR DEFAULT getConstant(constantsPath, &apos;OrganizationName&apos;);
+	DECLARE applicationName				VARCHAR DEFAULT getConstant(constantsPath, &apos;ApplicationName&apos;);
+
+-- Full cache single-table example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;FS&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_FULL_SINGLE&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;FULL_PRE_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;FULL_POST_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;
+
+	&lt;attribute&gt;&lt;name&gt;REFRESH_DROP_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;REFRESH_CREATE_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;EXECUTE_STATISTICS&lt;/name&gt;&lt;value&gt;TABLE&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Full cache multi-table example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;FM&apos;,&apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_FULL_MULTI&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;MULTI_BUCKET_MODE&lt;/name&gt;&lt;value&gt;AUTO_GEN&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;MULTI_NUM_BUCKETS&lt;/name&gt;&lt;value&gt;3&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;MULTI_DROP_CREATE_INDEX&lt;/name&gt;&lt;value&gt;true&lt;/value&gt;&lt;/attribute&gt;
+
+	&lt;attribute&gt;&lt;name&gt;FULL_PRE_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;FULL_POST_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;
+
+	&lt;attribute&gt;&lt;name&gt;REFRESH_DROP_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;REFRESH_CREATE_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;EXECUTE_STATISTICS&lt;/name&gt;&lt;value&gt;TABLE&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Incremental cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;IN&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+	&lt;!-- CONFIGURE: Index Attributes: --&gt;
+	&lt;attribute&gt;&lt;name&gt;INDEX_PREFIX&lt;/name&gt;&lt;value&gt;TSTINCR_&lt;/value&gt;&lt;/attribute&gt;
+
+	&lt;attribute&gt;&lt;name&gt;REFRESH_DROP_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;REFRESH_CREATE_INDEX&lt;/name&gt;&lt;value&gt;ALL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;EXECUTE_STATISTICS&lt;/name&gt;&lt;value&gt;TABLE&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid Stage Delta cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;HS&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR_HYB_S&apos;,organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid No-Stage Delta cache example [Various Data Type Test]
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;HN&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_DATATYPES&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SEQ&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;INTEGER&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid No-Stage Delta cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;HN&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR_HYB_N&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid Merge type 1 cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;MT1&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR_HYB_MT1&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoSS/CIS_CACHE/dbo/TEST_INCR_DEL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_DELDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+
+    &lt;attribute&gt;&lt;name&gt;REFRESH_MODE&lt;/name&gt;&lt;value&gt;TRIGGER&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- Schedule refresh mode [MANUAL, SCHEDULED, TRIGGER] --&gt; 
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_START_TIME&lt;/name&gt;&lt;value&gt;2014-10-19 00:00:00&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- When refresh mode=TRIGGER then a valid timestamp. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_PERIOD&lt;/name&gt;&lt;value&gt;MINUTE&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=TRIGGER then values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_COUNT&lt;/name&gt;&lt;value&gt;30&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- When refresh mode=TRIGGER then the number of Period units in the interval between cache refreshes.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_RECURRING_DAY&lt;/name&gt;&lt;value&gt;SUN MON WED FRI&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- When refresh mode=TRIGGER NULL or a list of one or more items: [SUN, MON, TUE, WED, THU, FRI, SAT].  May be space or comma delimited. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_FROM_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;06:00:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- When refresh mode=TRIGGER NULL or The time of day to start the trigger between 00:00:00 and 23:30 in 30 min increments.  Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_END_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;23:59:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- When refresh mode=TRIGGER NULL or The time of day to end the trigger between 00:00:00 and 23:30 in 30 min increments.   Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_IS_CLUSTER&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=TRIGGER NULL or 0=not once per cluster, 1=only once per cluster --&gt;
+   	&lt;attribute&gt;&lt;name&gt;TRIGGER_ANNOTATION&lt;/name&gt;&lt;value&gt;annotation&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- When refresh mode=TRIGGER NULL or an annotation for the trigger. --&gt;
+
+   	&lt;attribute&gt;&lt;name&gt;PURGE_WINDOW_PERIOD&lt;/name&gt;&lt;value&gt;WEEK&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- TRIGGER: defines the purge window that gets passed into the PurgeCacheData() procedure. (delete all rows WHERE PURGE_COLUMN_NAME &lt;= CURRENT_TIMESTAMP - (PURGE_WINDOW_COUNT * PURGE_WINDOW_PERIOD))  values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_WINDOW_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: the number of period units in for the purge window and the value passed into PurgeCacheData() procedure.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_START_TIME&lt;/name&gt;&lt;value&gt;2014-10-19 00:00:00&lt;/value&gt;&lt;/attribute&gt;			&lt;!-- TRIGGER: a valid starting timestamp. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_COLUMN_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: the timestamp column used for purging rows. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_PERIOD&lt;/name&gt;&lt;value&gt;DAY&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- TRIGGER: defines the trigger interval period between purges. (how often the tirgger fires)  values: MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;									&lt;!-- TRIGGER: the number of Period units in the interval between purges.  Values: Any positive integer.  --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_RECURRING_DAY&lt;/name&gt;&lt;value&gt;MON TUE WED THU FRI&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- TRIGGER: NULL or a list of one or more items: [SUN, MON, TUE, WED, THU, FRI, SAT].  May be space or comma delimited. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_FROM_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;00:00:00&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- TRIGGER: NULL or The time of day to start the TRIGGER: between 00:00:00 and 23:30 in 30 min increments.  Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_END_TIME_IN_A_DAY&lt;/name&gt;&lt;value&gt;23:59:00&lt;/value&gt;&lt;/attribute&gt;				&lt;!-- TRIGGER: NULL or The time of day to end the TRIGGER: between 00:00:00 and 23:30 in 30 min increments.   Format = HH24:MM:SS --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_IS_CLUSTER&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- TRIGGER: NULL or 0=not once per cluster, 1=only once per cluster --&gt;
+   	&lt;attribute&gt;&lt;name&gt;PURGE_ANNOTATION&lt;/name&gt;&lt;value&gt;annotation&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- TRIGGER: NULL or an annotation for the trigger. --&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid Merge type 2 cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;MT2&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR_HYB_MT2&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoSS/CIS_CACHE/dbo/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_STARTDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal start date. --&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ENDDT_COL&lt;/name&gt;&lt;value&gt;EDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal end date. --&gt;
+	&lt;!-- REFRESH: Schedule or Trigger --&gt;
+    &lt;attribute&gt;&lt;name&gt;REFRESH_MODE&lt;/name&gt;&lt;value&gt;SCHEDULED&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- Schedule refresh mode [MANUAL, SCHEDULED, TRIGGER] --&gt; 
+																									&lt;!--	When refresh mode=MANUAL then set the cache view schedule to Manual.
+																											When refresh mode=SCHEDULED then set the cache view schedule to Periodic using the parameters below.
+																											When refresh mode=TRIGGER then set the cache view schedule to Manual and create a Trigger with the parameters below. --&gt;
+	&lt;!-- REFRESH: Schedule Attributes --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_START_TIME&lt;/name&gt;&lt;value&gt;2014-10-19 00:00:00&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- When refresh mode=SCHEDULED then a valid timestamp. --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_PERIOD&lt;/name&gt;&lt;value&gt;HOUR&lt;/value&gt;&lt;/attribute&gt;							&lt;!-- When refresh mode=SCHEDULED then values: SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, or YEAR. --&gt;
+   	&lt;attribute&gt;&lt;name&gt;SCHEDULE_COUNT&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/attribute&gt;								&lt;!-- When refresh mode=SCHEDULED then the number of Period units in the interval between cache refreshes.  Values: Any positive integer. --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_EXPERIATION_PERIOD&lt;/name&gt;&lt;value&gt;0&lt;/value&gt;&lt;/attribute&gt;					&lt;!-- When refresh mode=SCHEDULED the amount of time in milliseconds that the cache will be cleared after it is refreshed.  --&gt;
+           																							&lt;!--	Values: If less than zero, the period will be set to zero.  If zero then the cache will never expire.  
+                   																							If set to NULL, the enable setting will be left unaltered. e.g. 1 day = 1000 (milliseconds) * 60 (sec) * 60 (min) * 24 (hours) = 86400000 (milliseconds) --&gt;
+    &lt;attribute&gt;&lt;name&gt;SCHEDULE_CLEAR_RULE&lt;/name&gt;&lt;value&gt;NONE&lt;/value&gt;&lt;/attribute&gt;						&lt;!-- When refresh mode=SCHEDULED it indicates when old cache data should be cleared. --&gt;
+&lt;/attributes&gt;&apos;);
+
+-- Hybrid Merge type 4 cache example
+INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+	VALUES (&apos;Y&apos;, &apos;Y&apos;, &apos;Y&apos;, &apos;MT4&apos;, &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_sqlserver/Views/V_TEST_INCR_HYB_MT4&apos;, organizationName, applicationName, constantsPath, 
+&apos;&lt;attributes&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoSS/CIS_CACHE/dbo/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITYDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity date column. --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_COL&lt;/name&gt;&lt;value&gt;ACTIVITY&lt;/value&gt;&lt;/attribute&gt;&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity.  e.g. ACTIVITY=[I|U|D] --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_INS_VAL&lt;/name&gt;&lt;value&gt;I&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity insert value.  e.g. ACTIVITY=I --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_UPD_VAL&lt;/name&gt;&lt;value&gt;U&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity update value.  e.g. ACTIVITY=U --&gt;
+    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_DEL_VAL&lt;/name&gt;&lt;value&gt;D&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity delete value.  e.g. ACTIVITY=D --&gt;
+&lt;/attributes&gt;&apos;);
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">1387218203901</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415060552925</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

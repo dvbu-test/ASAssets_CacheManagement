@@ -1,0 +1,178 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="reset_TEST_INCR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/reset_TEST_INCR" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="curs" direction="OUT" nullable="true">
+      <datatype name="curs" type="TABLE" refId="1">
+        <element name="result">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/dbo/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2" nullable="false">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/dbo/TEST_INCR_DEL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2" nullable="false">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="SDT" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/dbo/TEST_INCR_HIST" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2" nullable="false">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_DEL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_HIST" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE reset_TEST_INCR(
+	OUT curs		CURSOR (result INTEGER)
+)
+BEGIN
+	-- Delete all records from the TEST_INCR and TEST_INCR_HIST tables to clean it up.
+	DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR;
+	DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_HIST;
+	DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_DEL;
+	-- Clean out the TEST_INCR_HIST table
+	DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_HIST;
+	DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/TEST_INCR_DEL;
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410976985833</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415111280153</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

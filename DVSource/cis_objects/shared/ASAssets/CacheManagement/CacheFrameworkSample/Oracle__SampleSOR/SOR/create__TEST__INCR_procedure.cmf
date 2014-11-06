@@ -1,0 +1,219 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="create_TEST_INCR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/create_TEST_INCR" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="schemaName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="cursCombinedResult" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1024"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="MessageValue" type="STRING" maxLength="64000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/ExecuteDDL" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputSQL" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="outputValue">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	The methodology with the deleted table is to emulate the source table exactly plus added a deleted date column at the end
+	that signifies when the row is deleted.  The Cache Framework uses this column to keep track of what rows have been deleted
+	and applied to the cache table.
+*/
+PROCEDURE create_TEST_INCR(
+	IN  schemaName				VARCHAR,
+	OUT cursCombinedResult		VARCHAR(1024) -- 1=success, -1=failure
+)
+BEGIN
+	DECLARE sqlStatement		VARCHAR(4096);
+	DECLARE cursType			VARCHAR;
+	DECLARE i					INTEGER;
+	DECLARE ex					EXCEPTION;
+	DECLARE curs				CURSOR (result INTEGER);
+	DECLARE cursResult			INTEGER;
+	DECLARE status				VARCHAR(4);
+	DECLARE TYPE sqlRowType		ROW(cursType VARCHAR, sqlStatement LONGVARCHAR);
+	DECLARE sqlRow				sqlRowType;
+	DECLARE sqlVect				VECTOR(sqlRowType);
+
+	IF (schemaName IS NULL or LENGTH(schemaName) = 0) THEN
+		RAISE ex VALUE &apos;The schemaName variable cannot be null or empty.&apos;;
+	END IF;
+
+	SET sqlVect = VECTOR[
+		 (&apos;cursSequence&apos;, REPLACE(&apos;CREATE SEQUENCE {0}.TEST_INCR_SEQ START WITH 1 NOCYCLE CACHE 100 NOORDER&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+
+		,(&apos;cursTable&apos;, REPLACE(
+	&apos;CREATE TABLE {0}.TEST_INCR (
+	SEQ			NUMBER(19), 			
+	K1      	NUMBER(10),
+	K2      	VARCHAR2(10),
+	C3			VARCHAR2(255),
+	C4			DECIMAL(10,2),
+	ACTIVITY	VARCHAR2(1),
+	SDT      	timestamp(9),
+	CONSTRAINT TEST_INCR_PK PRIMARY KEY (K1,K2)
+	)&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+
+		,(&apos;cursHistTable&apos;, REPLACE(
+	&apos;CREATE TABLE {0}.TEST_INCR_HIST (
+	SEQ			NUMBER(19), 			
+	K1      	NUMBER(10),
+	K2      	VARCHAR2(10),
+	C3			VARCHAR2(255),
+	C4			DECIMAL(10,2),
+	ACTIVITY	VARCHAR2(1),
+	SDT      	timestamp(9),
+	EDT      	timestamp(9),
+	CONSTRAINT TEST_INCR_HIST_PK PRIMARY KEY (K1,K2,SDT)
+	)&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+
+	
+		,(&apos;cursDelTable&apos;, REPLACE(
+	&apos;CREATE TABLE {0}.TEST_INCR_DEL (
+	SEQ			NUMBER(19), 			
+	K1      	NUMBER(10),
+	K2      	VARCHAR2(10),
+	SDT      	timestamp(9),
+	CONSTRAINT TEST_INCR_DEL_PK PRIMARY KEY (K1,K2,SDT)
+	)&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+
+	,(&apos;cursDelTrigger&apos;, REPLACE(
+	&apos;CREATE OR REPLACE TRIGGER {0}.TEST_INCR_DEL_TRIGGER
+    AFTER DELETE ON {0}.TEST_INCR
+      REFERENCING OLD AS o NEW AS n
+      FOR EACH ROW
+    DECLARE
+        edtActual TIMESTAMP(9) := sysdate;
+    BEGIN
+        IF DELETING THEN
+             /* Insert a new record as &quot;deleted&quot;. */
+           INSERT INTO {0}.TEST_INCR_DEL VALUES (TEST_INCR_SEQ.NEXTVAL, :o.K1, :o.K2, edtActual);
+        END IF;
+    END;&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+
+	,(&apos;cursHistTrigger&apos;, REPLACE(
+	&apos;CREATE OR REPLACE TRIGGER {0}.TEST_INCR_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE ON {0}.TEST_INCR
+      REFERENCING OLD AS o NEW AS n
+      FOR EACH ROW
+    DECLARE
+        cnt NUMBER := 0;
+        activity CHAR(1);
+        edtSurrogate TIMESTAMP(9) := TO_DATE(&apos;&apos;9999-12-31 00:00:00&apos;&apos;, &apos;&apos;YYYY-MM-DD HH24:MI:SS&apos;&apos;);
+        edtActual TIMESTAMP(9) := sysdate;
+    BEGIN
+        IF INSERTING THEN
+            activity := &apos;&apos;I&apos;&apos;;
+            /* Update the previous current record. */
+   		    UPDATE {0}.TEST_INCR_HIST SET EDT = :n.SDT WHERE K1 = :o.K1 and K2 = :o.K2 AND (EDT = edtSurrogate OR EDT IS NULL);
+            /* Insert a new record as &quot;inserted&quot;. */
+            INSERT INTO {0}.TEST_INCR_HIST VALUES (TEST_INCR_SEQ.NEXTVAL, :n.K1, :n.K2, :n.C3, :n.C4, activity, :n.SDT, edtSurrogate);
+        END IF;
+        IF UPDATING THEN
+            activity := &apos;&apos;U&apos;&apos;;
+            /* Update the previous current record. */
+   		    UPDATE {0}.TEST_INCR_HIST SET EDT = :n.SDT WHERE K1 = :o.K1 and K2 = :o.K2 AND (EDT = edtSurrogate OR EDT IS NULL);
+            /* Insert a new record as &quot;updated&quot;. */
+            INSERT INTO {0}.TEST_INCR_HIST VALUES (TEST_INCR_SEQ.NEXTVAL, :n.K1, :n.K2, :n.C3, :n.C4, activity, :n.SDT, edtSurrogate);
+        END IF;
+        IF DELETING THEN
+            activity := &apos;&apos;D&apos;&apos;;
+            /* Update the previous current record. */
+   		    UPDATE {0}.TEST_INCR_HIST SET EDT = edtActual WHERE K1 = :o.K1 and K2 = :o.K2 AND (EDT = edtSurrogate OR EDT IS NULL);
+             /* Insert a new record as &quot;deleted&quot;. */
+           INSERT INTO {0}.TEST_INCR_HIST VALUES (TEST_INCR_SEQ.NEXTVAL, :o.K1, :o.K2, :o.C3, :o.C4, activity, edtActual, edtActual);
+        END IF;
+    END;&apos;, &apos;{0}&apos;, UPPER(schemaName)))
+	];
+
+	SET i = 1;
+	WHILE (i &lt;= CARDINALITY(sqlVect)) DO
+		SET sqlRow = sqlVect[i];
+
+		BEGIN INDEPENDENT TRANSACTION
+			CALL PRINT(i||&apos;:-----------------------------------------------------------------------------------------------&apos;);
+			CALL PRINT(sqlRow.sqlStatement);
+			OPEN curs FOR SELECT * FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/ExecuteDDL(sqlRow.sqlStatement);
+			FETCH curs INTO cursResult;
+			CLOSE curs;
+			SET status = &apos;PASS&apos;;
+		EXCEPTION
+			ELSE
+				CALL PRINT(sqlRow.cursType||&apos; EXCEPTION=&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+				SET cursResult = -1;
+				SET status = &apos;FAIL&apos;;
+		END;
+		IF (cursCombinedResult IS NULL) THEN
+			SET cursCombinedResult = &apos;&apos;;
+		ELSE
+			SET cursCombinedResult = cursCombinedResult || &apos;,  &apos;;
+		END IF;
+		SET cursCombinedResult = cursCombinedResult || sqlRow.cursType||&apos;=&apos;||status;
+		CALL PRINT(&apos;&apos;);
+		SET i = i + 1;
+	END WHILE;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410976495807</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415111270310</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/136</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/119</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/118</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/126</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

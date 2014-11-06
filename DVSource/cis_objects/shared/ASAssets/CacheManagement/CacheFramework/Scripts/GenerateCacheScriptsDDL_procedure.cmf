@@ -1,0 +1,759 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GenerateCacheScriptsDDL" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/GenerateCacheScriptsDDL" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="sequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="origUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="inResourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="inCatalogName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inSchemaName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inResourceName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inCacheType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inAttributes" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="outGetResourceDDL" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errMessage" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/ExtractColumnTypeParts" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inColumnType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="colTypeBase" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="colTypePrecision" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="colTypeScale" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="attributeName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="attributeXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="attributeValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnsXMLDef" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/conversions/convertBoolean" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="request" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="response" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="proprietaryModel">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString1" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inputString2" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/convertBoolean" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* GenerateCacheScriptsDDL:
+
+	This script is used to generate the DDL &quot;CREATE TABLE&quot; for a view or a staging view.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	01/20/2014		Manny Bhatia		6.2.5			Created new
+	09/25/2014		Mike Tinius			6.2.6			Modified to make cache framework generic. 
+*/  
+PROCEDURE GenerateCacheScriptsDDL(
+	IN  sequenceNum				BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  origUserName			VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+	IN  constantsPath	 		VARCHAR(4096),	-- Path to the application constants procedure.
+	IN  inResourcePath 			VARCHAR(4096),	-- Full resource path to view being cached
+	IN  inCatalogName			VARCHAR(255),	-- Catalog name if applicable or null
+	IN  inSchemaName			VARCHAR(255),	-- Schema name
+	IN  inResourceName 			VARCHAR(255), 	-- Resource name.  In most cases it will already be upper case.
+	IN  inCacheType				VARCHAR,		-- The cache type so that the script can determine if this is multi-table or not
+	IN  inAttributes			LONGVARCHAR, 	-- The attributes used to configure multi-table.
+	OUT outGetResourceDDL 		LONGVARCHAR,	-- The generated SQL
+	OUT errStatus 				VARCHAR,		-- The status
+	OUT errMessage				LONGVARCHAR		-- The error message
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR(255) 	DEFAULT &apos;GenerateCacheScriptsDDL&apos;;-- name of SQL Script
+	-- CommonTypes variables
+	DECLARE CommonTypesPath			VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE constantsType			VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationConstantsType&apos;); -- [Oracle, SqlServer, Netezza]
+	DECLARE sepBeg 					VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;SepBeg&apos;);
+	DECLARE sepEnd 					VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;SepEnd&apos;);
+	DECLARE createTableDDL			VARCHAR			DEFAULT getConstant(CommonTypesPath, constantsType||&apos;CreateTable&apos;);		-- Create table DDL from commonTypes
+	DECLARE cachekeyName			VARCHAR			DEFAULT getConstant(CommonTypesPath, constantsType||&apos;CachekeyName&apos;);	-- The default name of the cachekey column
+
+	-- General variables
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE cacheDSType				VARCHAR(255) 	DEFAULT getConstant(constantsPath, &apos;DefaultCacheDSType&apos;);
+	DECLARE cachekey				INTEGER 		DEFAULT 0;
+	DECLARE resourceType			VARCHAR			DEFAULT &apos;TABLE&apos;;
+	DECLARE dataSourceURL	 		VARCHAR(255)	DEFAULT NULL; -- CATALOG.SCHEMA or SCHEMA
+	DECLARE columnList				LONGVARCHAR;
+	DECLARE tableName				VARCHAR;
+	DECLARE getResourceRespTemp 	/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnsXMLDef.&quot;{http://www.compositesw.com/services/system/admin/resource}getResourceResponse&quot;;
+	DECLARE getResourceResp 		XML;
+	DECLARE fault 					XML;
+	DECLARE cColNames 				CURSOR(name VARCHAR(4096), definition VARCHAR, nativeType VARCHAR);
+	DECLARE colName 				VARCHAR(4096);
+	DECLARE colType					VARCHAR;
+	DECLARE nativeType				VARCHAR;
+	DECLARE cisType					VARCHAR;
+	DECLARE colTypeBase				VARCHAR;	-- The base type for the passed in column
+	DECLARE colTypePrecision		INTEGER;	-- The number of digits to the left of the decimal point or the number of characters specified in a VARCHAR or CHAR field
+	DECLARE colTypeScale			INTEGER;	-- The number of digits to the right of the decimal point or null when VARCHAR or CHAR
+	DECLARE colDataType 			VARCHAR;
+	DECLARE minPrecision			INTEGER;
+	DECLARE maxPrecision			INTEGER;
+	DECLARE cisInterval				BOOLEAN;
+	DECLARE status 					BOOLEAN;
+	DECLARE usePrecision			BOOLEAN;
+	DECLARE DistributionColumns		VARCHAR(4096);
+	DECLARE DataTypeMapping_CIS		VECTOR(/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.DataTypeMapping);
+	DECLARE i						INTEGER;
+	DECLARE typeFound				BOOLEAN;
+	DECLARE debugDecisionPath		VARCHAR;
+
+	/* Check for parameter */
+	IF (inResourcePath IS NULL) OR (inResourceName IS NULL) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE &apos;Resource name and target table name must be provided&apos;;
+	END IF;
+	CALL /lib/resource/ResourceExists(inResourcePath, resourceType, NULL, status); 
+	IF NOT(status) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound VALUE &apos;Resource &apos; || inResourcePath || &apos; not found&apos;;
+	END IF;
+
+	/* Get the resource details (list of columns) */
+	SET columnList = &apos;&apos;;
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(inResourcePath, resourceType) 
+			  WHERE columnName IS NOT NULL AND columnType IS NOT NULL
+	DO
+			set colName = r.columnName;
+			set colType = r.columnType;
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/ExtractColumnTypeParts(colType, colTypeBase, colTypePrecision, colTypeScale);
+
+			-- Get the correct CIS to Native DB vector from CommonTypes
+			CASE
+				WHEN cacheDSType = &apos;ORACLE&apos; THEN
+					SET DataTypeMapping_CIS = /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.DataTypeMapping_CIS_TO_ORACLE;
+				WHEN cacheDSType = &apos;SQLSERVER&apos; THEN
+					SET DataTypeMapping_CIS = /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.DataTypeMapping_CIS_TO_SQLSERVER;
+				WHEN cacheDSType = &apos;NETEZZA&apos; THEN
+					SET DataTypeMapping_CIS = /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.DataTypeMapping_CIS_TO_NETEZZA;
+				ELSE
+					raise /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exCacheDBTypeNotSupported 
+							VALUE &apos;The cache database type &apos;||NVL(cacheDSType, &apos;UNKNOWN&apos;)||&apos; is not supported.&apos;;
+			END CASE;
+
+			/**************************************************
+			 * LOOP THROUGH CIS TO NATIVE DB TYPE VECTOR
+			 **************************************************/
+			SET i = 1;
+			SET typeFound = FALSE;
+			mappingLoop:
+			WHILE (i &lt;= CARDINALITY(DataTypeMapping_CIS)) DO
+				SET cisType = DataTypeMapping_CIS[i].CIS_TYPE;
+				SET nativeType = DataTypeMapping_CIS[i].NATIVE_TYPE;
+				SET minPrecision = DataTypeMapping_CIS[i].MIN_PRECISION;
+				SET maxPrecision = DataTypeMapping_CIS[i].MAX_PRECISION;
+				SET usePrecision = convertBoolean(DataTypeMapping_CIS[i].USE_PRECISION);
+				SET cisInterval = FALSE;
+				IF(POSITION(&apos;INTERVAL&apos; IN colTypeBase) &gt; 0) THEN
+					SET cisInterval = TRUE;
+				END IF;
+
+				SET debugDecisionPath = &apos;0&apos;;
+				IF ( (UPPER(cisType) = UPPER(colTypeBase)) OR (cisInterval AND POSITION(colTypeBase IN cisType) &gt; 0) ) THEN
+					IF (minPrecision IS NOT NULL AND colTypePrecision IS NOT NULL) THEN
+						IF (maxPrecision IS NOT NULL AND colTypePrecision &gt;= minPrecision AND colTypePrecision &lt;= maxPrecision) THEN
+							IF (usePrecision) THEN
+								SET colDataType = nativeType || &apos;(&apos; || colTypePrecision || concatNotNull(&apos;,&apos;,colTypeScale,2) || &apos;)&apos;;
+								SET debugDecisionPath = &apos;1.1&apos;;
+							ELSE
+								SET colDataType = nativeType;
+								SET debugDecisionPath = &apos;1.2&apos;;
+							END IF;
+							SET typeFound = true;
+							leave mappingLoop;
+						ELSEIF (maxPrecision IS NULL AND colTypePrecision &gt;= minPrecision) THEN
+							IF (usePrecision) THEN
+								SET colDataType = nativeType || &apos;(&apos; || colTypePrecision || concatNotNull(&apos;,&apos;,colTypeScale,2) || &apos;)&apos;;
+								SET debugDecisionPath = &apos;2.1&apos;;
+							ELSE
+								SET colDataType = nativeType;
+								SET debugDecisionPath = &apos;2.2&apos;;
+							END IF;
+							SET typeFound = true;
+							leave mappingLoop;
+						END IF;
+					ELSEIF (minPrecision IS NULL AND colTypePrecision IS NOT NULL) THEN
+						IF (usePrecision) THEN
+							SET colDataType = nativeType || &apos;(&apos; || colTypePrecision || concatNotNull(&apos;,&apos;,colTypeScale,2) || &apos;)&apos;;
+							SET debugDecisionPath = &apos;3.1&apos;;
+						ELSE
+							SET colDataType = nativeType;
+							SET debugDecisionPath = &apos;3.2&apos;;
+						END IF;
+						SET typeFound = true;
+						leave mappingLoop;
+					ELSE
+						SET colDataType = nativeType;
+						SET typeFound = true;
+						SET debugDecisionPath = &apos;4&apos;;
+						leave mappingLoop;
+					END IF;
+				END IF;
+				SET i = i + 1;
+			END WHILE;
+
+			-- Set the column type to the composite view
+			IF (NOT typeFound) THEN
+				SET colDataType = colType;
+				IF (colTypePrecision IS NOT NULL AND POSITION(&apos;(&apos; IN colDataType) = 0) THEN
+					IF (usePrecision) THEN
+						SET colDataType = colDataType || &apos;(&apos; || colTypePrecision || concatNotNull(&apos;,&apos;,colTypeScale,2) || &apos;)&apos;;
+						SET debugDecisionPath = &apos;5.1&apos;;
+					ELSE
+						SET colDataType = nativeType;
+						SET debugDecisionPath = &apos;5.2&apos;;
+					END IF;
+				END IF;
+			END IF;
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, inResourceName, cachekey,  constantsPath, 
+				-- This is from the getBasicResourceCursor_SQL_TABLE output
+				&apos;  colName=[&apos;||colName||&apos;]  colType=[&apos;||colType||&apos;]  colTypeBase=[&apos;||colTypeBase||&apos;]  precision=[&apos;||emptyStr(colTypePrecision)||&apos;]  scale=[&apos;||emptyStr(colTypeScale)||&apos;]&apos;||
+				-- This is from the DataTypeMapping_CIS mapping vector
+				&apos;  VectorMapping=&apos;||i||&apos;  debugDecisionPath=&apos;||emptyStr(debugDecisionPath)||&apos;  cisType=[&apos;||emptyStr(cisType)||&apos;]&apos;||
+				&apos;  nativeType=[&apos;||emptyStr(nativeType)||&apos;]  minPrecision=[&apos;||emptyStr(minPrecision)||&apos;]  maxPrecision=[&apos;||emptyStr(maxPrecision)||&apos;]&apos;||
+				&apos;  usePrecision=&apos;||emptyStr(usePrecision)||&apos;  colDataType=[&apos;||emptyStr(colDataType)||&apos;]&apos;);
+
+            IF LOWER(colName) &lt;&gt; &apos;cachekey&apos; THEN
+               	SET columnList = columnList || sepBeg || colName || sepEnd || &apos;  &apos; || colDataType || &apos;, &apos;;
+            END IF;
+            --CALL PRINT(&apos;1 - &apos; || emptyStr(columnList));
+	END FOR;
+	--CALL PRINT(&apos;2 - columnList=[&apos; || emptyStr(columnList)||&apos;]&apos;);
+
+	-- Build up the final columnList and determine if a &quot;cachekey&quot; is required for single table caches	
+	SET columnList = TRIM(columnList);
+	SET columnList = SUBSTRING(columnList, 1, LENGTH(columnList) - 1);
+	SET columnList = CASE when inCacheType != &apos;FM&apos; THEN sepBeg||cachekeyName||sepEnd||&apos; INTEGER NOT NULL, &apos; ELSE &apos;&apos; END || columnList;
+	--CALL PRINT(&apos;3 - columnList=[&apos; || emptyStr(columnList)||&apos;]&apos;);
+
+	-- Generate the final CREATE TABLE statement
+	SET outGetResourceDDL = createTableDDL;
+	--CALL PRINT(&apos;4 - outGetResourceDDL=[&apos; || emptyStr(outGetResourceDDL)||&apos;]&apos;);
+	SET outGetResourceDDL = REPLACE(outGetResourceDDL, &apos;$CatalogName&apos;, TRIM(NVL(inCatalogName, &apos; &apos;)));
+	SET outGetResourceDDL = REPLACE(outGetResourceDDL, &apos;$SchemaName&apos;, TRIM(NVL(inSchemaName, &apos; &apos;)));
+	SET outGetResourceDDL = REPLACE(outGetResourceDDL, &apos;$TableName&apos;, inResourceName);
+	SET outGetResourceDDL = REPLACE(outGetResourceDDL, &apos;$ColumnList&apos;, columnList);
+	--CALL PRINT(&apos;5 - outGetResourceDDL=[&apos;||outGetResourceDDL||&apos;]&apos;);
+
+	-- Retrieve the &quot;DISTRIBUTION_COLUMNS&quot; attribute which is only applicable for Netezza therefore it should be NULL for other databases when not used
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;DISTRIBUTION_COLUMNS&apos;, inAttributes, DistributionColumns);
+	IF DistributionColumns IS NOT NULL AND LENGTH(DistributionColumns) &gt; 0 THEN
+		SET outGetResourceDDL = outGetResourceDDL || &apos; DISTRIBUTE ON (&apos; || sepBeg || DistributionColumns || sepEnd || &apos;)&apos;;
+	END IF;
+	SET errStatus = &apos;SUCCESS&apos;;
+
+ EXCEPTION
+       WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound THEN
+			SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+            CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, inResourceName, cachekey,  constantsPath,  errMessage);
+            SET outGetResourceDDL = NULL;
+			SET errStatus = &apos;FAIL&apos;;
+ 	   WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter THEN
+			SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+            CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, inResourceName, cachekey,  constantsPath,  errMessage);
+            SET outGetResourceDDL = NULL;
+			SET errStatus = &apos;FAIL&apos;;
+       ELSE
+			SET errMessage = CURRENT_EXCEPTION.TRACE;
+            CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, inResourceName, cachekey,  constantsPath,  errMessage);
+            SET outGetResourceDDL = NULL;
+			SET errStatus = &apos;FAIL&apos;;
+    END</attribute>
+  <attribute name="creationDate" type="LONG">1386168854236</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415057116561</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

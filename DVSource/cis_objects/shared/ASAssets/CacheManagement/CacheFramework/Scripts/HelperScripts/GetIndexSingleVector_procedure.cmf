@@ -1,0 +1,488 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GetIndexSingleVector" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetIndexSingleVector" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="cacheDSType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="indexVect" direction="OUT" nullable="true">
+      <datatype name="indexVect" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="indexRetrieveType" referenceDefinitionSet="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" referenceType="indexRetrieveType" type="TREE" refId="1">
+            <element name="sqlIndexName">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="sqlIndexType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="sqlIndexUnique">
+              <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+            </element>
+            <element name="sqlIndexColList">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_SQLINDEXES" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="sqlIndexName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexUnique">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlIndexColName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexColOrder">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString1" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inputString2" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* GetIndexSingleVector:
+
+	This script is used to return a vector of index for a given view.
+		sqlIndexName: 		sqlIndexType:		sqlIndexUnique:			sqlIndexColName:		sqlIndexColOrder:
+		pk					PRIMARY_KEY			1						C1						ASCENDING
+		updkey				UNKNOWN				0						C2						ASCENDING
+		updkey				UNKNOWN				0						UPD						ASCENDING
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE GetIndexSingleVector(
+	IN resourcePath				VARCHAR(4096),
+	IN resourceType				VARCHAR(4096),
+	IN cacheDSType				VARCHAR,			--  Options include: [ORACLE|SQLSERVER|NETEZZA]
+	OUT indexVect				VECTOR(/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.indexRetrieveType)
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;HelperScripts/GetIndexSingleVector&apos;;
+	-- Variables for retrieving indexes from the resource
+	DECLARE i						INTEGER;
+	DECLARE lastSqlIndexName		VARCHAR DEFAULT NULL;
+	DECLARE CommonTypesPath			VARCHAR(4096) DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE sepBeg, sepEnd			VARCHAR;  -- The characters used to enclose the beginning and end of column names
+	DECLARE sqlIndexColOrder		VARCHAR;
+	DECLARE indexRec				/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.indexRetrieveType;
+/* indexRetrieveType:
+		sqlIndexName: 		sqlIndexType:		sqlIndexUnique:			sqlIndexColName:		sqlIndexColOrder:
+		pk					PRIMARY_KEY			1						C1						ASCENDING
+		updkey				UNKNOWN				0						C2						ASCENDING
+		updkey				UNKNOWN				0						UPD						ASCENDING
+*/
+
+	-- Separators used to enclose column names
+	IF (UPPER(cacheDSType) = &apos;ORACLE&apos;) THEN
+		SET sepBeg = getConstant(CommonTypesPath, &apos;OracleSepBeg&apos;);
+		SET sepEnd = getConstant(CommonTypesPath, &apos;OracleSepEnd&apos;);
+	ELSEIF (UPPER(cacheDSType) = &apos;SQLSERVER&apos;) THEN
+		SET sepBeg = getConstant(CommonTypesPath, &apos;SqlServerSepBeg&apos;);
+		SET sepEnd = getConstant(CommonTypesPath, &apos;SqlServerSepEnd&apos;);
+	ELSEIF (UPPER(cacheDSType) = &apos;NETEZZA&apos;) THEN
+		SET sepBeg = getConstant(CommonTypesPath, &apos;NetezzaSepBeg&apos;);
+		SET sepEnd = getConstant(CommonTypesPath, &apos;NetezzaSepEnd&apos;);
+	ELSE
+		SET sepBeg = &apos;&apos;;
+		SET sepEnd = &apos;&apos;;
+	END IF;
+
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_SQLINDEXES(resourcePath, resourceType) DO
+		CASE 
+			WHEN r.sqlIndexColOrder = &apos;NONE&apos; THEN
+				SET sqlIndexColOrder = NULL;
+			WHEN r.sqlIndexColOrder = &apos;ASCENDING&apos; THEN
+				SET sqlIndexColOrder = &apos;asc&apos;;
+			WHEN r.sqlIndexColOrder = &apos;DESCENDING&apos; THEN
+				SET sqlIndexColOrder = &apos;desc&apos;;
+			ELSE
+		END CASE;
+
+		IF (lastSqlIndexName IS NULL) THEN
+			SET i = 1;
+			SET indexVect = VECTOR[(null)];
+			--call print(&apos;i=&apos;||i||&apos;  lastSqlIndexName=&apos;||emptyStr(lastSqlIndexName)||&apos;  r.sqlIndexName=&apos;||emptyStr(r.sqlIndexName)||&apos;  r.sqlIndexType=&apos;||emptyStr(r.sqlIndexType)||
+			--	&apos;  r.sqlIndexColName=&apos;||emptyStr(r.sqlIndexColName)||&apos;  r.sqlIndexColOrder=&apos;||emptyStr(r.sqlIndexColOrder));
+			SET indexVect[i].sqlIndexName = r.sqlIndexName;
+			SET indexVect[i].sqlIndexType = r.sqlIndexType;
+			SET indexVect[i].sqlIndexUnique = r.sqlIndexUnique;
+			SET indexVect[i].sqlIndexColList = sepBeg||r.sqlIndexColName||sepEnd || concatNotNull(&apos; &apos;, sqlIndexColOrder, 2);
+		ELSE
+			IF (r.sqlIndexName = lastSqlIndexName) THEN
+				--call print(&apos;i=&apos;||i||&apos;  lastSqlIndexName=&apos;||emptyStr(lastSqlIndexName)||&apos;  r.sqlIndexName=&apos;||emptyStr(r.sqlIndexName)||&apos;  r.sqlIndexType=&apos;||emptyStr(r.sqlIndexType)||
+				--	&apos;  r.sqlIndexColName=&apos;||emptyStr(r.sqlIndexColName)||&apos;  r.sqlIndexColOrder=&apos;||emptyStr(r.sqlIndexColOrder));
+				SET indexVect[i].sqlIndexColList = indexVect[i].sqlIndexColList || &apos;, &apos; || sepBeg||r.sqlIndexColName||sepEnd || concatNotNull(&apos; &apos;, sqlIndexColOrder, 2);
+			ELSE
+				SET indexVect = EXTEND(indexVect, 1);
+				SET i = i + 1;
+				--call print(&apos;i=&apos;||i||&apos;  lastSqlIndexName=&apos;||emptyStr(lastSqlIndexName)||&apos;  r.sqlIndexName=&apos;||emptyStr(r.sqlIndexName)||&apos;  r.sqlIndexType=&apos;||emptyStr(r.sqlIndexType)||
+				--	&apos;  r.sqlIndexColName=&apos;||emptyStr(r.sqlIndexColName)||&apos;  r.sqlIndexColOrder=&apos;||emptyStr(r.sqlIndexColOrder));
+				SET indexVect[i].sqlIndexName = r.sqlIndexName;
+				SET indexVect[i].sqlIndexType = r.sqlIndexType;
+				SET indexVect[i].sqlIndexUnique = r.sqlIndexUnique;
+				SET indexVect[i].sqlIndexColList = sepBeg||r.sqlIndexColName||sepEnd || &apos; &apos; || concatNotNull(&apos; &apos;, sqlIndexColOrder, 2);
+			END IF;
+		END IF;
+		-- Assign the current sql index name to the last sql index name to track when the name changes.
+		SET lastSqlIndexName = r.sqlIndexName;
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410293152629</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

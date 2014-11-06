@@ -1,0 +1,104 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="TEST_INCR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="SEQ" nullable="true">
+      <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="K1" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="K2" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="C3" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="C4" nullable="true">
+      <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ACTIVITY" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SDT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="pk" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="K1" sortOrder="ASCENDING"/>
+      <indexColumn name="K2" sortOrder="ASCENDING"/>
+      <indexColumn name="SDT" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    *
+FROM   
+	/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr   </attribute>
+  <attribute name="cacheDeltaLoader" type="NULL"/>
+  <attribute name="cacheIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache_DB/Cache_Repo/COMP6_CACHE1/cache_tracking</attribute>
+  <attribute name="cachePostRefreshCallback" type="NULL"/>
+  <attribute name="cachePreRefreshCallback" type="NULL"/>
+  <attribute name="cachePullBasedIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheSnapshotLoader" type="NULL"/>
+  <attribute name="creationDate" type="LONG">1408125285455</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415111348005</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

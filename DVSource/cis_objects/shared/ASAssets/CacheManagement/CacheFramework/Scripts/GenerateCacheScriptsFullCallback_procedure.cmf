@@ -1,0 +1,1664 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GenerateCacheScriptsFullCallback" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/GenerateCacheScriptsFullCallback" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="sequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="origUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="viewPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="viewName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="cacheType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="attributes" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="firstRefreshScriptPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="firstRefreshScriptImplPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="secondRefreshScriptPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="secondRefreshScriptImplPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/updateSqlScriptProcedure" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updateSqlScriptProcedure" direction="IN">
+        <datatype name="updateSqlScriptProcedure" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure">
+          <schemaDatatype>
+            <datatype name="updateSqlScriptProcedure" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateSqlScriptProcedureRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="detail" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="detailLevel" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="scriptText" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="scriptModel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="model" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                  </element>
+                  <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="modelType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                  </element>
+                </datatype>
+              </element>
+              <element name="isExplicitDesign" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="parameters" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="parameterList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                  <element name="parameter" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="parameter" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="dataType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="dataType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                          <element name="sqlType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="7">
+                              <element name="definition" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="nativeType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referencePath" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referenceTypeName" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                              </element>
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="trailingSpaces" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="xmlType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="8">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="namespace" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="schema" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referencePath" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="pseudoType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                              <element name="definition" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="pseudoType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="direction" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="paramDirection" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="isNullable" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="nullable" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="attributeList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="10">
+                          <element name="attribute" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                            <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="11">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeTypeValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="12">
+                                  <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                    <datatype name="attributeTypeValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="13">
+                                      <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                        <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <reference refId="12"/>
+                                      </element>
+                                      <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeTypeValueMap" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="14">
+                                          <element name="entry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="15">
+                                              <element name="key" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="13"/>
+                                              </element>
+                                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="13"/>
+                                              </element>
+                                            </datatype>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                      <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="16">
+                                          <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                </datatype>
+                              </element>
+                              <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="14"/>
+                              </element>
+                              <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="16"/>
+                              </element>
+                              <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <reference refId="10"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="updateSqlScriptProcedureResponse" direction="OUT">
+        <datatype name="updateSqlScriptProcedureResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse">
+          <schemaDatatype>
+            <datatype name="updateSqlScriptProcedureResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateSqlScriptProcedureResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="17">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="18">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="19">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="id" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="changeId" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                      </element>
+                      <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactMessage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="20">
+                          <element name="lockOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockCreateTime" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                          </element>
+                          <element name="lockParentPath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="hints" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="21">
+                          <element name="hint" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                            <reference refId="11"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <reference refId="10"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="22">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="23">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="attributeName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="attributeXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="attributeValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateImpactedResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inStartingFolders" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inExcludePathsKeywords" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString1" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inputString2" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* GenerateCacheScriptsFullCallback:
+
+	This script is used to generate the pre-call back and post-call back interface scripts for full single or full multi-table caching.
+	Additionally, these scripts generate the pre-call back and post-call back implementation scripts.  Altogether, there are four
+	scripts generated per view.  If the implementation scripts already exist, they will not be overwritten.  The pre-call back and post-call back
+	scripts will be overwritten if they exist.
+	CACHE_TYPE = &apos;FS&apos; or &apos;FM&apos;
+
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/  
+PROCEDURE GenerateCacheScriptsFullCallback(
+	IN  sequenceNum							BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  origUserName						VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+	IN  constantsPath 						VARCHAR(4096),	-- Path to the constants file
+	IN  viewPath							VARCHAR(4096),	-- This is the full path to the view.
+	IN	viewName							VARCHAR(255),	-- This is the view name only which includes any prefixes added to the name
+	IN  cacheType							VARCHAR,		-- The cache type
+	IN  attributes							LONGVARCHAR,	-- The attributes provide addition configuration features
+	OUT firstRefreshScriptPath				VARCHAR(4096),	-- Returns the firstRefreshScript Path (a.k.a. pre-callback procedure)
+	OUT firstRefreshScriptImplPath			VARCHAR(4096),	-- Returns the first Refresh Implementation Script (a.k.a. pre-callback impl procedure)
+	OUT secondRefreshScriptPath 			VARCHAR(4096),	-- Returns the secondRefreshScript Path (a.k.a. post-callback procedure)
+	OUT secondRefreshScriptImplPath 		VARCHAR(4096),	-- Returns the second Refresh Implementation Script (a.k.a. post-callback impl procedure)
+	OUT errStatus 							VARCHAR      	-- Returns the status message of SUCCESS or FAIL
+)
+BEGIN INDEPENDENT TRANSACTION
+    DECLARE moduleName 						VARCHAR(255) 	DEFAULT &apos;GenerateCacheScriptsFullCallback&apos;;-- name of SQL Script
+	DECLARE prefix							VARCHAR			DEFAULT &apos;FULL CACHE: &apos;;
+	DECLARE debugFlag						CHAR(1)			DEFAULT &apos;F&apos;;
+	-- CommonTypes variables
+	DECLARE CacheFrameworkPath				VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CacheFrameworkPath;
+	DECLARE CommonTypesPath					VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE constantsType					VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationConstantsType&apos;); -- [Oracle, SqlServer, Netezza]
+	DECLARE procedureTemplate				VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;procedureTemplate&apos;);
+	DECLARE procedureGenerationPath			VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;procedureGenerationPath&apos;);
+	-- General variables
+	DECLARE DEBUG_LEVEL_INFO 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE applicationCacheProcPath		VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;ApplicationCacheProcPath&apos;); 
+	DECLARE applicationCacheProcImplPath	VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;ApplicationCacheProcImplPath&apos;); 
+	DECLARE defaultPreCallbackSuffix 		VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;DefaultPreCallbackSuffix&apos;); 
+	DECLARE defaultPreCallbackImplSuffix 	VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;DefaultPreCallbackImplSuffix&apos;); 
+	DECLARE defaultPostCallbackSuffix 		VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;DefaultPostCallbackSuffix&apos;); 
+	DECLARE defaultPostCallbackImplSuffix 	VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;DefaultPostCallbackImplSuffix&apos;); 
+	DECLARE defProcedureGenerationPath		VARCHAR(4096)	DEFAULT procedureGenerationPath||&apos;/&apos;||moduleName;
+	DECLARE procedureTemplate1				VARCHAR(4096);
+	DECLARE procedureTemplate2				VARCHAR(4096);
+	DECLARE cachekey						INTEGER 		DEFAULT 0;
+	DECLARE resExists						BOOLEAN;
+	DECLARE requestXML						XML;
+	DECLARE crResResp						XML;
+	DECLARE upResResp						XML;
+	DECLARE fault							XML;
+	DECLARE success							BIT;
+	-- Pre-refresh Callback Variables
+	DECLARE	fullPreCallbackImplPath			VARCHAR(4096);
+	DECLARE	fullPreCallbackImplType			VARCHAR(255);
+	DECLARE processPreCallback				BOOLEAN			DEFAULT true;
+	DECLARE preCallbackResourcePath	 		VARCHAR(4096);
+	DECLARE preCallbackParentPath	 		VARCHAR(4096);
+	DECLARE preCallbackName			 		VARCHAR(4096);
+	DECLARE preCallbackImplResourcePath		VARCHAR(4096);
+	DECLARE preCallbackImplParentPath		VARCHAR(4096);
+	DECLARE preCallbackImplName 			VARCHAR(4096);
+
+	-- Post-refresh Callback Variables
+	DECLARE	fullPostCallbackImplPath		VARCHAR(4096);
+	DECLARE	fullPostCallbackImplType		VARCHAR(255);
+	DECLARE processPostCallback				BOOLEAN			DEFAULT true;
+	DECLARE postCallbackResourcePath		VARCHAR(4096);
+	DECLARE postCallbackParentPath			VARCHAR(4096);
+	DECLARE postCallbackName 				VARCHAR(4096);
+	DECLARE postCallbackImplResourcePath 	VARCHAR(4096);
+	DECLARE postCallbackImplParentPath	 	VARCHAR(4096);
+	DECLARE postCallbackImplName		 	VARCHAR(4096);
+
+	/******************************************
+	 * VALIDATE
+	 ******************************************/
+	-- Validate input
+	IF constantsPath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: Constants path can not be null.&apos;;
+	END IF;
+	IF viewPath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: View path can not be null.&apos;;
+	END IF;
+	IF viewName IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: View name can not be null.&apos;;
+	END IF;
+	IF attributes IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: Attributes can not be null.&apos;;
+	END IF;
+
+	/******************************************
+	 * PREPARE PROCEDURE TEMPLATE HEADER
+	 ******************************************/
+	SET procedureTemplate1 = REPLACE(procedureTemplate, &apos;$DEF_PROC&apos;, defProcedureGenerationPath);
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DEF_USERID&apos;, origUserName);
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DEF_CURRENT_TIMESTAMP&apos;, CAST(CURRENT_TIMESTAMP AS VARCHAR));
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DESCRIPTION&apos;, &apos;Full Cache.  Pre-Callback Script.  CACHE_TYPE=&apos;&apos;&apos;||cacheType||&apos;&apos;&apos;&apos;);
+
+	SET procedureTemplate2 = REPLACE(procedureTemplate, &apos;$DEF_PROC&apos;, defProcedureGenerationPath);
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DEF_USERID&apos;, origUserName);
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DEF_CURRENT_TIMESTAMP&apos;, CAST(CURRENT_TIMESTAMP AS VARCHAR));
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DESCRIPTION&apos;, &apos;Full Cache.  Post-Callback Script.  CACHE_TYPE=&apos;&apos;&apos;||cacheType||&apos;&apos;&apos;&apos;);
+
+	/******************************************
+	 * RETRIEVE ATTRIBUTES FROM CACHING_DATA
+	 ******************************************/
+	-- Get Pre-Refresh Cache Procedure variable and validate.  
+	-- If this is NULL then do not generate pre-refresh procedure
+		/*  &lt;!-- Explicit path to the pre-refresh callback implementation procedure or use the default application cache 
+				 proc path defined in CONSTANTS along with a generated procedure name. --&gt;
+	    	&lt;attribute&gt;&lt;name&gt;FULL_PRE_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;
+		*/
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;FULL_PRE_CALLBACK_IMPL_PROC&apos;, attributes, fullPreCallbackImplPath);
+	IF (fullPreCallbackImplPath IS NULL OR LENGTH(fullPreCallbackImplPath) = 0) THEN
+		SET processPreCallback = false;
+	END IF;
+		/*  &lt;!-- Explicit path to the post-refresh callback implemenation procedure or use the default application cache 
+				 proc path defined in CONSTANTS along with a generated procedure name. --&gt;
+	    	&lt;attribute&gt;&lt;name&gt;FULL_POST_CALLBACK_IMPL_PROC&lt;/name&gt;&lt;value&gt;$APPLICATION_CACHE_PROC_IMPL&lt;/value&gt;&lt;/attribute&gt;	
+		*/
+	-- Get Post-Refresh Cache Procedure variable and validate
+	-- If this is NULL then do not generate post-refresh procedure
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;FULL_POST_CALLBACK_IMPL_PROC&apos;, attributes, fullPostCallbackImplPath);
+	IF (fullPostCallbackImplPath IS NULL OR LENGTH(fullPostCallbackImplPath) = 0) THEN
+		SET processPostCallback = false;
+	END IF;
+
+	/******************************************
+	 * VALIDATE TARGET FOLDERS
+	 ******************************************/
+	-- Validate Default target folders for application procedure scripts
+	IF (processPreCallback OR processPostCallback) THEN
+		CALL /lib/resource/ResourceExists(applicationCacheProcPath, &apos;CONTAINER&apos;, null, resExists);
+		IF (NOT resExists) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound 
+				VALUE &apos;The application cache procedure path does not exist.  Check CONSTANTS for the value of &quot;ApplicationCacheProcPath&quot;.&apos;;
+		END IF;
+		CALL /lib/resource/ResourceExists(applicationCacheProcImplPath, &apos;CONTAINER&apos;, null, resExists);
+		IF (NOT resExists) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound 
+				VALUE &apos;The application cache procedure impl path does not exist.  Check CONSTANTS for the value of &quot;ApplicationCacheProcImplPath&quot;.&apos;;
+		END IF;
+	END IF;
+
+	/******************************************
+	 * VALIDATE PRE-REFRESH PATHS
+	 ******************************************/
+	-- Validate Pre-Refresh Cache Procedure paths
+	IF (processPreCallback) THEN
+		IF (POSITION(&apos;$APPLICATION_CACHE_PROC_IMPL&apos; IN fullPreCallbackImplPath) &gt; 0) THEN
+			SET fullPreCallbackImplPath = applicationCacheProcImplPath;
+		END IF;
+		FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(fullPreCallbackImplPath, NULL) DO
+			SET fullPreCallbackImplType = r.&quot;type&quot;;
+		END FOR;
+		IF fullPreCallbackImplType IS NULL THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: fullPreCallbackImplType name can not be null.&apos;;
+		END IF;
+		IF fullPreCallbackImplType NOT IN (&apos;CONTAINER&apos;,&apos;PROCEDURE&apos;) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: fullPreCallbackImplType must be either a FOLDER/CONTAINER or PROCEDURE.&apos;;
+		END IF;
+	END IF;
+
+	/******************************************
+	 * VALIDATE POST-REFRESH PATHS
+	 ******************************************/
+	-- Validate Post-Refresh Cache Procedure paths
+	IF (processPostCallback) THEN
+		IF (POSITION(&apos;$APPLICATION_CACHE_PROC_IMPL&apos; IN fullPostCallbackImplPath) &gt; 0) THEN
+			SET fullPostCallbackImplPath = applicationCacheProcImplPath;
+		END IF;
+		FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(fullPostCallbackImplPath, NULL) DO
+			SET fullPostCallbackImplType = r.&quot;type&quot;;
+		END FOR;
+		IF fullPostCallbackImplType IS NULL THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: fullPostCallbackImplType name can not be null.&apos;;
+		END IF;
+		IF fullPostCallbackImplType NOT IN (&apos;CONTAINER&apos;,&apos;PROCEDURE&apos;) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE moduleName||&apos;: fullPostCallbackImplType must be either a FOLDER/CONTAINER or PROCEDURE.&apos;;
+		END IF;
+	END IF;
+
+/******************************************
+ * BEGIN PRE-REFRESH CALLBACK GENERATION
+ *****************************************/
+	-- Only create a pre-refresh callback when the attribute is specified for the implementation procedure
+	IF (processPreCallback) THEN 
+
+		-- Prepare the pre/post callback and impl procedure paths
+		SET preCallbackName = concatNotNull(viewName, defaultPreCallbackSuffix, 3);
+		SET preCallbackParentPath = applicationCacheProcPath;
+		SET preCallbackResourcePath = preCallbackParentPath || &apos;/&apos; || preCallbackName;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(preCallbackParentPath, preCallbackParentPath);
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(preCallbackResourcePath, preCallbackResourcePath);
+
+		IF (fullPreCallbackImplType = &apos;CONTAINER&apos;) THEN
+			SET preCallbackImplName = concatNotNull(viewName, defaultPreCallbackImplSuffix, 3);
+			SET preCallbackImplParentPath = fullPreCallbackImplPath;
+			SET preCallbackImplResourcePath = preCallbackImplParentPath || &apos;/&apos; || preCallbackImplName;
+		ELSE	-- PROCEDURE
+			CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(fullPreCallbackImplPath, &apos;E&apos;, preCallbackImplName, preCallbackImplParentPath);
+			SET preCallbackImplResourcePath = fullPreCallbackImplPath;
+		END IF;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(preCallbackImplParentPath, preCallbackImplParentPath);
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(preCallbackImplResourcePath, preCallbackImplResourcePath);
+
+		-- Set the call back script path
+		SET firstRefreshScriptPath = preCallbackResourcePath;
+		SET firstRefreshScriptImplPath = preCallbackImplResourcePath;
+
+		IF (preCallbackResourcePath IS NULL OR LENGTH(preCallbackResourcePath) = 0) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter 
+				VALUE &apos;Procedure path for full cache &quot;Pre-Refresh Callback&quot; procedure may not be null.&apos;;
+		END IF;
+		IF (preCallbackImplResourcePath IS NULL OR LENGTH(preCallbackImplResourcePath) = 0) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter 
+				VALUE &apos;Procedure path for full cache &quot;Pre-Refresh CallbackImpl&quot; procedure may not be null.&apos;;
+		END IF;
+
+		/******************************************
+		 * CHECK EXIST PRE-REFRESH CALLBACK IMPL
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /lib/resource/ResourceExists(preCallbackImplResourcePath, &apos;PROCEDURE&apos;, null, resExists);
+		END;
+		/******************************************
+		 * BEGIN PRE-REFRESH CALLBACK IMPL GENERATION
+		 *****************************************/
+		-- Proceed with resource creation if the implementation procedure does not exist
+		IF (NOT resExists) THEN
+
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Creating resource &apos; || preCallbackImplResourcePath);
+
+			/******************************************
+			 * CREATE PRE-REFRESH CALLBACK IMPL
+			 *****************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/repository/createResource(preCallbackImplParentPath, preCallbackImplName, &apos;PROCEDURE&apos;, &apos;SQL_SCRIPT_PROCEDURE&apos;, success, crResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully created script &apos; || preCallbackImplResourcePath);
+				ELSE 					-- fail: resource not created 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+
+			SET requestXML = 
+	&apos;&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+	  &lt;resource:path&gt;&apos; || CAST(XMLTEXT(preCallbackImplResourcePath) AS VARCHAR(4096)) || &apos;&lt;/resource:path&gt;
+	  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+	  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||procedureTemplate1||&apos;PROCEDURE &apos;||CAST(XMLTEXT(preCallbackImplName) AS VARCHAR)||&apos;(
+	IN sequenceNum				BIGINT,
+	IN origUserName				VARCHAR,
+	IN constantsPath			VARCHAR(4096),
+	IN cacheViewPath			VARCHAR(4096),
+	IN cacheViewName			VARCHAR,
+	IN cachekey					BIGINT
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR(255)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(preCallbackImplName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Pre-Callback Impl] &apos;&apos;;
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+
+	/* 1. Initial log entry */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Begin &quot;custom&quot; Pre-Refresh Callback Impl for &apos;&apos;||cacheViewName);
+
+	/* 2. Implement the &quot;custom&quot; Pre-Refresh Callback Impl here: */
+
+
+	/* 3. Final log entry. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Successfully completed &quot;custom&quot; Pre-Refresh Callback Impl for &apos;&apos;||cacheViewName);
+EXCEPTION
+	ELSE
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END]]&gt;&lt;/resource:scriptText&gt;
+	  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+	  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+	&lt;/resource:updateSqlScriptProcedure&gt;&apos;;
+
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Updating resource &apos; || preCallbackImplResourcePath);
+
+			/******************************************
+			 * UPDATE PRE-REFRESH CALLBACK IMPL 
+			 *****************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(requestXML, upResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully updated script &apos; || preCallbackImplResourcePath);
+				ELSE 					-- fail: resource not updated 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+		END IF;
+
+		/******************************************
+		 * CHECK EXIST PRE-REFRESH CALLBACK
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /lib/resource/ResourceExists(preCallbackResourcePath, &apos;PROCEDURE&apos;, null, resExists);
+		END;
+		/******************************************
+		 * DESTROY PRE-REFRESH CALLBACK RESOURCE
+		 *****************************************/
+		IF (resExists) THEN
+			/* destroyResource:
+				IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+				IN resourceName		VARCHAR(255),
+				IN resourceType		VARCHAR(255),
+				OUT success			BIT,
+				OUT createResponse 	XML,
+				OUT faultResponse	XML    */
+			BEGIN INDEPENDENT TRANSACTION
+	 			CALL /shared/ASAssets/Utilities/repository/destroyResource(preCallbackParentPath, preCallbackName, &apos;PROCEDURE&apos;, success, crResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully destroyed script &apos; || preCallbackResourcePath);
+				ELSE 					-- fail: resource not destroyed 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+		END IF;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+				prefix||&apos;Creating resource &apos; || preCallbackResourcePath);
+
+		/******************************************
+		 * CREATE PRE-REFRESH CALLBACK RESOURCE
+		 *****************************************/
+		/*  createResource
+			IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+			IN resourceName		VARCHAR(255),
+			IN resourceType		VARCHAR(255),
+			IN resourceSubType	VARCHAR(255),
+			OUT success			BIT,
+			OUT createResponse 	XML,
+			OUT faultResponse	XML    */
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /shared/ASAssets/Utilities/repository/createResource(preCallbackParentPath, preCallbackName, &apos;PROCEDURE&apos;, &apos;SQL_SCRIPT_PROCEDURE&apos;, success, crResResp, fault);
+			IF fault IS NULL THEN	-- success
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Successfully created script &apos; || preCallbackResourcePath);
+			ELSE 					-- fail: resource not created 
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+			END IF;
+		END;
+
+		SET requestXML = 
+&apos;&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || CAST(XMLTEXT(preCallbackResourcePath) AS VARCHAR(4096)) || &apos;&lt;/resource:path&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||procedureTemplate1||&apos;PROCEDURE &apos;|| CAST(XMLTEXT(preCallbackName) AS VARCHAR)||&apos;()
+BEGIN
+	DECLARE moduleName 				VARCHAR(255)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(preCallbackName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Pre-Callback] &apos;&apos;;
+	DECLARE cacheViewPath			VARCHAR(4096)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(viewPath) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE cacheViewName			VARCHAR			DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(viewName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE constantsPath 			VARCHAR(4096)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(constantsPath) AS VARCHAR(4096))||&apos;&apos;&apos;;
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+	DECLARE cachekey 				BIGINT			DEFAULT 0;
+	DECLARE sequenceNum				BIGINT			DEFAULT 0;
+	DECLARE sequenceName			VARCHAR(4096)	DEFAULT cacheViewName;
+	DECLARE origUserName			VARCHAR;
+	DECLARE origSequenceNum			BIGINT;
+	DECLARE errStatus 				VARCHAR;
+	DECLARE errMessage 				LONGVARCHAR;
+
+	/* 1. Get the sequence from the preCallback environment or generate one if it does not exist. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequenceByName(sequenceName, 0, NULL, constantsPath, prefix, origSequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequence(sequenceName, origSequenceNum, origUserName, constantsPath, prefix, sequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;sequenceName=&apos;&apos;||sequenceName||&apos;&apos;  sequenceNum=&apos;&apos;||emptyStr(sequenceNum));
+
+	/* 2. Retrieve cache key from request environment */
+	CALL /lib/util/GetEnvironment(&apos;&apos;System.CACHED_RESOURCE_CACHE_KEY&apos;&apos;, cachekey);
+	IF (cachekey IS NULL OR cachekey &lt;= 0) THEN
+		RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exInvalidParameter 
+				VALUE &apos;&apos;The System.CACHED_RESOURCE_CACHE_KEY is not set properly.  cachekey=[&apos;&apos;||emptyStr(cachekey)||&apos;&apos;]&apos;&apos;;
+	END IF;
+
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Begin Pre-Refresh Callback for &apos;&apos;||cacheViewName);
+
+	/* 3. Invoke a custom application procedure where all the logic is implemented. */
+	CALL &apos;||preCallbackImplResourcePath||&apos;(sequenceNum, origUserName, constantsPath, cacheViewPath, cacheViewName, cachekey);
+
+	/* 4. Final log entry. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Successfully completed Pre-Refresh Callback for &apos;&apos;||cacheViewName);
+
+	/* 5. Reset the audit log sequence to null for this view. */
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned VALUE errMessage;
+		END IF;
+	END IF;
+EXCEPTION
+	ELSE
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+			-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+			IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+				CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+			END IF;
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END]]&gt;&lt;/resource:scriptText&gt;
+  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+&lt;/resource:updateSqlScriptProcedure&gt;&apos;;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+				prefix||&apos;Updating resource &apos; || preCallbackResourcePath);
+
+		/******************************************
+		 * UPDATE PRE-REFRESH CALLBACK
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(requestXML, upResResp, fault);
+			IF fault IS NULL THEN	-- success
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Successfully updated script &apos; || preCallbackResourcePath);
+			ELSE 					-- fail: resource not updated 
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+			END IF;
+		END;
+	END IF;
+
+/******************************************
+ * BEGIN POST-REFRESH CALLBACK GENERATION
+ *****************************************/
+	-- Only create a post-refresh callback when the attribute is specified for the implementation procedure
+	IF (processPostCallback) THEN
+		SET postCallbackName = concatNotNull(viewName, defaultPostCallbackSuffix, 3);
+		SET postCallbackParentPath = applicationCacheProcPath;
+		SET postCallbackResourcePath = postCallbackParentPath || &apos;/&apos; || postCallbackName;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(postCallbackParentPath, postCallbackParentPath);
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(postCallbackResourcePath, postCallbackResourcePath);
+
+		IF (fullPostCallbackImplType = &apos;CONTAINER&apos;) THEN
+			SET postCallbackImplName = concatNotNull(viewName, defaultPostCallbackImplSuffix, 3);
+			SET postCallbackImplParentPath = fullPostCallbackImplPath;
+			SET postCallbackImplResourcePath = postCallbackImplParentPath || &apos;/&apos; || postCallbackImplName;
+		ELSE	-- PROCEDURE
+			CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(fullPostCallbackImplPath, &apos;E&apos;, postCallbackImplName, postCallbackImplParentPath);
+			SET postCallbackImplResourcePath = fullPostCallbackImplPath;
+		END IF;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(postCallbackImplParentPath, postCallbackImplParentPath);
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(postCallbackImplResourcePath, postCallbackImplResourcePath);
+
+		-- Set the call back script path
+		SET secondRefreshScriptPath = postCallbackResourcePath;
+		SET secondRefreshScriptImplPath = postCallbackImplResourcePath;
+
+		IF (postCallbackResourcePath IS NULL OR LENGTH(postCallbackResourcePath) = 0) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter 
+				VALUE &apos;Procedure path for full cache &quot;Post-Refresh Callback&quot; procedure may not be null.&apos;;
+		END IF;
+		IF (postCallbackImplResourcePath IS NULL OR LENGTH(postCallbackImplResourcePath) = 0) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter 
+				VALUE &apos;Procedure path for full cache &quot;Post-Refresh CallbackImpl&quot; procedure may not be null.&apos;;
+		END IF;
+
+		/******************************************
+		 * CHECK EXIST POST-REFRESH CALLBACK IMPL
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /lib/resource/ResourceExists(postCallbackImplResourcePath, &apos;PROCEDURE&apos;, null, resExists);
+		END;
+		/******************************************
+		 * BEGIN POST-REFRESH CALLBACK IMPL GENERATION
+		 *****************************************/
+		-- Proceed with resource creation if the implementation procedure does not exist
+		IF (NOT resExists) THEN
+
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Creating resource &apos; || postCallbackImplResourcePath);
+
+			/******************************************
+			 * CREATE POST-REFRESH CALLBACK IMPL
+			 *****************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/repository/createResource(postCallbackImplParentPath, postCallbackImplName, &apos;PROCEDURE&apos;, &apos;SQL_SCRIPT_PROCEDURE&apos;, success, crResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully created script &apos; || postCallbackImplResourcePath);
+				ELSE 					-- fail: resource not created 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+
+			SET requestXML = 
+	&apos;&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+	  &lt;resource:path&gt;&apos; || CAST(XMLTEXT(postCallbackImplResourcePath) AS VARCHAR(4096)) || &apos;&lt;/resource:path&gt;
+	  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+	  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||procedureTemplate2||&apos;PROCEDURE &apos;||CAST(XMLTEXT(postCallbackImplName) AS VARCHAR)||&apos;(
+	IN sequenceNum				BIGINT,
+	IN origUserName				VARCHAR,
+	IN constantsPath			VARCHAR(4096),
+	IN cacheViewPath			VARCHAR(4096),
+	IN cacheViewName			VARCHAR,
+	IN cachekey					BIGINT
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR(255)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(postCallbackImplName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Post-Callback Impl] &apos;&apos;;
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+
+	/* 1. Initial log entry */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Begin &quot;custom&quot; Post-Refresh Callback Impl for &apos;&apos;||cacheViewName);
+
+	/* 2. Implement the &quot;custom&quot; Post-Refresh Callback Impl here: */
+
+
+	/* 3. Final log entry. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Successfully completed &quot;custom&quot; Post-Refresh Callback Impl for &apos;&apos;||cacheViewName);
+EXCEPTION
+	ELSE
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END]]&gt;&lt;/resource:scriptText&gt;
+	  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+	  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+	&lt;/resource:updateSqlScriptProcedure&gt;&apos;;
+
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Updating resource &apos; || postCallbackImplResourcePath);
+
+			/******************************************
+			 * UPDATE POST-REFRESH CALLBACK IMPL 
+			 *****************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(requestXML, upResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully updated script &apos; || postCallbackImplResourcePath);
+				ELSE 					-- fail: resource not updated 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+		END IF;
+
+		/******************************************
+		 * CHECK EXIST POST-REFRESH CALLBACK
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /lib/resource/ResourceExists(postCallbackResourcePath, &apos;PROCEDURE&apos;, null, resExists);
+		END;
+		/******************************************
+		 * DESTROY POST-REFRESH CALLBACK RESOURCE
+		 *****************************************/
+		IF (resExists) THEN
+			/* destroyResource:
+				IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+				IN resourceName		VARCHAR(255),
+				IN resourceType		VARCHAR(255),
+				OUT success			BIT,
+				OUT createResponse 	XML,
+				OUT faultResponse	XML    */
+			BEGIN INDEPENDENT TRANSACTION
+	 			CALL /shared/ASAssets/Utilities/repository/destroyResource(postCallbackParentPath, postCallbackName, &apos;PROCEDURE&apos;, success, crResResp, fault);
+				IF fault IS NULL THEN	-- success
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+						prefix||&apos;Successfully destroyed script &apos; || postCallbackResourcePath);
+				ELSE 					-- fail: resource not destroyed 
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+				END IF;
+			END;
+		END IF;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+				prefix||&apos;Creating resource &apos; || postCallbackResourcePath);
+
+		/******************************************
+		 * CREATE POST-REFRESH CALLBACK RESOURCE
+		 *****************************************/
+		/*  createResource
+			IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+			IN resourceName		VARCHAR(255),
+			IN resourceType		VARCHAR(255),
+			IN resourceSubType	VARCHAR(255),
+			OUT success			BIT,
+			OUT createResponse 	XML,
+			OUT faultResponse	XML    */
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /shared/ASAssets/Utilities/repository/createResource(postCallbackParentPath, postCallbackName, &apos;PROCEDURE&apos;, &apos;SQL_SCRIPT_PROCEDURE&apos;, success, crResResp, fault);
+			IF fault IS NULL THEN	-- success
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Successfully created script &apos; || postCallbackResourcePath);
+			ELSE 					-- fail: resource not created 
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+			END IF;
+		END;
+
+		SET requestXML = 
+&apos;&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || CAST(XMLTEXT(postCallbackResourcePath) AS VARCHAR(4096)) || &apos;&lt;/resource:path&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||procedureTemplate2||&apos;PROCEDURE &apos;|| CAST(XMLTEXT(postCallbackName) AS VARCHAR)||&apos;()
+BEGIN
+	DECLARE moduleName 				VARCHAR(255)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(postCallbackName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Post-Callback] &apos;&apos;;
+	DECLARE cacheViewPath			VARCHAR(4096)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(viewPath) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE cacheViewName			VARCHAR			DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(viewName) AS VARCHAR)||&apos;&apos;&apos;;
+	DECLARE constantsPath 			VARCHAR(4096)	DEFAULT &apos;&apos;&apos;||CAST(XMLTEXT(constantsPath) AS VARCHAR(4096))||&apos;&apos;&apos;;
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+	DECLARE cachekey 				BIGINT			DEFAULT 0;
+	DECLARE sequenceName			VARCHAR(4096)	DEFAULT cacheViewName;
+	DECLARE sequenceNum				BIGINT			DEFAULT 0;
+	DECLARE origUserName			VARCHAR;
+	DECLARE origSequenceNum			BIGINT;
+	DECLARE errStatus 				VARCHAR;
+	DECLARE errMessage 				LONGVARCHAR;
+
+	/* 1. Get the sequence from the preCallback environment or generate one if it does not exist. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequenceByName(sequenceName, 0, NULL, constantsPath, prefix, origSequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequence(sequenceName, origSequenceNum, origUserName, constantsPath, prefix, sequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;sequenceName=&apos;&apos;||sequenceName||&apos;&apos;  sequenceNum=&apos;&apos;||emptyStr(sequenceNum));
+
+	/* 2. Retrieve cache key from request environment */
+	CALL /lib/util/GetEnvironment(&apos;&apos;System.CACHED_RESOURCE_CACHE_KEY&apos;&apos;, cachekey);
+	IF (cachekey IS NULL OR cachekey &lt;= 0) THEN
+		RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exInvalidParameter 
+				VALUE &apos;&apos;The System.CACHED_RESOURCE_CACHE_KEY is not set properly.  cachekey=[&apos;&apos;||emptyStr(cachekey)||&apos;&apos;]&apos;&apos;;
+	END IF;
+
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Begin Post-Refresh Callback for &apos;&apos;||cacheViewName);
+
+	/* 3. Invoke a custom application procedure where all the logic is implemented. */
+	CALL &apos;||postCallbackImplResourcePath||&apos;(sequenceNum, origUserName, constantsPath, cacheViewPath, cacheViewName, cachekey);
+
+	/* 4. Final log entry. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Successfully completed Post-Refresh Callback for &apos;&apos;||cacheViewName);
+
+	/* 5. Reset the audit log sequence to null for this view. */
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned VALUE errMessage;
+		END IF;
+	END IF;
+
+	/* 6. Reset the audit log sequence to null for this view. */
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned VALUE errMessage;
+		END IF;
+	END IF;
+EXCEPTION
+	ELSE
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+			-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+			IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+				CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+			END IF;
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END]]&gt;&lt;/resource:scriptText&gt;
+  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+&lt;/resource:updateSqlScriptProcedure&gt;&apos;;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+				prefix||&apos;SCRIPT: Updating resource &apos; || postCallbackResourcePath);
+
+		/******************************************
+		 * UPDATE POST-REFRESH CALLBACK
+		 *****************************************/
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(requestXML, upResResp, fault);
+			IF fault IS NULL THEN	-- success
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Successfully updated script &apos; || postCallbackResourcePath);
+			ELSE 					-- fail: resource not updated 
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+			END IF;
+		END;
+	END IF;
+
+
+	/******************************************
+	 * UPDATE IMPACTED RESOURCES
+	 *****************************************/
+	/* updateImpactedResources:
+		IN debug					CHAR(1),
+		IN inStartingFolders 		LONGVARCHAR, -- a comma separated list of startingFolder paths like: /shared/&quot;_deployment&quot;
+		IN inExcludePathsKeywords	LONGVARCHAR, -- exclude paths containing these keywords (case insensitive)
+												 --   examples: Analysis,Archive,save,validation
+		OUT  success				BIT    */
+	BEGIN INDEPENDENT TRANSACTION
+	IF (processPreCallback OR processPostCallback) THEN
+		CALL /shared/ASAssets/Utilities/repository/updateImpactedResources(debugFlag, applicationCacheProcPath, NULL, success);
+		IF success = 1 THEN	-- success
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+				prefix||&apos;Successfully updated impacted resources in starting folder &apos; || applicationCacheProcPath);
+		ELSE 					-- fail: resource not updated 
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+		END IF;
+		IF (applicationCacheProcImplPath != applicationCacheProcPath) THEN
+			/******************************************
+			 * UPDATE IMPACTED RESOURCES
+			 *****************************************/
+			CALL /shared/ASAssets/Utilities/repository/updateImpactedResources(debugFlag, applicationCacheProcImplPath, NULL, success);
+			IF success = 1 THEN	-- success
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,  
+					prefix||&apos;Successfully updated impacted resources in starting folder &apos; || applicationCacheProcImplPath);
+			ELSE 					-- fail: resource not updated 
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+			END IF;
+		END IF;
+	END IF;
+	END;
+	SET errStatus = &apos;SUCCESS&apos;;
+
+EXCEPTION
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter THEN
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath,  prefix||CURRENT_EXCEPTION.MESSAGE);
+		SET errStatus = &apos;FAIL&apos;;
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned  THEN
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath,  prefix||CURRENT_EXCEPTION.MESSAGE);
+		SET errStatus = &apos;FAIL&apos;;
+	ELSE
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath,  prefix||CURRENT_EXCEPTION.TRACE);
+		SET errStatus = &apos;FAIL&apos;;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1384794645262</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

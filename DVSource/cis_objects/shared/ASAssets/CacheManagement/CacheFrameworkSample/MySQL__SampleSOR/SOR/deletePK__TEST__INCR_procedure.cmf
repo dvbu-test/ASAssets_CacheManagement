@@ -1,0 +1,251 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="deletePK_TEST_INCR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/deletePK_TEST_INCR" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inK1" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="inK2" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="SEQ">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K1">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K2">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C3">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C4">
+          <datatype name="DECIMAL" type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+        </element>
+        <element name="ACTIVITY">
+          <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+        </element>
+        <element name="SDT">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr_del" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr_hist" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_DEL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_HIST" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE deletePK_TEST_INCR(
+--	IN  inDeleteType		CHAR(1),	-- H=Hard delete (remove from table).  S=Soft/simulated delete.  Mark the ACTIVITY flag=D
+	IN  inK1				INTEGER,
+	IN  inK2				VARCHAR,
+	OUT result				CURSOR(SEQ INTEGER, K1 INTEGER, K2 VARCHAR, C3 VARCHAR, C4 DECIMAL(10,2), ACTIVITY VARCHAR(1), SDT TIMESTAMP)
+)
+BEGIN
+	DECLARE deleteType		CHAR(1) DEFAULT &apos;H&apos;; -- DEFAULT NVL(inDeleteType, &apos;H&apos;);
+	DECLARE cnt				INTEGER;
+	DECLARE transDt			TIMESTAMP;
+    DECLARE edtSurrogate 	TIMESTAMP DEFAULT TO_DATE(&apos;9999-12-31 00:00:00&apos;, &apos;YYYY-MM-DD HH24:MI:SS&apos;);
+    DECLARE edtActual 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+	BEGIN INDEPENDENT TRANSACTION
+		IF (deleteType = &apos;H&apos;) THEN
+			-- DELETE table - Insert a new record as &quot;deleted&quot; to emulate a DELETE trigger
+           INSERT INTO /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_DEL (K1, K2, SDT)
+				SELECT K1, K2, edtActual
+				FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR 
+				WHERE K1 = inK1 AND K2 = inK2;
+
+		-- Update the previous current record. 
+--			UPDATE {0}.TEST_INCR_HIST SET EDT = :n.SDT WHERE K1 = :o.K1 and K2 = :o.K2 AND (EDT = edtSurrogate OR EDT IS NULL);
+            -- Update the previous current record.
+   		    UPDATE /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_HIST 
+				SET EDT = edtActual 
+				WHERE K1 = inK1 and K2 = inK2
+				  AND (EDT = edtSurrogate OR EDT IS NULL);
+
+             -- Insert a new record as &quot;deleted&quot;.
+           INSERT INTO /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_HIST (K1, K2, C3, C4, ACTIVITY, SDT, EDT)
+				SELECT K1, K2, C3,C4, &apos;D&apos;, edtActual, edtActual
+				FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR 
+				WHERE K1 = inK1 AND K2 = inK2;
+
+			-- Delete the row from the source TEST_INCR table.
+			DELETE FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR 
+				WHERE K1 = inK1 AND K2 = inK2;
+		END IF;
+/*
+		IF (deleteType = &apos;S&apos;) THEN
+			SET transDt = CURRENT_TIMESTAMP;
+			UPDATE /shared/Common/CacheFramework/DemoORA/SOR/TEST_INCR
+				SET ACTIVITY = &apos;D&apos;,
+					SDT = transDt
+				WHERE K1 = inK1;			
+
+			INSERT INTO /shared/Common/CacheFramework/DemoORA/SOR/TEST_INCR_HIST 
+				SELECT T.*, transDt DEL
+				FROM /shared/Common/CacheFramework/DemoORA/SOR/TEST_INCR T
+				WHERE K1 = inK1;			
+		END IF;
+*/		
+	COMMIT;
+	EXCEPTION
+		ELSE
+			RAISE;
+	END;
+
+	OPEN result FOR SELECT { option no_data_cache } * From /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR ORDER BY K1,K2,SDT;
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">1411958719692</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415111348005</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

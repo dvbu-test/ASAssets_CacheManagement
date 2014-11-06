@@ -1,0 +1,2001 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="DeconfigureCache" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/DeconfigureCache" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inSequenceName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inOrigUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="inResourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errMessage" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DeleteDBSequence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceName" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inPrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errMessage" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DropTable" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="catalogName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="schemaName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="tableName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="tablePrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="tableSuffix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cacheType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="attributes" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBResourceValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSqlStatement" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="runObjectValue" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceValue" direction="OUT">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBSequence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSequenceName" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inSequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="inOrigUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inPrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sequenceNum" direction="OUT">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBSequenceByName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSequenceName" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inSequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="inOrigUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inPrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sequenceNum" direction="OUT">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetUniqueSequenceName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSequenceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="prefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="suffix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sequenceName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceCacheConfig" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inDataSourcePath" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="StatusTablePath" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="TrackingTablePath" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="configured">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="cachePolicy">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageDataSourcePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageTargetName">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storagePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageType">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="refreshMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="scheduleMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="startTime">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="fromTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="endTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="recurringDay">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="interval">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="period">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="count">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="isCluster">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="expirationPeriod">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="clearRule">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="allOrNothing">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="incremental">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="storageBucketMode">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketCatalog">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketSchema">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketPrefix">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketNumBuckets">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="storageDropCreateIdx">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="firstRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="secondRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateResourceCacheConfig" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cacheConfigured" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateResourceCacheEnabled" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cacheConfigured" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString1" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inputString2" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 	DeconfigureCache:
+
+	This script is the main driver script that will deconfigure the cache .  It will do the following:
+		1. Disable primary cache view (disable cache)
+		2. If Staging table used
+			2.a. Destroy staging view
+			2.b. Destroy CIS staging table
+			2.c. Drop staging table in database
+			2.d. Delete the staging table cache_status row
+		3. Destroy CIS cache load or callback scripts.  Optional to destroy custom callback implementation scripts.
+			3.a. Destroy first call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+			3.b. Destroy second call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+		4. Destroy CIS cache table
+		5. Drop cache tables in database
+		6. Deconfigure primary cache view 
+			6.a. Ddestroy cache configuration
+			6.b. Delete the cache table cache_status row
+		7. Destroy the cache refresh trigger if it exists
+		8. Destroy the cache purge trigger if it exists
+		9. Delete AUDIT_LOG_SEQ entry
+		10. Verify the Deconfiguration
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/  
+PROCEDURE DeconfigureCache(
+	IN  inSequenceName			VARCHAR,		-- The name of the sequence.  Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  inOrigUserName			VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+	IN  constantsPath	 		VARCHAR(4096),	-- Path to the application constants procedure.
+	IN  inResourcePath			VARCHAR(4096),	-- The specific view path to be deconfigured or leave null to deconfigure all views in CachingData (procedure) / CACHING_DATA (table).
+	OUT errStatus 				VARCHAR,		-- Status=SUCCESS or FAIL
+	OUT errMessage 				LONGVARCHAR		-- Status message upon FAIL othwerwise NULL
+)
+BEGIN
+	DECLARE moduleName 						VARCHAR(255) 	DEFAULT &apos;PublishedImpl/DeconfigureCache&apos;;-- name of SQL Script
+	DECLARE prefix							VARCHAR 		DEFAULT &apos;DECONFIGURE CACHE: &apos;; 		-- Used to prefix messages for the log so the messages are all uniform.
+	DECLARE CommonTypesPath					VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE constantsType					VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationConstantsType&apos;); -- [Oracle, SqlServer, Netezza]
+	DECLARE CachingDataSelect				LONGVARCHAR		DEFAULT getConstant(CommonTypesPath, &apos;CachingDataSelect&apos;);
+	DECLARE tableExistsSQL 					LONGVARCHAR		DEFAULT getConstant(CommonTypesPath, constantsType||&apos;ObjectTableExists&apos;);
+	DECLARE DEBUG_LEVEL_INFO 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	DECLARE runObjectExists					VARCHAR(4096) 	DEFAULT getConstant(constantsPath, &apos;ApplicationObjectExists&apos;);
+ 	DECLARE cacheDSType 					VARCHAR(255) 	DEFAULT getConstant(constantsPath, &apos;DefaultCacheDSType&apos;);
+ 	DECLARE organizationName 				VARCHAR(255)	DEFAULT getConstant(constantsPath, &apos;OrganizationName&apos;);
+ 	DECLARE applicationName 				VARCHAR(255)	DEFAULT getConstant(constantsPath, &apos;ApplicationName&apos;);
+	DECLARE stagingFolderPath 				VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationStageViewPath&apos;);					-- Used for holding the location of the staging views to be generated.			
+ 	DECLARE CachingDataTablePath			VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;CachingDataTablePath&apos;);
+	DECLARE CacheStatusSelect				LONGVARCHAR		DEFAULT getConstant(CommonTypesPath, &apos;CacheStatusSelect&apos;);
+	DECLARE applicationTriggersPath 		VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationTriggersPath&apos;);					-- Used for the trigger path location
+	DECLARE triggerNameSuffix 				VARCHAR			DEFAULT emptyStr(getConstant(constantsPath, &apos;DefaultTriggerNameSuffix&apos;));		-- Used for appending a trigger suffix name to the trigger path.
+	DECLARE purgeTriggerNameSuffix			VARCHAR			DEFAULT emptyStr(getConstant(constantsPath, &apos;DefaultPurgeTriggerNameSuffix&apos;));	-- Used for appending a purge trigger suffix name to the trigger path.
+	DECLARE auditTableSeq	 				VARCHAR			DEFAULT emptyStr(getConstant(constantsPath, &apos;AuditSeqTablePath&apos;));				-- AUDIT_LOG_SEQ CIS path.
+	DECLARE refreshTriggerName				VARCHAR;
+	DECLARE purgeTriggerName				VARCHAR;
+	DECLARE refreshTriggerFound				BOOLEAN			DEFAULT FALSE;
+	DECLARE purgeTriggerFound				BOOLEAN			DEFAULT FALSE;
+	DECLARE CachingDataCurs					CURSOR /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CachingDataType;
+	DECLARE resultCursorValue 				INTEGER;
+  	DECLARE resultCursor 					CURSOR (outputvalue BIGINT);
+	DECLARE resExists						BOOLEAN;
+	DECLARE i								INTEGER;
+	DECLARE status							BOOLEAN;
+	DECLARE sessionID						DECIMAL(38,0);
+	DECLARE sequenceNum						BIGINT;
+	DECLARE sequenceName					VARCHAR(4096);
+	DECLARE origSequenceNum					BIGINT;
+	DECLARE origUserName					VARCHAR;
+	DECLARE seqMessage						LONGVARCHAR;
+	DECLARE cachekey						INTEGER 		DEFAULT 0;
+	DECLARE cacheConfigured					INTEGER;
+	DECLARE cacheType						VARCHAR;
+	DECLARE sqlStatement					VARCHAR(4096);
+	DECLARE catalogName						VARCHAR;
+	DECLARE schemaName						VARCHAR;
+	DECLARE tableName						VARCHAR;
+	DECLARE success							BIT; -- true(1), false(0)
+	DECLARE createResponse 					XML;
+	DECLARE faultResponse					XML;
+	DECLARE messageInvalid					LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE messageValid					LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE verified						BOOLEAN;
+
+	DECLARE resourcePathTemp				VARCHAR(4096);
+	DECLARE TYPE databaseType				ROW (
+			catalogName			VARCHAR,
+			schemaName			VARCHAR,
+			tableName			VARCHAR
+	);
+	-- Required Variables for deconfiguration
+	DECLARE parentPath						VARCHAR(4096);
+	DECLARE resourcePath 					VARCHAR(4096);
+	DECLARE resourceName 					VARCHAR(255);
+	DECLARE resourceNameUPPER				VARCHAR(255);
+	DECLARE resourceType					VARCHAR(4096);
+	DECLARE firstRefreshCallback			VARCHAR(4096);
+	DECLARE secondRefreshCallback			VARCHAR(4096);
+	DECLARE cacheTableCISVect				VECTOR(ROW(resourcePath VARCHAR(4096))) DEFAULT VECTOR[(null)];	-- vector needed to support multi-table
+	DECLARE cacheTableDBVect				VECTOR(databaseType) DEFAULT VECTOR[(null)];	-- vector needed to support multi-table
+	-- Staging resources
+	DECLARE stagingTablePath				VARCHAR(4096);
+	DECLARE stagingTableCISVect				VECTOR(ROW(resourcePath VARCHAR(4096))) DEFAULT VECTOR[(null)];	-- vector needed to support multi-table
+	DECLARE stagingTableDBVect				VECTOR(databaseType) DEFAULT VECTOR[(null)];	-- vector needed to support multi-table
+	DECLARE storageDataSourcePath			VARCHAR(4096);
+	DECLARE cacheStatusTablePath			VARCHAR(4096);
+	DECLARE cacheStatusStagingTablePath		VARCHAR(4096);
+	DECLARE cacheTrackingTablePath			VARCHAR(4096);
+	DECLARE selectStmt						LONGVARCHAR;
+	DECLARE curs							CURSOR /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.cacheStatus_Type;
+
+	-- Generate an audit log sequence# and set it in the AUDIT_LOG_SEQ table.
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetUniqueSequenceName(inSequenceName, moduleName, &apos;SEQ&apos;, sequenceName);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBSequenceByName(sequenceName, 0, inOrigUserName, constantsPath, prefix, origSequenceNum, origUserName, errStatus);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBSequence(sequenceName, origSequenceNum, origUserName, constantsPath, prefix, sequenceNum, origUserName, errStatus);
+
+	-- Fix paths
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(CachingDataTablePath, CachingDataTablePath);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(applicationTriggersPath, applicationTriggersPath);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(stagingFolderPath, stagingFolderPath);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(auditTableSeq, auditTableSeq);
+
+	-- When a specific resource is provided then only deconfigure this resource
+	IF (inResourcePath IS NOT NULL) THEN
+		-- In the SQL below, the CACHE_TYPE is set to &apos;U&apos; for unknown.  The CACHE_TYPE is not needed for deconfiguration.
+		SET CachingDataSelect = &apos;
+          SELECT 
+            &apos;&apos;Y&apos;&apos; RUN_YN,
+            &apos;&apos;Y&apos;&apos; DROP_RECREATE_VIEW_YN,
+            &apos;&apos;N&apos;&apos; DROP_RECREATE_TABLE_YN,
+            &apos;&apos;U&apos;&apos; CACHE_TYPE,
+            &apos;&apos;&apos;||inResourcePath||&apos;&apos;&apos; RESOURCE_PATH, 
+            &apos;&apos;&apos;||organizationName||&apos;&apos;&apos; ORGANIZATION_NAME,
+            &apos;&apos;&apos;||applicationName||&apos;&apos;&apos; APPLICATION_NAME,
+            &apos;&apos;&apos;||constantsPath||&apos;&apos;&apos; CONSTANTS_PATH,
+            &apos;&apos;&apos;&apos; ATTRIBUTES
+         FROM /shared/ASAssets/Utilities/request/DUAL&apos;;
+	ELSE
+		-- When no resource path is provided then deconfigure the resources in CACHING_DATA table
+		SET CachingDataSelect = REPLACE(CachingDataSelect, &apos;$CachingDataTablePath&apos;, CachingDataTablePath) ||
+										&apos; WHERE RUN_YN=&apos;&apos;Y&apos;&apos; AND ORGANIZATION = &apos;&apos;&apos;||emptyStr(organizationName)||
+										&apos;&apos;&apos; AND APPLICATION_NAME = &apos;&apos;&apos;||emptyStr(applicationName)||&apos;&apos;&apos;&apos;;
+	END IF;
+
+	-- Validate the caching data select statement from the custom constants
+	IF (CachingDataSelect IS NULL OR LENGTH(CachingDataSelect) = 0) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound 
+			VALUE &apos;The constant &quot;CachingDataSelect&quot; is null or empty.  Please provide a valid constant in the procedure=&apos;||constantsPath;
+	END IF;
+
+/******************************************************
+ * BEGIN: GENERATE AND EXECUTE CACHE TABLE DDL
+ *****************************************************/
+	BEGIN INDEPENDENT TRANSACTION
+	OPEN CachingDataCurs FOR CachingDataSelect;
+	-- itereate through each resource to be configured for caching
+	FOR CachingDataRow AS CachingDataCurs DO
+
+		-- Initialize variables
+		SET cacheStatusTablePath = NULL;
+		SET cacheStatusStagingTablePath = NULL;
+		SET stagingTablePath = NULL;
+		SET refreshTriggerFound = FALSE;
+		SET purgeTriggerFound = FALSE; 
+
+		-- Get the resourcePath and resource name
+		SET resourcePath = CachingDataRow.RESOURCE_PATH;
+		CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+		set resourceNameUPPER = UPPER(resourceName);
+
+		-- Start Logging messages
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath,
+				prefix||&apos;Start deconfiguring for resource &apos; || emptyStr(resourcePath));
+
+		-- Get the resource type
+		SELECT &quot;type&quot; INTO resourceType FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(resourcePath, NULL);
+
+		-- Check if resource exists
+		CALL /lib/resource/ResourceExists(resourcePath, resourceType, NULL, status); 
+		IF NOT(status) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound VALUE prefix||&apos;Resource &apos; || resourcePath || &apos; not found&apos;;
+		ELSE
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+				prefix||&apos;Resource &apos; || resourcePath || &apos; exists&apos;);
+		END IF;
+
+		-- Initialize cache configure to 0 (deconfigured)
+		SET cacheConfigured = 0;
+
+		-- Get the cache configuration for the view.   If the cache is not configured then &quot;configured=0&quot;.  There is always a row returned.
+		FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(resourcePath, resourceType) DO
+			-- Get the cache configured
+			SET cacheConfigured = r.configured;
+			-- Get the first and second script paths
+			SET firstRefreshCallback = r.firstRefreshCallback;
+			SET secondRefreshCallback = r.secondRefreshCallback;
+			SET storageDataSourcePath = r.storageDataSourcePath;
+
+			IF (storageDataSourcePath IS NOT NULL) THEN
+				-- Get the cache status and tracking tables for the associated data source
+				CALL /shared/ASAssets/Utilities/repository/getDataSourceCacheConfig(storageDataSourcePath, cacheStatusTablePath, cacheTrackingTablePath);
+			END IF;
+
+			SET i = 1;
+			SET cacheTableCISVect = VECTOR[(null)];
+			SET cacheTableDBVect = VECTOR[(null)];
+			-- This is not multi-table
+			IF (r.storageBucketMode IS NULL) THEN
+				SET cacheTableCISVect[i].resourcePath = r.storagePath;
+				SET resourcePathTemp = REPLACE(r.storagePath, r.storageDataSourcePath, &apos;&apos;); -- Remove the leading CIS path from the full storage path;
+				CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 1, 0, tableName);
+				CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 2, 0, schemaName);
+				CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 3, 0, catalogName);
+				SET cacheTableDBVect[i].catalogName = TRIM(NVL(catalogName, &apos; &apos;));
+				SET cacheTableDBVect[i].schemaName = TRIM(NVL(schemaName, &apos; &apos;));
+				SET cacheTableDBVect[i].tableName = TRIM(NVL(tableName, &apos; &apos;));
+				SET cacheTableDBVect = EXTEND(cacheTableDBVect, 1); -- extend by 1 so it can be truncated.
+				SET cacheTableCISVect = EXTEND(cacheTableCISVect, 1); -- extend by 1 so it can be truncated.
+			ELSE -- This is multi-table
+				WHILE (i &lt;= r.storageBucketNumBuckets) DO
+					SET cacheTableCISVect[i].resourcePath = r.storageDataSourcePath || &apos;/&apos; ||
+							concatNotNull(r.storageBucketCatalog, &apos;/&apos;, 3) ||
+							concatNotNull(r.storageBucketSchema, &apos;/&apos;, 3) ||
+							r.storageBucketPrefix||(i-1); -- a.k.a. tableName
+					SET cacheTableDBVect[i].catalogName = r.storageBucketCatalog;
+					SET cacheTableDBVect[i].schemaName = r.storageBucketSchema;
+					SET cacheTableDBVect[i].tableName = r.storageBucketPrefix||(i-1);
+					SET cacheTableDBVect = EXTEND(cacheTableDBVect, 1); -- extend by 1 so it can be truncated.
+					SET cacheTableCISVect = EXTEND(cacheTableCISVect, 1); -- extend by 1 so it can be truncated.
+					SET i = i + 1;
+				END WHILE;
+			END IF;
+			SET cacheTableCISVect = TRUNCATE(cacheTableCISVect, 1); 
+			SET cacheTableDBVect = TRUNCATE(cacheTableDBVect, 1); 
+
+			-- Determine if there is a staging table by interrogating the firstRefreshCallback script which is the initial load script.
+			-- If there is a staging table then it is used in the initial load script.  There is only one staging table per initial load script.
+			SET stagingTablePath = NULL;
+			SET stagingTableCISVect = VECTOR[(null)];
+			SET stagingTableDBVect = VECTOR[(null)];
+			IF (firstRefreshCallback IS NOT NULL) THEN
+				FOR r AS 
+					SELECT * FROM /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(firstRefreshCallback, &apos;PROCEDURE&apos;)
+						WHERE resourcePath LIKE stagingFolderPath||&apos;%&apos;
+				DO
+					SET stagingTablePath = r.resourcePath;
+				END FOR;
+			END IF;
+			IF (stagingTablePath IS NOT NULL) THEN
+				SET i = 1;
+				-- Get the cache configuration for the staging view.   If the cache is not configured then &quot;configured=0&quot;.  There is always a row returned.
+				FOR s AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(stagingTablePath, &apos;TABLE&apos;) DO
+					SET storageDataSourcePath = r.storageDataSourcePath;
+
+					IF (storageDataSourcePath IS NOT NULL) THEN
+						-- Get the cache status and tracking tables for the associated data source
+						CALL /shared/ASAssets/Utilities/repository/getDataSourceCacheConfig(storageDataSourcePath, cacheStatusStagingTablePath, cacheTrackingTablePath);
+					END IF;
+
+					-- This is not multi-table
+					IF (s.storageBucketMode IS NULL) THEN
+						SET stagingTableCISVect[i].resourcePath = s.storagePath;
+						SET resourcePathTemp = REPLACE(s.storagePath, s.storageDataSourcePath, &apos;&apos;); -- Remove the leading CIS path from the full storage path;
+						CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 1, 0, tableName);
+						CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 2, 0, schemaName);
+						CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePathTemp, &apos;R&apos;, &apos;/&apos;, 3, 0, catalogName);
+						SET stagingTableDBVect[i].catalogName = TRIM(NVL(catalogName, &apos; &apos;));
+						SET stagingTableDBVect[i].schemaName = TRIM(NVL(schemaName, &apos; &apos;));
+						SET stagingTableDBVect[i].tableName = TRIM(NVL(tableName, &apos; &apos;));
+						-- extend by 1 so it can be truncated.
+						SET stagingTableDBVect = EXTEND(stagingTableDBVect, 1); 
+						SET stagingTableCISVect = EXTEND(stagingTableCISVect, 1); 
+					ELSE -- This is multi-table
+						WHILE (i &lt;= s.storageBucketNumBuckets) DO
+							SET stagingTableCISVect[i].resourcePath = s.storageDataSourcePath || &apos;/&apos; ||
+									concatNotNull(s.storageBucketCatalog, &apos;/&apos;, 3) ||
+									concatNotNull(s.storageBucketSchema, &apos;/&apos;, 3) ||
+									s.storageBucketPrefix||(i-1);
+							SET stagingTableDBVect[i].catalogName = s.storageBucketCatalog;
+							SET stagingTableDBVect[i].schemaName = s.storageBucketSchema;
+							SET stagingTableDBVect[i].tableName = s.storageBucketPrefix||(i-1);
+							-- extend by 1 so it can be truncated.
+							SET stagingTableDBVect = EXTEND(stagingTableDBVect, 1); 
+							SET stagingTableCISVect = EXTEND(stagingTableCISVect, 1);
+							SET i = i + 1;
+						END WHILE;
+					END IF;
+				END FOR;
+			END IF;
+			SET stagingTableCISVect = TRUNCATE(stagingTableCISVect, 1); 
+			SET stagingTableDBVect = TRUNCATE(stagingTableDBVect, 1); 
+		END FOR;
+
+		-- Cache is not configured to log a message and end
+		IF (cacheConfigured = 0) THEN
+			CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+					prefix||&apos;Cache view has already been deconfigured &apos; || emptyStr(resourceName)); 
+
+		-- Continue with deconfiguration if the cache is configured
+		ELSE
+			/*******************************************************
+				Required resources to perform deconfiguration:
+				1. Disable primary cache view (disable cache)
+					Required: resourcePath, resourceType
+					1.a. Update Cache Enabled &quot;enabled=0&quot;
+				2. If Staging table used
+					Required: stagingTablePath, stagingTableCISVect[resPath], stagingTableDBVect[tableURL]
+					2.a. Destroy staging view 			 			- use stagingTablePath
+					2.b. Destroy CIS staging table 		 			- use stagingTableCISVect[resPath] - support multi-table
+					2.c. Drop staging table in database  			- use stagingTableDBVect[tableURL] - support multi-table
+					2.d. Delete the staging table cache_status row	- use stagingTablePath
+				3. Destroy CIS cache load or callback scripts.  Optional to destroy custom callback implementation scripts.
+					Required: firstRefreshCallback, secondRefreshCallback
+					3.a. Destroy first call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+					3.b. Destroy second call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+				4. Destroy CIS cache table
+					Required: cacheTableCISVect[resPath] 			- support multi-table
+					4.a. Destroy all CIS cache tables
+				5. Drop cache tables in database
+					Required: cacheTableDBVect[tableURL]			- support multi-table
+					5.a. Drop all cache tables
+				6. Deconfigure primary cache view (deconfigure cache)
+					Required: resourcePath, resourceType
+					6.a. Update Cache Configure &quot;configured=0&quot;
+					6.b. Delete the cache table cache_status row	- use resourcePath
+				7. Destroy the cache refresh trigger if it exists
+				8. Destroy the cache purge trigger if it exists
+				9. Delete AUDIT_LOG_SEQ entry
+				10. Verify the Deconfiguration
+			 *******************************************************/
+
+			/****************************************************** 
+			 * 1.a. DISABLE PRIMARY CACHE VIEW
+			 *****************************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;1.a. Disable primary cache view &apos; || emptyStr(resourceName)); 
+
+				/* updateResourceCacheConfig(
+					IN fullResourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+					IN resourceType			VARCHAR(255),
+    				IN cacheConfigured 		VARCHAR(255), -- true or false string
+					OUT success				BIT, -- true(1), false(0)
+					OUT createResponse 		XML,
+					OUT faultResponse		XML)         */
+				CALL /shared/ASAssets/Utilities/repository/updateResourceCacheEnabled(resourcePath, resourceType, &apos;false&apos;, success, createResponse, faultResponse);
+				IF (faultResponse IS NULL) THEN
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;1.a. Successfully disabled CIS cache view &apos; || emptyStr(resourceName)); 
+				ELSE
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+							VALUE prefix||&apos;1.a. Disable primary cache view.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+				END IF;
+			END;
+
+			/****************************************************** 
+			 * 2. DESTROY STAGING RESOURCES
+			 *****************************************************/
+			IF (stagingTablePath IS NOT NULL AND LENGTH(stagingTablePath) &gt; 0) THEN
+				---------------------------------------
+				-- 2.a. Destroy staging view
+				---------------------------------------
+				BEGIN INDEPENDENT TRANSACTION
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(stagingTablePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;2.a. Destroy staging view &apos; || emptyStr(resourceName)); 
+
+					CALL /lib/resource/ResourceExists(stagingTablePath, &apos;TABLE&apos;, null, status);
+					IF status THEN
+						/* 	destroyResource(
+								IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+								IN resourceName		VARCHAR(255),
+								IN resourceType		VARCHAR(255),
+								OUT success			BIT,
+								OUT createResponse 	XML,
+								OUT faultResponse	XML)      */
+						CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, resourceName, &apos;TABLE&apos;, success, createResponse, faultResponse);
+						IF (faultResponse IS NULL) THEN
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;2.a. Successfully destroyed CIS staging view &apos; || emptyStr(resourceName)); 
+						ELSE
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+									VALUE prefix||&apos;2.a. Destroy staging view.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+					ELSE
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;2.a. CIS staging view has already been destroyed &apos; || emptyStr(resourceName)); 
+					END IF;
+				END;
+				---------------------------------------
+				-- 2.b. Destroy CIS staging table
+				---------------------------------------
+				BEGIN INDEPENDENT TRANSACTION
+					SET i = 1;
+					WHILE (i &lt;= CARDINALITY(stagingTableCISVect)) DO
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;2.b. Destroy CIS staging table &apos; || emptyStr(stagingTableCISVect[i].resourcePath)); 
+
+						CALL /lib/resource/ResourceExists(stagingTableCISVect[i].resourcePath, &apos;TABLE&apos;, null, status);
+						IF status THEN
+							CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(stagingTableCISVect[i].resourcePath, &apos;E&apos;, resourceName, parentPath);
+
+							/* 	destroyResource(
+									IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+									IN resourceName		VARCHAR(255),
+									IN resourceType		VARCHAR(255),
+									OUT success			BIT,
+									OUT createResponse 	XML,
+									OUT faultResponse	XML)      */
+							CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, resourceName, &apos;TABLE&apos;, success, createResponse, faultResponse);
+							IF (faultResponse IS NULL) THEN
+								CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+										prefix||&apos;2.b. Successfully destroyed CIS staging table &apos; || emptyStr(resourceName)); 
+							ELSE
+								RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+										VALUE prefix||&apos;2.b. Destroy CIS staging table.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+							END IF;
+						ELSE
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;2.b. CIS staging table has already destroyed &apos; || emptyStr(resourceName)); 
+						END IF;
+						SET i = i + 1;
+					END WHILE;
+				END;
+
+				---------------------------------------
+				-- 2.c. Drop staging table in database
+				---------------------------------------
+				BEGIN INDEPENDENT TRANSACTION
+					SET i = 1;
+					WHILE (i &lt;= CARDINALITY(stagingTableDBVect)) DO
+						set resourceName = stagingTableDBVect[i].tableName;
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;2.c. Drop DB staging table &apos; || emptyStr(resourceName)); 
+
+						/* DropTable(
+							IN  sequenceNum				BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+							IN  origUserName			VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+							IN  constantsPath	 		VARCHAR(4096),	-- Path to the application constants procedure.
+							IN  catalogName				VARCHAR,
+							IN  schemaName				VARCHAR,
+							IN  tableName	 			VARCHAR,
+							IN  tablePrefix				VARCHAR,
+							IN  tableSuffix				VARCHAR,
+							IN  cacheType				VARCHAR,
+							IN  attributes				LONGVARCHAR,
+							OUT errStatus 				VARCHAR)         */
+						-- Drop cache table if it exists
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DropTable(
+								sequenceNum, 
+								origUserName,
+								constantsPath, 
+								stagingTableDBVect[i].catalogName, 
+								stagingTableDBVect[i].schemaName, 
+								stagingTableDBVect[i].tableName, 
+								NULL, 
+								NULL, 
+								&apos;FS&apos;, 	-- Force as single so that the &apos;FM&apos; choice is not used because the table names are already known here.
+								NULL, 
+								errStatus);
+						IF errStatus = &apos;SUCCESS&apos; THEN		
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;2.c. Successfully dropped DB staging table &apos; || resourceName || &apos;.&apos;); 
+						ELSE 
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound 
+									VALUE prefix||&apos;2.c. Unable to drop DB staging table &apos; || resourceName||&apos;.&apos;;
+						END IF;  
+						SET i = i + 1;
+					END WHILE;
+				END;
+
+				---------------------------------------
+				-- 2.d. Delete the staging table cache_status row
+				---------------------------------------
+					IF (cacheStatusStagingTablePath IS NOT NULL AND stagingTablePath IS NOT NULL) THEN
+						SET sqlStatement = &apos;DELETE FROM &apos;||cacheStatusStagingTablePath||&apos; WHERE &quot;resourceid&quot; = &apos;&apos;&apos;|| stagingTablePath ||&apos;&apos;&apos;&apos;;
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;2.d. Deleting staging table cache_status rows using SQL=[&apos; || emptyStr(sqlStatement)||&apos;]&apos;); 
+
+						BEGIN INDEPENDENT TRANSACTION
+							EXECUTE IMMEDIATE sqlStatement;
+
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;2.d. Successfully deleted staging table cache_status rows for &apos; || stagingTablePath ||&apos;.&apos;); 
+						EXCEPTION
+							ELSE
+								SET errMessage = CURRENT_EXCEPTION.TRACE;
+								RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned
+										VALUE prefix||&apos;2.d. Unable to delete staging table cache_status rows for &apos; || stagingTablePath||&apos;.  ERROR=&apos;||errMessage;
+						END;
+					
+					END IF;
+			ELSE
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;2. No staging table to deconfigure.&apos;); 
+			END IF;
+
+			/****************************************************** 
+			 * 3. DESTROY CACHE SCRIPTS
+			 *****************************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				---------------------------------------
+				-- 3.a. Destroy first call back script
+				---------------------------------------
+				IF (firstRefreshCallback IS NOT NULL OR LENGTH(firstRefreshCallback) &gt; 0) THEN
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(firstRefreshCallback, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;3.a. Destroy CIS first call back script &apos; || emptyStr(resourceName)); 
+
+					CALL /lib/resource/ResourceExists(firstRefreshCallback, &apos;PROCEDURE&apos;, null, status);
+					IF status THEN
+						/* 	destroyResource(
+								IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+								IN resourceName		VARCHAR(255),
+								IN resourceType		VARCHAR(255),
+								OUT success			BIT,
+								OUT createResponse 	XML,
+								OUT faultResponse	XML)      */
+						CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, resourceName, &apos;PROCEDURE&apos;, success, createResponse, faultResponse);
+						IF (faultResponse IS NULL) THEN
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;3.a. Successfully destroyed CIS first refresh callback procedure &apos; || emptyStr(resourceName)); 
+						ELSE
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+									VALUE prefix||&apos;3.a. Destroy CIS first call back script.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+					ELSE
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;3.a. CIS first refresh callback procedure has already been destroyed &apos; || emptyStr(resourceName)); 
+					END IF;
+				ELSE
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;3.a. No first refresh callback procedure to deconfigure.&apos;); 
+				END IF;
+
+				---------------------------------------
+				-- 3.b. Destroy second call back script
+				---------------------------------------
+				IF (firstRefreshCallback IS NOT NULL OR LENGTH(firstRefreshCallback) &gt; 0) THEN
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(secondRefreshCallback, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;3.b. Destroy CIS second call back script &apos; || emptyStr(resourceName)); 
+
+					CALL /lib/resource/ResourceExists(secondRefreshCallback, &apos;PROCEDURE&apos;, null, status);
+					IF status THEN
+						/* 	destroyResource(
+								IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+								IN resourceName		VARCHAR(255),
+								IN resourceType		VARCHAR(255),
+								OUT success			BIT,
+								OUT createResponse 	XML,
+								OUT faultResponse	XML)      */
+						CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, resourceName, &apos;PROCEDURE&apos;, success, createResponse, faultResponse);
+						IF (faultResponse IS NULL) THEN
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;3.b. Successfully destroyed CIS second refresh callback procedure &apos; || emptyStr(resourceName)); 
+						ELSE
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+								VALUE prefix||&apos;3.b. Destroy CIS second call back script.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+					ELSE
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;3.b. CIS second refresh callback procedure has already been destroyed &apos; || emptyStr(resourceName)); 
+					END IF;
+				ELSE
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;3.b. No second refresh callback procedure to deconfigure.&apos;); 
+				END IF;
+			END;
+
+			/****************************************************** 
+			 * 4. DESTORY CIS CACHE TABLES
+			 *****************************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				SET i = 1;
+				WHILE (i &lt;= CARDINALITY(cacheTableCISVect)) DO
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(cacheTableCISVect[i].resourcePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;4.a. Destroy CIS cache table &apos; || emptyStr(cacheTableCISVect[i].resourcePath)); 
+
+					CALL /lib/resource/ResourceExists(cacheTableCISVect[i].resourcePath, &apos;TABLE&apos;, null, status);
+					IF status THEN
+
+						/* 	destroyResource(
+								IN resourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+								IN resourceName		VARCHAR(255),
+								IN resourceType		VARCHAR(255),
+								OUT success			BIT,
+								OUT createResponse 	XML,
+								OUT faultResponse	XML)      */
+						CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, resourceName, &apos;TABLE&apos;, success, createResponse, faultResponse);
+						IF (faultResponse IS NULL) THEN
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+									prefix||&apos;4.a. Successfully destroyed CIS cache table &apos; || emptyStr(resourceName)); 
+						ELSE
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+									VALUE prefix||&apos;4.a. Destroy CIS cache table.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+					ELSE
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;4.a. CIS cache table has already been destroyed &apos; || emptyStr(resourceName)); 
+					END IF;
+					SET i = i + 1;
+				END WHILE;
+			END;
+					
+			/****************************************************** 
+			 * 5. DESTROY DATABASE CACHE TABLES
+			 *****************************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				SET i = 1;
+				WHILE (i &lt;= CARDINALITY(cacheTableDBVect)) DO
+					SET resourceName = cacheTableDBVect[i].tableName;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;5.a. DROP cache table &apos; || emptyStr(resourceName)); 
+
+					/* DropTable(
+						IN  sequenceNum				BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+						IN  origUserName			VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+						IN  constantsPath	 		VARCHAR(4096),	-- Path to the application constants procedure.
+						IN  catalogName				VARCHAR,
+						IN  schemaName				VARCHAR,
+						IN  tableName	 			VARCHAR,
+						IN  tablePrefix				VARCHAR,
+						IN  tableSuffix				VARCHAR,
+						IN  cacheType				VARCHAR,
+						IN  attributes				LONGVARCHAR,
+						OUT errStatus 				VARCHAR)         */
+					-- Drop cache table if it exists
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DropTable(
+							sequenceNum, 
+							origUserName,
+							constantsPath, 
+							cacheTableDBVect[i].catalogName, 
+							cacheTableDBVect[i].schemaName, 
+							cacheTableDBVect[i].tableName, 
+							NULL, 
+							NULL, 
+							&apos;FS&apos;, 	-- Force as single so that the &apos;FM&apos; choice is not used because the table names are already known here.
+							NULL, 
+							errStatus);
+					IF errStatus = &apos;SUCCESS&apos; THEN		
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;5.a. Successfully dropped cache table &apos; || resourceName || &apos;.&apos;); 
+					ELSE 
+						RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound 
+								VALUE prefix||&apos;5.a. Unable to drop cache table &apos; || resourceName;
+					END IF;  
+					SET i = i + 1;
+				END WHILE;
+			END;
+
+			/****************************************************** 
+			 * 6.a. DECONFIGURE PRIMARY CACHE VIEW
+			 *****************************************************/
+				---------------------------------------
+				-- 6.a. Update Cache Configure &quot;configured=0&quot;
+				---------------------------------------
+				BEGIN INDEPENDENT TRANSACTION
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;6.a. Update Cache Configure &quot;configured=0&quot; &apos; || emptyStr(resourceName)); 
+
+					/* updateResourceCacheConfig(
+						IN fullResourcePath 	/shared/ASAssets/Utilities/TypeDefinitions.pathType, 
+						IN resourceType			VARCHAR(255),
+   		 				IN cacheConfigured 		VARCHAR(255), -- true or false string
+						OUT success				BIT, -- true(1), false(0)
+						OUT createResponse 		XML,
+						OUT faultResponse		XML)         */
+					CALL /shared/ASAssets/Utilities/repository/updateResourceCacheConfig(resourcePath, resourceType, &apos;false&apos;, success, createResponse, faultResponse);
+					IF (faultResponse IS NULL) THEN
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;6.a. Successfully deconfigured CIS cache view &apos; || emptyStr(resourceName)); 
+					ELSE
+						RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned 
+								VALUE prefix||&apos;6.a. Update Cache Configure &quot;configured=0&quot;.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+					END IF;
+				END;
+
+				---------------------------------------
+				-- 6.b. Delete the cache table cache_status row
+				---------------------------------------
+				IF (cacheStatusTablePath IS NOT NULL AND resourcePath IS NOT NULL) THEN
+					SET sqlStatement = &apos;DELETE FROM &apos;||cacheStatusTablePath||&apos; WHERE &quot;resourceid&quot; = &apos;&apos;&apos;|| resourcePath ||&apos;&apos;&apos;&apos;;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;6.b. Deleting cache table cache_status rows using SQL=[&apos; || emptyStr(sqlStatement)||&apos;]&apos;); 
+
+					BEGIN INDEPENDENT TRANSACTION
+						EXECUTE IMMEDIATE sqlStatement;
+
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;6.b. Successfully deleted cache table cache_status rows for &apos; || resourcePath ||&apos;.&apos;); 
+					EXCEPTION
+						ELSE
+							SET errMessage = CURRENT_EXCEPTION.TRACE;
+							RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned
+									VALUE prefix||&apos;6.b. Unable to delete cache table cache_status rows for &apos; || resourcePath||&apos;.  ERROR=&apos;||errMessage;
+					END;				
+				END IF;
+
+			/****************************************************** 
+			 * 7. Destroy the cache refresh trigger if it exists
+			 *****************************************************/
+			SET refreshTriggerName = resourceNameUPPER || emptyStr(triggerNameSuffix);
+			CALL /lib/resource/ResourceExists(applicationTriggersPath || &apos;/&apos; || refreshTriggerName , &apos;TRIGGER&apos;, NULL, resExists); 
+			IF (resExists) THEN
+				SET refreshTriggerFound = TRUE;
+				-- resource found and we need to drop it.
+				BEGIN INDEPENDENT TRANSACTION
+					CALL /shared/ASAssets/Utilities/repository/destroyResource(applicationTriggersPath, refreshTriggerName, &apos;TRIGGER&apos;, success, createResponse, faultResponse);
+					IF (faultResponse IS NULL) THEN
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, refreshTriggerName, cachekey, constantsPath, 
+								prefix||&apos;7. Successfully destroyed refresh trigger &apos; || emptyStr(refreshTriggerName)); 
+					ELSE
+						RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE
+								prefix||&apos;7. Unable to drop refresh trigger &apos; || applicationTriggersPath || &apos;/&apos; || refreshTriggerName || &apos;  failed.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+					END IF;
+				END;	
+			END IF;
+
+			/****************************************************** 
+			 * 8. Destroy the cache purge trigger if it exists
+			 *****************************************************/
+			SET purgeTriggerName = resourceNameUPPER || emptyStr(purgeTriggerNameSuffix);
+			CALL /lib/resource/ResourceExists(applicationTriggersPath || &apos;/&apos; || purgeTriggerName , &apos;TRIGGER&apos;, NULL, resExists); 
+			IF (resExists) THEN
+				SET purgeTriggerFound = TRUE;
+				-- resource found and we need to drop it.
+				BEGIN INDEPENDENT TRANSACTION
+					CALL /shared/ASAssets/Utilities/repository/destroyResource(applicationTriggersPath, purgeTriggerName, &apos;TRIGGER&apos;, success, createResponse, faultResponse);
+					IF (faultResponse IS NULL) THEN
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, purgeTriggerName, cachekey, constantsPath, 
+								prefix||&apos;8. Successfully destroyed purge trigger &apos; || emptyStr(purgeTriggerName)); 
+					ELSE
+						RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE
+								prefix||&apos;8. Unable to drop purge trigger &apos; || applicationTriggersPath || &apos;/&apos; || purgeTriggerName || &apos;  failed.  ERROR: &apos;||CAST(faultResponse AS LONGVARCHAR);
+					END IF;
+				END;	
+			END IF;
+
+			/****************************************************** 
+			 * 9. Delete AUDIT_LOG_SEQ entry
+			 *****************************************************/
+			SET sqlStatement = &apos;DELETE FROM &apos;||auditTableSeq||&apos; WHERE SEQUENCE_NAME = &apos;&apos;&apos;||resourceNameUPPER||&apos;&apos;&apos;&apos;;
+			BEGIN INDEPENDENT TRANSACTION
+				EXECUTE IMMEDIATE sqlStatement;
+
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, auditTableSeq, cachekey, constantsPath, 
+						prefix||&apos;9. Successfully deleted AUDIT_LOG_SEQ entry where SEQUENCE_NAME=&apos; || emptyStr(resourceNameUPPER)); 
+			EXCEPTION
+				ELSE
+					SET errMessage = CURRENT_EXCEPTION.TRACE;
+					RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned
+							VALUE prefix||&apos;9. Unable to delete AUDIT_LOG_SEQ entry where SEQUENCE_NAME=&apos; || resourceNameUPPER||&apos;.  ERROR=&apos;||errMessage;
+			END;				
+
+			/****************************************************** 
+			 * 10. VERIFY DECONFIGURATION
+			 *****************************************************/
+			/*******************************************************
+				Required resources to perform deconfiguration:
+				1. Disable primary cache view (disable cache)
+					Required: resourcePath, resourceType
+					1.a. Update Cache Enabled &quot;enabled=0&quot;
+				2. If Staging table used
+					Required: stagingTablePath, stagingTableCISVect[resPath], stagingTableDBVect[tableURL]
+					2.a. Destroy staging view 			 			- use stagingTablePath
+					2.b. Destroy CIS staging table 		 			- use stagingTableCISVect[resPath] - support multi-table
+					2.c. Drop staging table in database  			- use stagingTableDBVect[tableURL] - support multi-table
+					2.d. Delete the staging table cache_status row	- use stagingTablePath
+				3. Destroy CIS cache load or callback scripts.  Optional to destroy custom callback implementation scripts.
+					Required: firstRefreshCallback, secondRefreshCallback
+					3.a. Destroy first call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+					3.b. Destroy second call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+				4. Destroy CIS cache table
+					Required: cacheTableCISVect[resPath] 			- support multi-table
+					4.a. Destroy all CIS cache tables
+				5. Drop cache tables in database
+					Required: cacheTableDBVect[tableURL]			- support multi-table
+					5.a. Drop all cache tables
+				6. Deconfigure primary cache view (deconfigure cache)
+					Required: resourcePath, resourceType
+					6.a. Update Cache Configure &quot;configured=0&quot;
+					6.b. Delete the cache table cache_status row	- use resourcePath
+				7. Destroy the cache refresh trigger if it exists
+				8. Destroy the cache purge trigger if it exists
+				9. Delete AUDIT_LOG_SEQ entry
+				10. Verify the Deconfiguration
+			 *******************************************************/
+			BEGIN INDEPENDENT TRANSACTION
+				SET verified = TRUE;
+
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;10. Verify the Deconfiguration &apos; || emptyStr(resourceName)); 
+
+				-- 1.a. Disable the cache
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;10. Verify: 1.a. Disable the cache &apos; || emptyStr(resourceName)); 
+
+				FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(resourcePath, resourceType) DO
+					IF (r.enabled is null or r.enabled = 0) THEN
+						SET messageValid = messageValid || &apos;1.a. Successfully disabled the cache view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;1.a. Failed to disable the cache view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;
+				END FOR;
+
+				IF (stagingTablePath IS NOT NULL AND LENGTH(stagingTablePath) &gt; 0) THEN
+					-- 2.a. Destroy staging view 			 	- use stagingTablePath
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(stagingTablePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify: 2.a. Destroy staging view &apos; || emptyStr(resourceName)); 
+
+					CALL /lib/resource/ResourceExists(stagingTablePath, &apos;TABLE&apos;, null, status);
+					IF NOT status THEN
+						SET messageValid = messageValid || &apos;2.a. Successfully destroyed the staging view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;2.a. Failed to destroy the staging view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;
+
+					-- 2.b. Destroy CIS staging table 		 	- use stagingTableCISVect[resPath] - support multi-table
+					SET i = 1;
+					WHILE (i &lt;= CARDINALITY(stagingTableCISVect)) DO
+						CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(stagingTableCISVect[i].resourcePath, &apos;E&apos;, resourceName, parentPath);
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;10. Verify: 2.b. Destroy CIS staging table &apos; || emptyStr(resourceName)); 
+
+						CALL /lib/resource/ResourceExists(stagingTableCISVect[i].resourcePath, &apos;TABLE&apos;, null, status);
+						IF NOT status THEN
+							SET messageValid = messageValid || &apos;2.b. Successfully destroyed CIS staging table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						ELSE
+							SET messageInvalid = messageInvalid || &apos;2.b. Failed to destroy CIS staging table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+							SET verified = FALSE;
+						END IF;
+						SET i = i + 1;
+					END WHILE;
+
+					-- 2.c. Drop staging table in database  	- use stagingTableDBVect[tableURL] - support multi-table
+					SET i = 1;
+					WHILE (i &lt;= CARDINALITY(stagingTableDBVect)) DO
+						SET resourceName = stagingTableDBVect[i].tableName;
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;10. Verify: 2.c. Drop DB staging table &apos; || emptyStr(resourceName)); 
+
+						SET sqlStatement = REPLACE(tableExistsSQL, &apos;$CatalogName&apos;, TRIM(NVL(stagingTableDBVect[i].catalogName, &apos; &apos;)));
+						SET sqlStatement = REPLACE(sqlStatement,   &apos;$SchemaName&apos;,  stagingTableDBVect[i].schemaName);
+						SET sqlStatement = REPLACE(sqlStatement,   &apos;$TableName&apos;,   stagingTableDBVect[i].tableName);
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBResourceValue(sqlStatement, runObjectExists, resultCursorValue);
+						-- Table was dropped
+						IF resultCursorValue = 0 THEN
+							SET messageValid = messageValid || &apos;2.c. Successfully dropped DB staging table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						ELSE
+							SET messageInvalid = messageInvalid || &apos;2.c. Failed to drop DB staging table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+							SET verified = FALSE;
+						END IF;
+						SET i = i + 1;
+					END WHILE;
+
+					-- 2.d. Delete the staging table cache_status row 		-- use stagingTablePath
+					IF (cacheStatusStagingTablePath IS NOT NULL) THEN
+						SET sqlStatement = &apos;SELECT COUNT(*) cnt FROM &apos;||cacheStatusStagingTablePath||&apos; WHERE &quot;resourceid&quot; = &apos;&apos;&apos;|| stagingTablePath ||&apos;&apos;&apos;&apos;;
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+								prefix||&apos;10. Verify 2.d. Delete staging table cache_status rows using SQL=[&apos; || emptyStr(sqlStatement)||&apos;]&apos;); 
+
+						OPEN resultCursor FOR sqlStatement;
+						FETCH resultCursor INTO resultCursorValue;
+						CLOSE resultCursor;
+						-- Rows were deleted
+						IF resultCursorValue = 0 THEN
+							SET messageValid = messageValid || &apos;2.d. Successfully deleted staging table cache_status rows for &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						ELSE
+							SET messageInvalid = messageInvalid || &apos;2.d. Unable to delete staging table cache_status rows for &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+							SET verified = FALSE;
+						END IF;					
+					END IF;
+				ELSE
+					SET messageValid = messageValid || &apos;2. No staging table to deconfigure.&apos;;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify: 2. No staging table to deconfigure.&apos;); 
+				END IF;
+
+				-- 3.a. Destroy first call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(firstRefreshCallback, &apos;E&apos;, resourceName, parentPath);
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;10. Verify: 3.a. Destroy first call back script &apos; || emptyStr(resourceName)); 
+
+				CALL /lib/resource/ResourceExists(firstRefreshCallback, &apos;PROCEDURE&apos;, null, status);
+				IF NOT status THEN
+					SET messageValid = messageValid || &apos;3.a. Successfully destroyed first refresh call back procedure &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+				ELSE
+					SET messageInvalid = messageInvalid || &apos;3.a. Failed to destroy first refresh call back procedure &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					SET verified = FALSE;
+				END IF;
+
+				-- 3.b. Destroy second call back script [Initial Load or Pre-Callback and Pre-Callback Impl (optional)]
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(secondRefreshCallback, &apos;E&apos;, resourceName, parentPath);
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;10. Verify: 3.a. Destroy second call back script &apos; || emptyStr(resourceName)); 
+
+				CALL /lib/resource/ResourceExists(secondRefreshCallback, &apos;PROCEDURE&apos;, null, status);
+				IF NOT status THEN
+					SET messageValid = messageValid || &apos;3.b. Successfully destroyed second refresh call back procedure &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+				ELSE
+					SET messageInvalid = messageInvalid || &apos;3.b. Failed to destroy second refresh call back procedure &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					SET verified = FALSE;
+				END IF;
+
+				-- 4.a. Destroy CIS cache table				-- cacheTableCISVect[resPath] 	- support multi-table
+				SET i = 1;
+				WHILE (i &lt;= CARDINALITY(cacheTableCISVect)) DO
+					CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(cacheTableCISVect[i].resourcePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify: 4.a. Destroy CIS cache table &apos; || emptyStr(resourceName)); 
+
+					CALL /lib/resource/ResourceExists(cacheTableCISVect[i].resourcePath, &apos;TABLE&apos;, null, status);
+					IF NOT status THEN
+						SET messageValid = messageValid || &apos;4.a. Successfully destroyed CIS cache table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;4.a. Failed to destroy CIS cache table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;
+					SET i = i + 1;
+				END WHILE;
+
+				-- 5.a. Drop cache table					-- cacheTableDBVect[tableURL]	- support multi-table
+				SET i = 1;
+				WHILE (i &lt;= CARDINALITY(cacheTableDBVect)) DO
+					SET resourceName = cacheTableDBVect[i].tableName;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify: 5.a. Drop cache table &apos; || emptyStr(resourceName)); 
+
+					SET sqlStatement = REPLACE(tableExistsSQL, &apos;$CatalogName&apos;, TRIM(NVL(cacheTableDBVect[i].catalogName, &apos; &apos;)));
+					SET sqlStatement = REPLACE(sqlStatement,   &apos;$SchemaName&apos;,  cacheTableDBVect[i].schemaName);
+					SET sqlStatement = REPLACE(sqlStatement,   &apos;$TableName&apos;,   cacheTableDBVect[i].tableName);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetDBResourceValue(sqlStatement, runObjectExists, resultCursorValue);
+					-- Table was dropped
+					IF resultCursorValue = 0 THEN
+						SET messageValid = messageValid || &apos;5.a. Successfully dropped DB staging table &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;5.a. Failed to drop DB staging table &apos;||resourceName||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;
+					SET i = i + 1;
+				END WHILE;
+
+				-- 6.a. Update cache configuration for the view.   If the cache is not configured then &quot;configured=0&quot;.  There is always a row returned.
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify: 6.a. Deconfigure the cache view &apos; || emptyStr(resourceName)); 
+
+				FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(resourcePath, resourceType) DO
+					IF (r.configured IS NULL OR r.configured = 0) THEN
+						SET messageValid = messageValid || &apos;6.a. Successfully deconfigured the cache view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;6.a. Failed to deconfigure the cache view &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;
+				END FOR;
+
+				-- 6.b. Delete the cache table cache_status row		- use resourcePath
+				IF (cacheStatusTablePath IS NOT NULL) THEN
+					SET sqlStatement = &apos;SELECT COUNT(*) cnt FROM &apos;||cacheStatusTablePath||&apos; WHERE &quot;resourceid&quot; = &apos;&apos;&apos;|| resourcePath ||&apos;&apos;&apos;&apos;;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, resourceName, cachekey, constantsPath, 
+							prefix||&apos;10. Verify 6.b. Delete cache table cache_status rows using SQL=[&apos; || emptyStr(sqlStatement)||&apos;]&apos;); 
+
+					OPEN resultCursor FOR sqlStatement;
+					FETCH resultCursor INTO resultCursorValue;
+					CLOSE resultCursor;
+					-- Rows were deleted
+					IF resultCursorValue = 0 THEN
+						SET messageValid = messageValid || &apos;6.b. Successfully deleted cache table cache_status rows for &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;6.b. Unable to delete cache table cache_status rows for &apos;|| emptyStr(resourceName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;					
+				END IF;
+
+				-- 7. Destroy the cache refresh trigger if it exists
+				IF (refreshTriggerFound) THEN
+					CALL /lib/resource/ResourceExists(applicationTriggersPath || &apos;/&apos; || refreshTriggerName , &apos;TRIGGER&apos;, NULL, resExists); 
+					IF (NOT resExists) THEN
+						SET messageValid = messageValid || &apos;7. Successfully deleted cache trigger &apos;|| emptyStr(refreshTriggerName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;7. Unable to delete cache trigger &apos;|| emptyStr(refreshTriggerName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;					
+				ELSE
+						SET messageValid = messageValid || &apos;8. No operation.  No refresh trigger available.&apos;||CHR(10);
+				END IF;
+
+				-- 8. Destroy the cache purge trigger if it exists
+				IF (purgeTriggerFound) THEN
+					CALL /lib/resource/ResourceExists(applicationTriggersPath || &apos;/&apos; || purgeTriggerName , &apos;TRIGGER&apos;, NULL, resExists); 
+					IF (NOT resExists) THEN
+						SET messageValid = messageValid || &apos;8. Successfully deleted purge trigger &apos;|| emptyStr(purgeTriggerName) ||&apos;.&apos;||CHR(10);
+					ELSE
+						SET messageInvalid = messageInvalid || &apos;8. Unable to delete purge trigger &apos;|| emptyStr(purgeTriggerName) ||&apos;.&apos;||CHR(10);
+						SET verified = FALSE;
+					END IF;					
+				ELSE
+						SET messageValid = messageValid || &apos;8. No operation.  No purge trigger available.&apos;||CHR(10);
+				END IF;
+
+			-- 9. Delete AUDIT_LOG_SEQ entry
+			BEGIN INDEPENDENT TRANSACTION
+				SET sqlStatement = &apos;SELECT COUNT(*) cnt FROM &apos;||auditTableSeq||&apos; WHERE SEQUENCE_NAME = &apos;&apos;&apos;||resourceNameUPPER||&apos;&apos;&apos;&apos;;
+				OPEN resultCursor FOR sqlStatement;
+				FETCH resultCursor INTO resultCursorValue;
+				CLOSE resultCursor;
+				IF (resultCursorValue = 0) THEN
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceNameUPPER, cachekey, constantsPath, 
+							prefix||&apos;9. Successfully deleted AUDIT_LOG_SEQ entry where SEQUENCE_NAME=&apos; || emptyStr(resourceNameUPPER)); 
+				ELSE
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceNameUPPER, cachekey, constantsPath, 
+							prefix||&apos;9. Unable to delete AUDIT_LOG_SEQ entry where SEQUENCE_NAME=&apos; || emptyStr(resourceNameUPPER)); 
+					SET verified = FALSE;
+				END IF;
+			EXCEPTION
+				ELSE
+					SET errMessage = CURRENT_EXCEPTION.TRACE;
+					SET verified = FALSE;
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, resourceNameUPPER, cachekey, constantsPath, 
+						prefix||&apos;9. Unable to verify delete AUDIT_LOG_SEQ entry where SEQUENCE_NAME=&apos; || resourceNameUPPER||&apos;.  ERROR=&apos;||errMessage);
+			END;				
+
+				-- Output messages to log
+				CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, resourceName, parentPath);
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;**VALID VERIFICATION** DBType=&apos;||cacheDSType||&apos;.  Valid deconfigure actions: &apos; || emptyStr(messageValid));
+				IF NOT verified THEN
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, resourceName, cachekey, constantsPath, 
+						prefix||&apos;**INVALID VERIFICATION** DBType=&apos;||cacheDSType||&apos;.  Invalid deconfigure actions: &apos; || emptyStr(messageInvalid));
+				END IF;
+			END;
+		END IF;
+	END FOR;
+
+	END;
+
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;FAIL&apos;) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE prefix||errMessage;
+		END IF;
+	END IF;
+
+	SET errStatus = &apos;SUCCESS&apos;;
+	SET errMessage = NULL;
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, resourceName, cachekey, constantsPath,  prefix||&apos;End Deconfigure.&apos;);
+
+EXCEPTION
+    WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound THEN
+		SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+    	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, null, cachekey, constantsPath, errMessage);
+		-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+		IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, seqMessage);
+		END IF;
+        SET errStatus = &apos;FAIL&apos;;
+ 	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned THEN
+    	SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+    	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, null, cachekey, constantsPath, errMessage);
+		-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+		IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, seqMessage);
+		END IF;
+        SET errStatus = &apos;FAIL&apos;;
+    ELSE
+    	SET errMessage = CURRENT_EXCEPTION.TRACE;
+    	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, null, cachekey, constantsPath, errMessage);
+		-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+		IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, seqMessage);
+		END IF;
+        SET errStatus = &apos;FAIL&apos;;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1411147122381</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

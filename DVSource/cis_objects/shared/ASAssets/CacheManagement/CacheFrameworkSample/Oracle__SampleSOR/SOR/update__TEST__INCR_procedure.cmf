@@ -1,0 +1,130 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="update_TEST_INCR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/update_TEST_INCR" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inK1" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="inK2" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="10"/>
+    </parameter>
+    <parameter name="inC3" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inC4" direction="IN" nullable="true">
+      <datatype name="DECIMAL" type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="SEQ">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K1">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K2">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C3">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C4">
+          <datatype name="DECIMAL" type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+        </element>
+        <element name="ACTIVITY">
+          <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+        </element>
+        <element name="SDT">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      </element>
+      <element name="K1" nullable="false">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="K2" nullable="false">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE update_TEST_INCR(
+	IN  inK1			INTEGER,
+	IN  inK2			VARCHAR(10),
+	IN  inC3			VARCHAR(255),
+	IN  inC4			DECIMAL(10,2),
+	OUT result			CURSOR(SEQ INTEGER, K1 INTEGER, K2 VARCHAR, C3 VARCHAR, C4 DECIMAL(10,2), ACTIVITY VARCHAR(1), SDT TIMESTAMP)
+)
+BEGIN
+
+	BEGIN INDEPENDENT TRANSACTION
+		UPDATE /shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/TEST_INCR
+			SET C3 = inC3,
+				C4 = inC4,
+				SDT = CURRENT_TIMESTAMP,
+				ACTIVITY = &apos;U&apos;
+			WHERE K1 = inK1
+			  AND K2 = inK2;
+	COMMIT;
+	END;
+
+	OPEN result FOR SELECT { option no_data_cache } * From /shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/TEST_INCR ORDER BY K1,K2,SDT;
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">1411958719692</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415114909273</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

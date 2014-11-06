@@ -1,0 +1,1134 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="RefreshResourceCache" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/RefreshResourceCache" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="sequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="origUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="pollingInterval" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="maxLoops" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="refreshPrePause" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="refreshPostPause" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="prefix" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="refreshDuration" direction="OUT" nullable="true">
+      <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_DAY_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+    </parameter>
+    <parameter name="row_count" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="cachekey" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="error" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/Pause" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="timeInMilliSeconds" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/databases/system/SYS_CACHES" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="RESOURCE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="RESOURCE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="RESOURCE_TYPE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OWNER_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="OWNER">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PARENT_PATH">
+        <datatype type="STRING" maxLength="65535"/>
+      </element>
+      <element name="STATUS">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="VARIANT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="LAST_REFRESH_END">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="LAST_SUCCESS_END">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="LAST_FAIL_END">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="LAST_ACCESS">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="LAST_SUCCESS_DURATION">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="LAST_FAIL_DURATION">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="NUM_SUCCESS">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="NUM_FAIL">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="NUM_ACCESS">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="STORAGE_USED">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="MESSAGE">
+        <datatype type="STRING" maxLength="65535"/>
+      </element>
+      <element name="INITIAL_TIME">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="NEXT_TIME">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="FREQUENCY">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CURRENT_REFRESH_START">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CURRENT_DURATION">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="CURRENT_STORAGE">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="CURRENT_CAUSE">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/refreshResourceCache" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="refreshResourceCache" direction="IN">
+        <datatype name="refreshResourceCache" extendedName="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCache" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCache" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCache">
+          <schemaDatatype>
+            <datatype name="refreshResourceCache" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="refreshResourceCacheRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="refreshResourceCacheResponse" direction="OUT">
+        <datatype name="refreshResourceCacheResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCacheResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCacheResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}refreshResourceCacheResponse">
+          <schemaDatatype>
+            <datatype name="refreshResourceCacheResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="refreshResourceCacheResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="3"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="4">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceCacheConfig" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inDataSourcePath" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="StatusTablePath" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="TrackingTablePath" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="configured">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="cachePolicy">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageDataSourcePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageTargetName">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storagePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageType">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="refreshMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="scheduleMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="startTime">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="fromTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="endTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="recurringDay">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="interval">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="period">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="count">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="isCluster">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="expirationPeriod">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="clearRule">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="allOrNothing">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="incremental">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="storageBucketMode">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketCatalog">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketSchema">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketPrefix">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketNumBuckets">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="storageDropCreateIdx">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="firstRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="secondRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* refreshResourceCache:
+
+   Purpose: The objective of the refresh resource cache is to provide a repeatable solution for refreshing
+	 a cache entry as defined by the &quot;cacheInfoTables&quot; cursor output.  This procedure will perform the
+	 following steps:
+
+   Modified Date:   Modified By:                      CSW Version:      Reason:
+   01/12/2012                        Mike Tinius                                        5.2.0                                    Created new
+   05/29/2013                        Mike Tinius                                        6.2.0                                    Added = in &gt;= for the following SQL:
+															   set selectStmt = &apos;select status, starttime, finishtime, cachekey, message from &apos;||cacheStatusTable||
+																			  &apos; where cachekey != 0 and starttime &gt;= TO_TIMESTAMP(&apos;&apos;&apos;||refreshBegin||&apos;&apos;&apos;) and resourceid = &apos;&apos;&apos;||resourcePath||&apos;&apos;&apos; &apos;;
+*/
+PROCEDURE RefreshResourceCache(
+	IN  sequenceNum					BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  origUserName				VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+	IN  constantsPath	 			VARCHAR(4096),	-- Path to the application constants procedure.
+	IN  resourcePath				VARCHAR(4096), 	-- e.g. /shared/project/Business/Business/VIEW
+	IN  resourceType				VARCHAR, 		-- e.g. TABLE
+	IN  pollingInterval				INTEGER, 		-- number of milliseconds to pause in between loops before polling for the cache outcome.
+	IN  maxLoops					INTEGER, 		-- number of loops to iterate before failing.  When 0 the loop for eternity.
+	IN  refreshPrePause				INTEGER, 		-- number of milliseconds to pause before starting the refresh
+	IN  refreshPostPause			INTEGER, 		-- number of milliseconds to pause after completing the refresh (needed to avoid race condition with database commits)
+	IN  prefix						VARCHAR,		-- The prefix from the invoking procedure used for logging.
+	OUT refreshDuration				INTERVAL DAY TO SECOND,
+	OUT row_count					INTEGER, 		-- the number of rows cached for a particular cachekey
+	OUT cachekey					INTEGER, 		-- return the cachekey
+	OUT error						VARCHAR(4096)
+)
+BEGIN
+	DECLARE moduleName				VARCHAR(255) 	DEFAULT &apos;HelperScripts/RefreshResourceCache&apos;;
+	DECLARE CommonTypesPath			VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	DECLARE CacheStatusSelect		VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;CacheStatusSelect&apos;);
+	DECLARE configured				BIT;
+	DECLARE enabled					BIT;
+	DECLARE refreshDone				BOOLEAN 		DEFAULT false;
+	DECLARE request					VARCHAR(4096);
+	DECLARE response				XML;
+	DECLARE fault					XML;
+	DECLARE selectStmt				LONGVARCHAR;
+	DECLARE selectCountStmt 		LONGVARCHAR;
+	DECLARE cacheStatus				/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.cacheStatus_Type;
+	DECLARE curs					CURSOR /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.cacheStatus_Type;
+	DECLARE TYPE rowCountType		ROW(rowcount INTEGER);
+	DECLARE rowCount				rowCountType;
+	DECLARE cursCount				CURSOR rowCountType;
+	DECLARE i,j						INTEGER 		DEFAULT 1;
+	DECLARE pauseLoop				INTEGER 		DEFAULT 0;
+	DECLARE defaultPostPause		INTEGER 		DEFAULT 10000; -- pause for 10 seconds if pollingInterval is set to zero
+	DECLARE maxRetryLoops			INTEGER 		DEFAULT 6;     -- Number of times to retry after Oracle throws an error
+	DECLARE viewName				VARCHAR;
+	DECLARE viewPath				VARCHAR(4096);
+	DECLARE refreshBegin			TIMESTAMP; -- Get the start time for the refresh cache procedure
+	DECLARE refreshEnd				TIMESTAMP;
+	DECLARE resourceName			VARCHAR;
+	DECLARE parentPath				VARCHAR(2048);
+	DECLARE ex						EXCEPTION;
+	DECLARE bucketName				VARCHAR;
+	DECLARE resExists		 		BOOLEAN;
+
+	DECLARE storageDataSourcePath	VARCHAR(4096);
+	DECLARE cacheStatusTablePath	VARCHAR(4096);
+	DECLARE cacheTrackingTablePath	VARCHAR(4096);
+	DECLARE storagePath				VARCHAR(4096);
+	DECLARE incremental				INTEGER 		DEFAULT -1;
+	DECLARE cachestatus				VARCHAR 		DEFAULT NULL;
+
+	-- Check if resource exists
+	CALL /lib/resource/ResourceExists(resourcePath, resourceType, NULL, resExists );
+
+	IF NOT(resExists) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound VALUE 
+		 		&apos;Resource &apos; || resourcePath || &apos; does not exist or the path is invalid.&apos;;
+	END IF;		
+
+	-- Get the cache configuration for the view
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(resourcePath, resourceType) DO
+		-- Find out if the cache view is configured
+		SET configured = r.configured;
+		-- Find out if the cache view is enabled
+		SET enabled = r.enabled;
+		-- Get the view storage path location
+		SET storagePath = r.storagePath;
+		-- Get the data source path location
+		SET storageDataSourcePath = r.storageDataSourcePath;
+		-- Determine if this is a full or incremental cache
+		SET incremental = r.incremental;
+		-- Get the cache status and tracking tables for the associated data source
+		CALL /shared/ASAssets/Utilities/repository/getDataSourceCacheConfig(r.storageDataSourcePath, cacheStatusTablePath, cacheTrackingTablePath);
+
+			/* Results from getResourceCacheConfigCursor:
+			configured:				1
+			enabled:				1
+			cachePolicy:			[NULL]
+			storageMode:			DATA_SOURCE
+			storageDataSourcePath:	/shared/Cache_DB/CacheDS_Oracle
+			storageTargetName:		result
+			storagePath:			/shared/Cache_DB/CacheDS_Oracle/CACHE_ADMIN/C_V_TEST_INCR
+			storageType:			TABLE
+			refreshMode:			SCHEDULED
+			scheduleMode:			INTERVAL
+			startTime:				2014-08-29 11:55:38
+			fromTimeInADay:			[NULL]
+			endTimeInADay:			[NULL]
+			recurringDay:			[NULL]
+			interval:				0
+			period:					[NULL]
+			count:					[NULL]
+			isCluster:				[NULL]
+			expirationPeriod:		0
+			clearRule:				[NULL]
+			allOrNothing:			1
+			incremental:			1
+			storageBucketMode:		[NULL]
+			storageBucketCatalog:	[NULL]
+			storageBucketSchema:	[NULL]
+			storageBucketPrefix:	[NULL]
+			storageBucketNumBuckets:[NULL]
+			storageDropCreateIdx:	[NULL]
+			firstRefreshCallback:	/shared/Common/CachingFramework/ApplicationCustom/CacheLoadScripts/V_TEST_INCR_CacheLoad
+			secondRefreshCallback:	/shared/Common/CachingFramework/ApplicationCustom/CacheLoadScripts/V_TEST_INCR_CacheLoad
+			*/
+	END FOR;
+
+	-- Make sure the cache is configured
+	IF (configured = 0 OR incremental &lt; 0) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exInvalidParameter 
+			VALUE &apos;There is no cache configured for the resource path=&apos;||resourcePath;
+	END IF;
+	-- Make sure the cache is configured
+	IF (enabled = 0) THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exInvalidParameter 
+			VALUE &apos;The cache is not enabled for the resource path=&apos;||resourcePath;
+	END IF;
+
+	-- Pause before starting the cache refresh using &quot;refreshPrePause&quot;
+	if (refreshPrePause is not null) then
+		call pause(refreshPrePause);
+	end if;
+
+	-- Initialize variables
+	set error = null;
+	CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(resourcePath, &apos;E&apos;, viewName, viewPath); -- Get the View name
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, viewName, cachekey,  constantsPath,
+		prefix||&apos;CIS Server Time (refreshBegin)=&apos;||emptyStr(refreshBegin)||
+		&apos;  refreshPrePause=&apos;||emptyStr(cast(refreshPrePause/1000 as varchar))||&apos; sec&apos;||
+		&apos;  pollingInterval=&apos;||emptyStr(pollingInterval)||
+		&apos;  maxLoops=&apos;||emptyStr(maxLoops));
+
+   -- Determine if there are any configuration errors with the cached resource
+	FOR sys_cache as 
+		SELECT * FROM /services/databases/system/SYS_CACHES 
+			WHERE RESOURCE_NAME = viewName
+			AND PARENT_PATH = viewPath
+	DO
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+			prefix||&apos;Cache Status=[&apos;||emptyStr(sys_cache.STATUS)||&apos;] for resource=&apos;||emptyStr(resourcePath));
+		-- CONFIG ERROR:  throw an exception
+		-- UP, STALE, NOT LOADED, DOWN: Allow this to pass through and continue with caching
+		-- Note: With DOWN, it could simply be that the Composite was shutdown in the middle of caching in which case restarting caching is OK
+		IF (sys_cache.STATUS &lt;&gt; &apos;UP&apos; and sys_cache.STATUS &lt;&gt; &apos;STALE&apos; and sys_cache.STATUS &lt;&gt; &apos;NOT LOADED&apos; and sys_cache.STATUS &lt;&gt; &apos;DOWN&apos;) THEN 
+			raise ex value &apos;System Cache Error: resourceid=&apos;||resourcePath||&apos; Status=&apos;||emptyStr(sys_cache.STATUS)||&apos;  Message=&apos;||emptyStr(sys_cache.MESSAGE);
+		END IF;
+   END FOR;
+
+	-- (1) Guard against issues with the cache_status where a view has entries with status=F,C.
+	--   If status IN (F,C) then delete those entries
+	-- (2) Guard against issues with the cache_status table where there could be no KEY rows or duplicate KEY rows.  
+	--   If no KEY rows, then insert one.  IF there are duplicate KEY rows then delete all but MAX.
+	--   If there are duplicate KEY rows with the same cache key then delete them and reinsert.
+	--   A properly functioning cache_status table only has a snigle KEY row.
+--	call /shared/&quot;_deployment&quot;/CacheManagement/helpers/manageCacheStatusKeys(debug, resourcePath, cacheStatusTablePath);
+
+	-- Setup the web service API request
+	set request =
+		&apos;&lt;ns1:refreshResourceCache xmlns:ns1=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+					 &lt;ns1:path&gt;&apos; || resourcePath || &apos;&lt;/ns1:path&gt;
+					 &lt;ns1:type&gt;&apos; || resourceType || &apos;&lt;/ns1:type&gt;
+		&lt;/ns1:refreshResourceCache&gt;&apos;;
+
+	-- For CIS 6.1.0.01.33 or higher, use Composite CURRENT_TIMESTAMP for cache_status.starttime.
+	set refreshBegin = CURRENT_TIMESTAMP;
+	-- Execute the call to the Web Service ADMIN API to refresh the cache
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+			prefix||&apos;Start refreshing the cache for resource=&apos;||emptyStr(resourcePath));
+
+	-- Invoke the web service API to start caching
+	CALL /services/webservices/system/admin/resource/operations/refreshResourceCache(request, response, fault);
+	if (fault is not null) then
+		set error = cast(fault as varchar(2048));
+		raise ex value error;
+	end if;
+
+	-- Determine the cachekey from the cache_status table for full or incremental types of caching
+	IF (incremental = 0) THEN
+		-- SQL Statement for &quot;full&quot; cache
+		-- CacheStatusSelect =&apos;select status, starttime, finishtime, cachekey, message, bucket, incrementalstatus, incrementalmaintenancelevel from &apos;
+		set selectStmt = CacheStatusSelect || cacheStatusTablePath ||
+						 &apos; where cachekey != 0 and starttime &gt;= TO_TIMESTAMP(&apos;&apos;&apos;||refreshBegin||&apos;&apos;&apos;) and resourceid = &apos;&apos;&apos;||resourcePath||&apos;&apos;&apos; order by status desc&apos;;
+	ELSE
+		-- SQL Statement for &quot;incremental&quot; cache (cannot use starttime with incremental because it does not change after the initial load)
+		-- CacheStatusSelect =&apos;select status, starttime, finishtime, cachekey, message, bucket, incrementalstatus, incrementalmaintenancelevel from &apos;
+		set selectStmt = CacheStatusSelect ||cacheStatusTablePath ||
+						 &apos; where cachekey != 0 and resourceid = &apos;&apos;&apos;||resourcePath||&apos;&apos;&apos; order by status desc&apos;;
+	END IF;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+			prefix||&apos;Get Cache Key SQL=&apos;||emptyStr(selectStmt));
+	-- Loop until the cachekey is retrieved for the resource
+	set i = 1;
+	While ( (cachekey is null or cachekey = 0) AND (i &lt;= maxLoops OR maxLoops = 0)) do
+		SET j = 1;
+		open curs for selectStmt;
+		cachekeyLoop:
+		for r as curs do
+			SET cachestatus = r.status;
+			SET cachekey = r.cachekey;		
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+					prefix||&apos;Retrieve cachekey inner loop count=&apos;||j||&apos;  cachekey=&apos;||emptyStr(cachekey)||&apos; status=&apos;||emptyStr(cachestatus));
+			IF (r.status = &apos;I&apos;) THEN
+				leave cachekeyLoop;
+			END IF;
+			IF (r.status = &apos;A&apos;) THEN
+				leave cachekeyLoop;
+			END IF;
+			SET j = j + 1;
+		end for;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Retrieve cachekey outer loop count=&apos;||i||&apos;  cachekey=&apos;||emptyStr(cachekey)||&apos; status=&apos;||emptyStr(cachestatus));
+		if (curs is not null) then
+			if (curs.ISOPEN) then
+				close curs;
+			end if;
+		end if;
+		call pause(pollingInterval); -- pause in between loops to give the database a chance to register the cache_status row
+		set i = i + 1;
+	end while;
+	if (cachekey is null) then
+		set error = &apos;Unable to retrieve cachekey.  Exceeded maxLoop[&apos;||emptyStr(maxLoops)||&apos;] * pollingInterval[&apos;||emptyStr(cast(pollingInterval/1000 as varchar))||&apos;] time=&apos;||emptyStr(cast(cast(maxLoops*(pollingInterval/1000)/60 as decimal(32,2)) as varchar))||&apos; min.&apos;;
+		raise ex value error;
+	end if;
+
+	-- SQL to retrieve cache_status information
+	-- CacheStatusSelect =&apos;select status, starttime, finishtime, cachekey, message, bucket, incrementalstatus, incrementalmaintenancelevel from &apos;
+	set selectStmt = CacheStatusSelect ||cacheStatusTablePath||&apos; where cachekey = &apos;||cachekey;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+			prefix||&apos;Cache Status SQL=&apos;||emptyStr(selectStmt));
+
+	-- Loop until the cache is complete with a status-&apos;A&apos;
+	set i = 1;
+	While (NOT refreshDone AND (i &lt;= maxLoops OR maxLoops = 0)) do
+		set row_count = null;
+		open curs for selectStmt;
+		fetch curs into cacheStatus;
+		if (cacheStatus is not null) then
+			-- Cache is in proces
+			if (cacheStatus.status = &apos;I&apos; OR (cacheStatus.status = &apos;A&apos; AND incremental = 1 AND (cacheStatus.incrementalstatus = &apos;I&apos; OR cacheStatus.finishtime &lt; refreshBegin))) then
+				-- Print out a status message every nth time
+				if (i % 10 = 0) then
+					CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+						prefix||&apos;Loop=&apos;||LPAD(i,4)||
+						&apos; Status=&apos;||emptyStr(cacheStatus.status)||
+						&apos; cachekey=&apos;||emptyStr(cachekey)||
+						&apos; Start=&apos;||emptyStr(cacheStatus.starttime)||
+						&apos; Current=&apos;||cast(CURRENT_TIMESTAMP as varchar)||
+						&apos; incrementalstatus=&apos;||NVL(cacheStatus.incrementalstatus,&apos;NULL&apos;)||
+						&apos; incrementalmaintenancelevel=&apos;||NVL(cacheStatus.incrementalmaintenancelevel,&apos;NULL&apos;)
+					);
+				end if;
+
+			-- Cache refresh failed
+			elseif (cacheStatus.status = &apos;F&apos;) then
+				set error = &apos;Cache Status=F (fail).  Cache key=&apos;||emptyStr(cacheStatus.cachekey)||&apos;  Cache Status Error:  &apos;||emptyStr(cacheStatus.message);
+				raise ex value error;
+
+			-- Cache refresh is active and complete
+			elseif (cacheStatus.status = &apos;A&apos; OR (cacheStatus.status = &apos;A&apos; AND incremental = 1 AND cacheStatus.finishtime &gt;= refreshBegin)) then
+				-- Extract the storage bucket name
+				call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(cacheStatus.bucket, &apos;R&apos;, &apos;/&apos;, 1, 1, bucketName);
+				IF (bucketName IS NULL) THEN
+					-- When no bucket name then standard caching is used so must include cachekey
+					set selectCountStmt = &apos;SELECT COUNT(*) rowcount FROM &apos;||storagePath||&apos; WHERE &quot;cachekey&quot; = &apos;||cachekey;
+				ELSE
+					-- When bucket name exists then multi-table so no cachekey is used
+					call /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(storagePath, &apos;E&apos;, resourceName, parentPath);
+					set selectCountStmt = &apos;SELECT COUNT(*) rowcount FROM &apos;||parentPath||&apos;/&apos;||bucketName;
+				END IF;
+				-- For CIS 6.1.0.01.33 or higher, use Composite CURRENT_TIMESTAMP for cache_status.starttime.
+				set refreshEnd = CURRENT_TIMESTAMP;
+				set refreshDuration = refreshEnd - refreshBegin;
+
+				CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+						prefix||&apos;Loop=&apos;||LPAD(i,4)||
+						&apos; Status=&apos;||emptyStr(cacheStatus.status)||
+						&apos; cachekey=&apos;||emptyStr(cachekey)||
+						&apos; Start=&apos;||emptyStr(cacheStatus.starttime)||
+						&apos; Current=&apos;||cast(CURRENT_TIMESTAMP as varchar)||
+						&apos; Finish=&apos;||emptyStr(cacheStatus.finishtime)||
+						&apos; Duration=&apos;||emptyStr(refreshDuration)||
+						&apos; incrementalstatus=&apos;||NVL(cacheStatus.incrementalstatus,&apos;NULL&apos;)||
+						&apos; incrementalmaintenancelevel=&apos;||NVL(cacheStatus.incrementalmaintenancelevel,&apos;NULL&apos;)||
+						&apos; SQL=&apos;||NVL(selectCountStmt,&apos;UNKNOWN SQL&apos;));
+				set refreshDone = true;
+				--                           Get the number of rows when the refresh is complete
+				--                           Execute the count(*) query
+				--                           Ignore errors for 3 executions times with pause in between
+				--                           It has been found that Oracle does not commit very fast and their is a latency issue between the time
+				--                           the database finally commits and another operation on that table can be succcessfully executed.
+				set row_count = null;
+				set pauseLoop = 0;
+				--                           If the row count is null, keep trying until maxLoops.
+				WHILE (pauseLoop &lt; maxRetryLoops and row_count is null) DO
+					set row_count = null;
+					set error = null;
+					BEGIN
+						OPEN cursCount FOR selectCountStmt;
+						FETCH cursCount INTO row_count;
+						CLOSE cursCount;
+						CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+							prefix||&apos;COMPLETED:  Num Rows=&apos;||NVL(CAST(row_count AS VARCHAR), &apos;NULL&apos;));
+					EXCEPTION
+						 ELSE
+							set error = &apos;Error selecting count(*):  &apos;||emptyStr(CURRENT_EXCEPTION.TRACE);
+							CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+								prefix||&apos;LoopTry=&apos;||RPAD(pauseLoop+1,4)||&apos; &apos;||error);
+							if (cursCount is not null) then
+								if (cursCount.ISOPEN) then
+									close cursCount;
+								end if;
+							end if;
+							set cursCount = null;
+							if (refreshPostPause is not null) then
+								if (pollingInterval &gt; 0) then
+									call pause(pollingInterval);
+								else
+									call pause(defaultPostPause);
+								end if;
+							end if;
+					END;      
+					SET pauseLoop = pauseLoop + 1;
+				END WHILE;
+				--    Determine if an error occurred
+				if (error is not null) then
+					raise ex value error;
+				elseif (pauseLoop &gt;= maxLoops and maxLoops &gt; 0) then
+					set error = &apos;Max loops [&apos;||emptyStr(maxLoops)||&apos;] reached while waiting for cache refresh to complete or row count=null.&apos;;
+					raise ex value error;
+				end if;
+			end if;
+		end if;
+		close curs;
+		if (i &gt;= maxLoops and maxLoops &gt; 0) then
+			set error = &apos;Max loops [&apos;||emptyStr(maxLoops)||&apos;] reached while waiting for cache refresh to complete.&apos;;
+			raise ex value error;
+		end if;
+		call pause(pollingInterval);
+		set i = i + 1;
+	end while;
+
+	-- Successfully refreshed the cache and retrieved the table count
+	set error = null;
+
+EXCEPTION
+	ELSE
+		-- For CIS 6.1.0.01.33 or higher, use Composite CURRENT_TIMESTAMP for cache_status.starttime.
+		set refreshDuration = CURRENT_TIMESTAMP - refreshBegin;
+		IF (CURRENT_EXCEPTION.TRACE IS NOT NULL) THEN
+			SET error = viewName||&apos; Refresh Duration=&apos;||emptyStr(refreshDuration)||&apos;  Cache Refresh Exception caught: &apos; || emptyStr(CURRENT_EXCEPTION.TRACE);
+		ELSE 
+			SET error = viewName||&apos; Refresh Duration=&apos;||emptyStr(refreshDuration)||&apos;  Cache Refresh Exception caught (no msg): &apos; || emptyStr(CURRENT_EXCEPTION.name);
+		END IF;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath, prefix||error);
+		raise ex value error;
+END
+</attribute>
+  <attribute name="creationDate" type="LONG">1409671702241</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/357</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/236</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/337</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/140</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/335</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

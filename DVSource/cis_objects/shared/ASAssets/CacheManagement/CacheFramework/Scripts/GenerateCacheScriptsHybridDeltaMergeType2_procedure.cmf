@@ -1,0 +1,2017 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GenerateCacheScriptsHybridDeltaMergeType2" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/GenerateCacheScriptsHybridDeltaMergeType2" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="sequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="origUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="viewPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="targetDatabasePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="stageViewPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="stageDatabasePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="scriptPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="cacheType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="attributes" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="firstRefreshScriptPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="secondRefreshScriptPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="createResource" direction="IN">
+        <datatype name="createResource" extendedName="{http://www.compositesw.com/services/system/admin/resource}createResource" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}createResource" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}createResource">
+          <schemaDatatype>
+            <datatype name="createResource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="createResourceRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="detail" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="detailLevel" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="id" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="changeId" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                  </element>
+                  <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="ownerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="ownerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="impactMessage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                  </element>
+                  <element name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                      <element name="lockOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="lockOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="lockCreateTime" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                      </element>
+                      <element name="lockParentPath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                  <element name="hints" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                      <element name="hint" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                        <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                          <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                            <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype name="attributeTypeValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="7">
+                              <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                <datatype name="attributeTypeValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="8">
+                                  <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                    <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                    <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                    <reference refId="7"/>
+                                  </element>
+                                  <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                    <datatype name="attributeTypeValueMap" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                                      <element name="entry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="10">
+                                          <element name="key" namespace="http://www.compositesw.com/services/system/util/common">
+                                            <reference refId="8"/>
+                                          </element>
+                                          <element name="value" namespace="http://www.compositesw.com/services/system/util/common">
+                                            <reference refId="8"/>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                  <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                    <datatype name="attributeSimpleValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="11">
+                                      <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                        <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                </datatype>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <reference refId="9"/>
+                          </element>
+                          <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <reference refId="11"/>
+                          </element>
+                          <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                  <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="attributeList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="12">
+                      <element name="attribute" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                        <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="13">
+                          <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                            <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <reference refId="7"/>
+                          </element>
+                          <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <reference refId="9"/>
+                          </element>
+                          <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <reference refId="11"/>
+                          </element>
+                          <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="resourceBundle" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="resourceBundle" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="14">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <reference refId="3"/>
+                  </element>
+                  <element name="privilegeEntries" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="15">
+                      <element name="privilegeEntry" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                        <datatype name="privilegeEntry" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="16">
+                          <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="resourceOrColumnType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="privileges" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="17">
+                              <element name="privilege" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                                <datatype name="privilege" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="18">
+                                  <element name="domain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="nameType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="userNameType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="privs" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="combinedPrivs" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                    <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="inheritedPrivs" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                    <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                </datatype>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                  <element name="cacheConfig" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="cacheConfig" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="19">
+                      <element name="allOrNothing" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="configured" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="incremental" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="storage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="20">
+                          <element name="mode" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="storageMode" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="bucketMode" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="bucketModeType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="bucketProperties" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="bucketPropertiesType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="21">
+                              <element name="bucketCatalog" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="bucketSchema" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="bucketPrefix" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="numBuckets" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="dropCreateIdx" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                          </element>
+                          <element name="storageDataSourcePath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="storageTargets" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="targetPathTypePairList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="22">
+                              <element name="entry" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                                <datatype name="targetPathTypePair" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="23">
+                                  <element name="targetName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                  <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                    <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                  </element>
+                                </datatype>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="refresh" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="24">
+                          <element name="mode" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="refreshMode" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="schedule" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="schedule" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="25">
+                              <element name="mode" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="scheduleMode" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="startTime" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                              </element>
+                              <element name="fromTimeInADay" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="long" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="integer" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER"/>
+                              </element>
+                              <element name="endTimeInADay" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="long" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="integer" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER"/>
+                              </element>
+                              <element name="recurringDay" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                              </element>
+                              <element name="interval" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                              </element>
+                              <element name="period" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="calendarPeriod" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="count" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                              </element>
+                              <element name="isCluster" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="expirationPeriod" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="long" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="integer" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER"/>
+                      </element>
+                      <element name="firstRefreshCallback" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="secondRefreshCallback" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="clearRule" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="clearRule" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="includeOwnership" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="createResourceResponse" direction="OUT">
+        <datatype name="createResourceResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}createResourceResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}createResourceResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}createResourceResponse">
+          <schemaDatatype>
+            <datatype name="createResourceResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="createResourceResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="26">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="27">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <reference refId="3"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="28">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="29">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/updateSqlScriptProcedure" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updateSqlScriptProcedure" direction="IN">
+        <datatype name="updateSqlScriptProcedure" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedure">
+          <schemaDatatype>
+            <datatype name="updateSqlScriptProcedure" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateSqlScriptProcedureRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="detail" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="detailLevel" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="scriptText" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="scriptModel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="model" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                  </element>
+                  <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                    <datatype name="modelType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                    <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                  </element>
+                </datatype>
+              </element>
+              <element name="isExplicitDesign" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="parameters" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="parameterList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                  <element name="parameter" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="parameter" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="dataType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="dataType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                          <element name="sqlType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="7">
+                              <element name="definition" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="nativeType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referencePath" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referenceTypeName" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                              </element>
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="trailingSpaces" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="xmlType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="8">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="namespace" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="schema" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="referencePath" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="proprietaryModel" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="base64Binary" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="BINARY"/>
+                              </element>
+                            </datatype>
+                          </element>
+                          <element name="pseudoType" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                              <element name="definition" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="pseudoType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="direction" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="paramDirection" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="isNullable" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="nullable" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="attributeList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="10">
+                          <element name="attribute" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                            <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="11">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeTypeValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="12">
+                                  <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                    <datatype name="attributeTypeValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="13">
+                                      <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                        <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <reference refId="12"/>
+                                      </element>
+                                      <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeTypeValueMap" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="14">
+                                          <element name="entry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="15">
+                                              <element name="key" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="13"/>
+                                              </element>
+                                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="13"/>
+                                              </element>
+                                            </datatype>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                      <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="16">
+                                          <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                </datatype>
+                              </element>
+                              <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="14"/>
+                              </element>
+                              <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="16"/>
+                              </element>
+                              <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <reference refId="10"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="updateSqlScriptProcedureResponse" direction="OUT">
+        <datatype name="updateSqlScriptProcedureResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateSqlScriptProcedureResponse">
+          <schemaDatatype>
+            <datatype name="updateSqlScriptProcedureResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateSqlScriptProcedureResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="17">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="18">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="19">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="id" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="changeId" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2207" maxValue="2147483647"/>
+                      </element>
+                      <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactMessage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="20">
+                          <element name="lockOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockCreateTime" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                          </element>
+                          <element name="lockParentPath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="hints" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="21">
+                          <element name="hint" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                            <reference refId="11"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <reference refId="10"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="22">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="23">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="attributeName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="attributeXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="attributeValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="excludeColumnList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="prefixName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sepBeg" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sepEnd" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="numTabs" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="outGetResourceCols" direction="OUT">
+        <datatype type="STRING" maxLength="32768"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/ParseCSVLine" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="csvLine" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="qualifier" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="CSValue">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/isEmpty" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="request" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="response" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/isEmpty" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* GenerateCacheScriptsHybridDeltaMergeType2:
+
+	This script is used to generate the incremental hybrid cache merge type 2 &quot;initial&quot; and &quot;delta&quot; scripts.
+	Incremental hybrid approach uses uses a staging table for both initial and delta loads.  It uses a staging table for the initial load
+	in order to take advantage of CIS native load capabilities.  It is known as &quot;Merge Type 2&quot; because type 2 slowly changing dimension data warehouse 
+	tables overwrite the old data with the new data, and tracks historical data.   Deleted records are determined by analyzing the historical table 
+	end date for records that are not null and not equal to the surrogate end date value of 9999-12-31.  This way whenever a delete is executed 
+	in the source it can be applied at cache refresh time to the cache table as well.
+
+	Merge Type 1 Key Points:
+	-------------------------------
+	1) Modeled after &quot;Slowly Changing Dimension&quot; Type 2 methodology.
+	2) Source records are overwritten.
+	3) History is tracked with a separate history table using bi-temporal start and end date columns.
+	4) Deleted records are determined from the history table where end date is not null and not equal to 9999-12-31.
+	5) CACHE_TYPE = &apos;MT2&apos;
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE GenerateCacheScriptsHybridDeltaMergeType2(
+	IN  sequenceNum							BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  origUserName						VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+	IN  constantsPath						VARCHAR(4096),	-- Path to the constants file
+	IN	viewPath							VARCHAR(4096),	-- Path to the view being cached
+	IN	targetDatabasePath					VARCHAR(4096),	-- Path to the target database table associated with the cache view
+	IN	stageViewPath						VARCHAR(4096),	-- Path to the staging view
+	IN  stageDatabasePath					VARCHAR(4096),	-- Path to the staging database table
+	IN	scriptPath							VARCHAR(4096),	-- Path to the scripts directory
+	IN  cacheType							VARCHAR,		-- The cache type
+	IN  attributes							LONGVARCHAR,	-- Attributes containing incremental parameters
+	OUT firstRefreshScriptPath				VARCHAR(4096),
+	OUT secondRefreshScriptPath 			VARCHAR(4096),
+	OUT errStatus 							VARCHAR			-- Output status [SUCCESS, FAIL]
+)
+BEGIN
+    DECLARE moduleName 						VARCHAR(255) 	DEFAULT &apos;GenerateCacheScriptsHybridDeltaMergeType2&apos;;-- name of SQL Script
+	DECLARE prefix							VARCHAR			DEFAULT &apos;HYB-MRG-TYP2 CACHE SCRIPT: &apos;;
+	-- CommonTypes variables
+	DECLARE CacheFrameworkPath				VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CacheFrameworkPath;
+	DECLARE CommonTypesPath					VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE constantsType					VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;ApplicationConstantsType&apos;); -- [Oracle, SqlServer, Netezza]
+	DECLARE CISSepBeg						VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;CISSepBeg&apos;);
+	DECLARE CISSepEnd						VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;CISSepEnd&apos;);
+	DECLARE sepBeg 							VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;SepBeg&apos;);
+	DECLARE sepEnd 							VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;SepEnd&apos;);
+	DECLARE cachekeyName	 				VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;CachekeyName&apos;);
+	DECLARE MergeTableSql					VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;MergeTableSql&apos;);
+	DECLARE MergeTableExample				VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;MergeTableExample&apos;);
+	DECLARE procedureTemplate				VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;procedureTemplate&apos;);
+	DECLARE procedureGenerationPath			VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;procedureGenerationPath&apos;);
+	-- General variables
+	DECLARE DEBUG_LEVEL_INFO 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	DECLARE IU_CACHE_KEY 					VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;IU_CACHE_KEY&apos;);
+	DECLARE D_CACHE_KEY 					VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;D_CACHE_KEY&apos;);
+	DECLARE defProcedureGenerationPath		VARCHAR(4096)	DEFAULT procedureGenerationPath||&apos;/&apos;||moduleName;
+	DECLARE procedureTemplate1				VARCHAR(4096);
+	DECLARE procedureTemplate2				VARCHAR(4096);
+	DECLARE viewName						VARCHAR(255);
+	DECLARE targetName						VARCHAR(255);
+	DECLARE tempPath						VARCHAR(4096);
+	DECLARE colName							VARCHAR;
+	DECLARE i								INTEGER;
+	DECLARE cacheSelectList					LONGVARCHAR;
+	DECLARE cacheInsertColList				LONGVARCHAR;
+	DECLARE cacheInsertColListCIS			LONGVARCHAR;
+	DECLARE cacheUpdateList					LONGVARCHAR;
+	DECLARE cacheInsertValueList			LONGVARCHAR;
+	DECLARE joinCriteria					LONGVARCHAR;
+	DECLARE cacheSelectHistoryTableList		LONGVARCHAR;
+	DECLARE cacheHavingJoinHistoryTableList	LONGVARCHAR;
+	DECLARE cacheInitScrNm					VARCHAR(255);
+	DECLARE cacheDltaScrNm					VARCHAR(255);
+	DECLARE sqlScriptStr					LONGVARCHAR;
+	DECLARE cachekey						BIGINT DEFAULT 0;
+	DECLARE pos, success					INTEGER;
+	DECLARE NotEmpty						INTEGER DEFAULT 0;
+	DECLARE crResResp						XML;
+	DECLARE upResResp						XML;
+	DECLARE fault							XML;
+	DECLARE resourcePathInit				VARCHAR(4096);
+	DECLARE resourcePathDelta				VARCHAR(4096);
+	DECLARE stagingTableName				VARCHAR;
+	DECLARE resExists						BOOLEAN;
+	DECLARE	keyName							VARCHAR(255);		-- Name of the key column
+	DECLARE	keyType							VARCHAR(64);		-- Type of the key column
+	DECLARE keyStartingValue				VARCHAR(255);		-- Starting value of the key column
+	DECLARE cacheViewPkCSV					VARCHAR(4096);		-- Cache View Primary Key List
+	DECLARE historyTablePath				VARCHAR(4096);
+	DECLARE historyTablePKCSV				VARCHAR(4096);
+	DECLARE startDateCol					VARCHAR;
+	DECLARE endDateCol						VARCHAR;
+
+	-- Get the incremental key values
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_KEY_NAME&apos;, attributes, keyName);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_KEY_TYPE&apos;, attributes, keyType);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_KEY_STARTING_VALUE&apos;, attributes, keyStartingValue);
+	-- Get the incremental delete table name attributes
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_MERGE_CACHE_VIEW_PKCSV&apos;, attributes, cacheViewPkCSV);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_MERGE_HISTORY_TABLE_PATH&apos;, attributes, historyTablePath);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_MERGE_HISTORY_TABLE_PKCSV&apos;, attributes, historyTablePKCSV);
+
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_MERGE_HISTORY_TABLE_STARTDT_COL&apos;, attributes, startDateCol);-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal start date.
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc(&apos;INCR_MERGE_HISTORY_TABLE_ENDDT_COL&apos;, attributes, endDateCol);-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal end date.
+
+	-- Remove any separators
+	SET keyName = REPLACE(keyName, &apos;&quot;&apos;, &apos;&apos;);
+	SET startDateCol = REPLACE(startDateCol, &apos;&quot;&apos;, &apos;&apos;);
+	
+	-- Extract the view name
+	CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(viewPath, &apos;R&apos;, &apos;/&apos;, 1, 0, viewName);
+	-- Extract the target table name
+	CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(targetDatabasePath, &apos;R&apos;, &apos;/&apos;, 1, 0, targetName);
+	-- Extract the staging table name
+	CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(stageViewPath, &apos;R&apos;, &apos;/&apos;, 1, 0, stagingTableName);
+
+	/******************************************
+	 * PREPARE PROCEDURE TEMPLATE HEADER
+	 ******************************************/
+	SET procedureTemplate1 = REPLACE(procedureTemplate, &apos;$DEF_PROC&apos;, defProcedureGenerationPath);
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DEF_USERID&apos;,origUserName);
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DEF_CURRENT_TIMESTAMP&apos;, CAST(CURRENT_TIMESTAMP AS VARCHAR));
+	SET procedureTemplate1 = REPLACE(procedureTemplate1, &apos;$DESCRIPTION&apos;, &apos;Incremental Cache Merge Table.  Initial Load Script.  CACHE_TYPE=&apos;&apos;&apos;||cacheType||&apos;&apos;&apos;&apos;);
+
+	SET procedureTemplate2 = REPLACE(procedureTemplate, &apos;$DEF_PROC&apos;, defProcedureGenerationPath);
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DEF_USERID&apos;, origUserName);
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DEF_CURRENT_TIMESTAMP&apos;, CAST(CURRENT_TIMESTAMP AS VARCHAR));
+	SET procedureTemplate2 = REPLACE(procedureTemplate2, &apos;$DESCRIPTION&apos;, &apos;Incremental Cache Merge Table.  Delta Load Script. CACHE_TYPE=&apos;&apos;&apos;||cacheType||&apos;&apos;&apos;&apos;);
+
+	-- Validate the input parameters
+	IF viewPath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter VALUE &apos;View path &quot;viewPath&quot; is NULL&apos;;
+	ELSEIF targetDatabasePath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Target database path &quot;targetDatabasePath&quot; is NULL&apos;;
+	ELSEIF viewName IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;View path &quot;viewPath&quot; is invalid: &apos; || emptyStr(viewPath);
+	ELSEIF targetName IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Target path &quot;targetName&quot; is invalid: &apos; || emptyStr(targetDatabasePath);
+	ELSEIF stageViewPath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Stage View path &quot;stageViewPath&quot; is invalid&apos;;
+	ELSEIF stageDatabasePath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Stage Table path &quot;stageDatabasePath&quot; is invalid&apos;;
+	ELSEIF scriptPath IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Script path &quot;scriptPath&quot; is NULL&apos;;
+	ELSEIF keyName IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Key name &quot;keyName&quot; is NULL&apos;;
+	ELSEIF keyType IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Key type &quot;keyType&quot; is NULL&apos;;
+	ELSEIF keyStartingValue IS NULL THEN
+		RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter  VALUE &apos;Key Starting Value &quot;keyStartingValue&quot; is NULL&apos;;
+	ELSE
+		-- Validate the incremental primary key column list
+		IF (cacheViewPkCSV IS NULL OR LENGTH(cacheViewPkCSV) = 0) THEN
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exInvalidParameter VALUE
+					prefix||&apos;The &quot;INCR_MERGE_CACHE_VIEW_PKCSV&quot; provided by CachingData() attributes is not set.&apos;;
+		END IF;
+		-- Validate the incremental delete table path
+		IF (historyTablePath IS NOT NULL AND LENGTH(historyTablePath) &gt; 0) THEN
+			CALL /lib/resource/ResourceExists(historyTablePath, &apos;TABLE&apos;, NULL, resExists);
+			IF (NOT resExists) THEN
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound VALUE
+						prefix||&apos;The &quot;INCR_MERGE_HISTORY_TABLE_PATH&quot; provided by CachingData() attributes does not exist.  path=[&apos; || historyTablePath || &apos;]&apos;;
+			END IF;
+			IF (historyTablePKCSV IS NULL OR LENGTH(historyTablePKCSV) = 0) THEN
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exInvalidParameter VALUE
+						prefix||&apos;The &quot;INCR_MERGE_HISTORY_TABLE_PKCSV&quot; provided by CachingData() attributes is not set.&apos;;
+			END IF;
+			IF (startDateCol IS NULL OR LENGTH(startDateCol) = 0) THEN
+				RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exInvalidParameter VALUE
+						prefix||&apos;The &quot;INCR_MERGE_HISTORY_TABLE_DELDT_COL&quot; provided by CachingData() attributes is not set.&apos;;
+			END IF;
+		END IF;
+
+		SET tempPath = scriptPath;
+		IF SUBSTR(scriptPath, LENGTH(scriptPath), 1) &lt;&gt; &apos;/&apos; THEN
+			SET tempPath = tempPath || &apos;/&apos;;
+		END IF;
+		SET cacheInitScrNm = viewName || getConstant(constantsPath, &apos;DefaultInitialLoadScriptSuffix&apos;); 
+		SET cacheDltaScrNm = viewName || getConstant(constantsPath, &apos;DefaultDeltaLoadScriptSuffix&apos;);
+		SET resourcePathInit = tempPath || cacheInitScrNm;
+		SET resourcePathDelta = tempPath || cacheDltaScrNm;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(resourcePathInit, resourcePathInit);
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath(resourcePathDelta, resourcePathDelta);
+		-- Set the call back script path
+		SET firstRefreshScriptPath = resourcePathInit;
+		SET secondRefreshScriptPath = resourcePathDelta;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, viewName, cachekey, constantsPath, 
+			prefix||&apos;constantsPath=&apos;||emptyStr(constantsPath)||CHR(10)||
+			&apos;viewPath=&apos;||emptyStr(viewPath)||CHR(10)||
+			&apos;targetDatabasePath=&apos;||emptyStr(targetDatabasePath)||CHR(10)||
+			&apos;stageViewPath=&apos;||emptyStr(stageViewPath)||CHR(10)||
+			&apos;stageDatabasePath=&apos;||emptyStr(stageDatabasePath)||CHR(10)||
+			&apos;scriptPath=&apos;||emptyStr(scriptPath)||CHR(10)||
+			&apos;attributes=&apos;||emptyStr(attributes)||CHR(10)||
+			&apos;viewName=&apos;||emptyStr(viewName)||CHR(10)||
+			&apos;cacheInitScrNm=&apos;||emptyStr(cacheInitScrNm)||CHR(10)||
+			&apos;cacheDltaScrNm=&apos;||emptyStr(cacheDltaScrNm)||CHR(10)||
+			&apos;resourcePathInit=&apos;||emptyStr(resourcePathInit)||CHR(10)||
+			&apos;resourcePathDelta=&apos;||emptyStr(resourcePathDelta)||CHR(10)
+			);
+
+	/******************************************
+	 * DESTROY INITIAL LOAD SCRIPT
+	 ******************************************/
+		-- Destroy the resource if resource exists
+		CALL /lib/resource/ResourceExists(resourcePathInit, &apos;PROCEDURE&apos;, NULL, resExists);
+		IF (resExists) THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey, constantsPath, 
+					prefix||&apos;Dropping resource &apos; || resourcePathInit );
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/repository/destroyResource(resourcePathInit, NULL, &apos;PROCEDURE&apos;, success, crResResp, fault);
+			END;
+		END IF;
+
+	/******************************************
+	 * CREATE INITIAL LOAD SCRIPT
+	 ******************************************/
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Creating Initialize Load Script: &apos; || resourcePathInit);
+
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/createResource(&apos;
+&lt;resource:createResource xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || scriptPath || &apos;&lt;/resource:path&gt;
+  &lt;resource:name&gt;&apos; || cacheInitScrNm || &apos;&lt;/resource:name&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:type&gt;PROCEDURE&lt;/resource:type&gt;
+  &lt;resource:subtype&gt;SQL_SCRIPT_PROCEDURE&lt;/resource:subtype&gt;
+&lt;/resource:createResource&gt;&apos;, crResResp, fault);
+		END;
+		IF fault IS NULL THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Created Initialize Load Script: &apos; || resourcePathInit);
+		ELSE -- resource not  created 
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+		END IF;
+
+		SET sqlScriptStr = procedureTemplate1||&apos;PROCEDURE &apos; || cacheInitScrNm || &apos;(OUT IncrementalMaintenanceLevel VARCHAR)
+BEGIN
+	DECLARE moduleName				VARCHAR 		DEFAULT &apos;&apos;&apos;||cacheInitScrNm||&apos;&apos;&apos;;
+	DECLARE cacheViewName			VARCHAR			DEFAULT &apos;&apos;&apos;||viewName||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Initial] &apos;&apos;;
+	DECLARE constantsPath 			VARCHAR(4096) 	DEFAULT &apos;&apos;&apos;||constantsPath||&apos;&apos;&apos;;
+	DECLARE stageViewPath			VARCHAR(4096)	DEFAULT &apos;&apos;&apos; || stageViewPath || &apos;&apos;&apos;;
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+	DECLARE cachekey 				BIGINT			DEFAULT 0;
+	DECLARE sequenceName			VARCHAR			DEFAULT cacheViewName;
+	DECLARE sequenceNum				BIGINT			DEFAULT 0;
+	DECLARE origUserName			VARCHAR;
+	DECLARE origSequenceNum			BIGINT;
+	DECLARE incrKeyStartingValue	&apos;||keyType||&apos; 		DEFAULT CAST(&apos;&apos;&apos;||keyStartingValue||&apos;&apos;&apos; AS &apos;||keyType||&apos;);
+	DECLARE maxI 					&apos;||keyType||&apos;;
+	DECLARE incrMaintLevel 			VARCHAR;
+	DECLARE numRows                 BIGINT;
+	DECLARE errStatus               VARCHAR;
+	DECLARE errMessage 				LONGVARCHAR;
+
+	/* 1. Get the correlated sequence number or generate one if it does not exist. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequenceByName(sequenceName, 0, NULL, constantsPath, prefix, origSequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequence(sequenceName, origSequenceNum, origUserName, constantsPath, prefix, sequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;sequenceName=&apos;&apos;||sequenceName||&apos;&apos;  sequenceNum=&apos;&apos;||emptyStr(sequenceNum));
+
+	/* 2. Retrieve cache key from request environment */
+	CALL /lib/util/GetEnvironment(&apos;&apos;System.CACHED_RESOURCE_CACHE_KEY&apos;&apos;, cachekey);
+	IF (cachekey IS NULL OR cachekey &lt;= 0) THEN
+		RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exInvalidParameter 
+				VALUE &apos;&apos;The System.CACHED_RESOURCE_CACHE_KEY is not set properly.  cachekey=[&apos;&apos;||emptyStr(cachekey)||&apos;&apos;]&apos;&apos;;
+	END IF;
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+			prefix||&apos;&apos;Refreshing cache for cachekey=&apos;&apos;||emptyStr(cachekey)||&apos;&apos; : &apos;&apos;||cacheViewName);
+
+	/* 3. Start caching the staging table */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+			prefix||&apos;&apos;Refreshing cache on staging table for view &apos;&apos; || cacheViewName || &apos;&apos;&apos;&apos;);
+
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/PublishedImpl/RefreshCache(
+			sequenceName, origUserName, constantsPath, stageViewPath, 1, prefix, errStatus, errMessage);
+
+	IF errStatus != &apos;&apos;SUCCESS&apos;&apos; THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath,
+			prefix||&apos;&apos;Refresh failed cache on staging table for view &apos;&apos; || cacheViewName || &apos;&apos;&apos;&apos;||&apos;&apos;  errMessage=&apos;&apos;||errMessage);
+		SET IncrementalMaintenanceLevel = incrMaintLevel;
+	ELSE 
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath,
+			prefix||&apos;&apos;Refreshed cache on staging table for view &apos;&apos; || cacheViewName || &apos;&apos;&apos;&apos;);
+
+		/* 4. Determine initial snapshot level */
+		SELECT
+			MAX(&apos; ||CISSepBeg||keyName||CISSepEnd|| &apos;)
+			INTO maxI
+		FROM &apos; || stageViewPath || &apos;;
+
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;COALESCE(maxI[&apos;&apos;||emptyStr(maxI)||&apos;&apos;], incrKeyStartingValue[&apos;&apos;||incrKeyStartingValue||&apos;&apos;]): &apos;&apos;||cacheViewName);
+		SET maxI = COALESCE(maxI, incrKeyStartingValue);
+
+		/* 5. Load cache target table */
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;Refresh cachekey=&apos;&apos;||emptyStr(cachekey)||&apos;&apos; WHERE &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &lt;= maxI[&apos;&apos;||emptyStr(maxI)||&apos;&apos;] : &apos;&apos;||cacheViewName);
+
+		INSERT INTO &apos; || targetDatabasePath || &apos;
+			SELECT
+				&apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos;,
+				S.*
+			FROM &apos; || stageViewPath || &apos; S
+			WHERE &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &lt;= maxI;
+
+		-- Get the number of rows inserted.
+		CALL /lib/util/GetEnvironment(&apos;&apos;NUM_ROWS_AFFECTED&apos;&apos;, numRows);
+
+		/* 6. Return incremental maintenance level */
+		SET IncrementalMaintenanceLevel = CAST(maxI AS VARCHAR);
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;Refreshed cache for: &apos;&apos;||cacheViewName||&apos;&apos;  numRows=&apos;&apos; || COALESCE(numRows, 0)|| &apos;&apos;  IncrementalMaintenanceLevel=&apos;&apos;||emptyStr(IncrementalMaintenanceLevel));
+	END IF;
+
+	/* 7. Reset the audit log sequence to null for this view. */
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned VALUE errMessage;
+		END IF;
+	END IF;
+EXCEPTION
+	ELSE
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+			-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+			IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+				CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+			END IF;
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END&apos;;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;SQL Script Procedure: &apos; || sqlScriptStr);
+
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(&apos;
+&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || resourcePathInit || &apos;&lt;/resource:path&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||sqlScriptStr||&apos;]]&gt;&lt;/resource:scriptText&gt;
+  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+&lt;/resource:updateSqlScriptProcedure&gt;&apos;, upResResp, fault);
+		END;
+		IF fault IS NULL THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Created Initialize Load Script: &apos; || resourcePathInit);
+		ELSE -- resource not  created 
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+		END IF;
+
+	/******************************************
+	 * DESTROY DELTA LOAD SCRIPT
+	 ******************************************/
+		-- Destroy the resource if resource exists
+		CALL /lib/resource/ResourceExists(resourcePathDelta, &apos;PROCEDURE&apos;, NULL, resExists);
+		IF (resExists) THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey, constantsPath, 
+					prefix||&apos;Dropping resource &apos; || resourcePathDelta );
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/repository/destroyResource(resourcePathDelta, NULL, &apos;PROCEDURE&apos;, success, crResResp, fault);
+			END;
+		END IF;
+
+	/******************************************
+	 * CREATE DELTA LOAD SCRIPT
+	 ******************************************/
+		-- Get the column list for the staging view
+		BEGIN INDEPENDENT TRANSACTION
+			-- This list will be used as &quot;Native&quot; lists within the Merge command so separators are database specific
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, NULL, &apos;S&apos;, sepBeg, sepEnd, 1, cacheSelectList);
+		END;
+
+		-- get list of columns from staging table
+		BEGIN INDEPENDENT TRANSACTION
+			-- This is the cache insert column list with CIS separators used within the CIS Sql Script			
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, NULL, &apos;c&apos;, CISSepBeg, CISSepEnd, 1, cacheInsertColListCIS);
+
+			-- All of these lists will be used as &quot;Native&quot; lists within the Merge command so separators are database specific
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, NULL, NULL, sepBeg, sepEnd, 1, cacheSelectList);
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, NULL, NULL, sepBeg, sepEnd, 1, cacheInsertColList);
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, cacheViewPkCSV, NULL, sepBeg, sepEnd, 1, cacheUpdateList);
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnProc(stageViewPath, NULL, &apos;d&apos;, sepBeg, sepEnd, 1, cacheInsertValueList);
+
+			-- This list will be used as &quot;Native&quot; lists within the Merge command so separators are database specific
+			-- Build up the update list for the merge: c.&quot;C3&quot; = d.&quot;C3&quot;, c.&quot;C4&quot; = d.&quot;C4&quot;, c.&quot;SDT&quot; = d.&quot;SDT&quot;
+			IF (isEmpty(cacheUpdateList) = NotEmpty) THEN
+				SET i = 0;
+				FOR upd AS SELECT * FROM /shared/ASAssets/Utilities/string/ParseCSVLine(cacheUpdateList, &apos;,&apos;, &apos;&quot;&apos;)
+							WHERE CSValue IS NOT NULL AND LENGTH(TRIM(CSValue)) &gt; 0 
+				DO
+					SET colName = TRIM(upd.CSValue);
+					IF (i = 0) THEN
+						SET cacheUpdateList = &apos;&apos;;
+					ELSE
+						SET cacheUpdateList = cacheUpdateList || &apos;,&apos;||CHR(10);
+					END IF;
+					SET cacheUpdateList = cacheUpdateList || CHR(9)||&apos;c.&apos;||colName||&apos; = d.&apos;||colName;
+					SET i = i + 1; 
+				END FOR;				
+			END IF;
+
+			-- This list will be used as &quot;Native&quot; lists within the Merge command so separators are database specific
+			-- Build up the join criteria list for the merge: c.&quot;K1&quot; = d.&quot;K1&quot; AND c.&quot;K2&quot; = d.&quot;K2&quot;
+			IF (isEmpty(cacheViewPkCSV) = NotEmpty) THEN
+				SET i = 0;
+				FOR pk AS SELECT * FROM /shared/ASAssets/Utilities/string/ParseCSVLine(cacheViewPkCSV, &apos;,&apos;, &apos;&quot;&apos;)
+							WHERE CSValue IS NOT NULL AND LENGTH(TRIM(CSValue)) &gt; 0 
+				DO
+					SET colName = TRIM(pk.CSValue);
+					IF (i = 0) THEN
+						SET joinCriteria = &apos;&apos;;
+					ELSE
+						SET joinCriteria = joinCriteria || &apos; AND &apos;;
+					END IF;
+					SET joinCriteria = joinCriteria || &apos;c.&apos;||sepBeg||colName||sepEnd||&apos; = d.&apos;||sepBeg||colName||sepEnd;
+					SET i = i + 1; 
+				END FOR;				
+			END IF;
+
+--			CALL /lib/resource/LoadResourceCacheStatus(cacheViewPath, cacheViewType);
+		END;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Creating Delta Load Script: &apos; || resourcePathDelta);
+
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/createResource(&apos;
+&lt;resource:createResource xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || scriptPath || &apos;&lt;/resource:path&gt;
+  &lt;resource:name&gt;&apos; || cacheDltaScrNm || &apos;&lt;/resource:name&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:type&gt;PROCEDURE&lt;/resource:type&gt;
+  &lt;resource:subtype&gt;SQL_SCRIPT_PROCEDURE&lt;/resource:subtype&gt;
+&lt;/resource:createResource&gt;&apos;, crResResp, fault);
+		END;
+		IF fault IS NULL THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Created Delta Load Script: &apos; || resourcePathDelta);
+		ELSE -- resource not  created 
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+		END IF;
+
+		SET sqlScriptStr = procedureTemplate2||&apos;PROCEDURE &apos; || cacheDltaScrNm || &apos;(OUT IncrementalMaintenanceLevel VARCHAR)
+BEGIN
+	DECLARE moduleName				VARCHAR 		DEFAULT &apos;&apos;&apos; || cacheDltaScrNm || &apos;&apos;&apos;;
+	DECLARE cacheViewName			VARCHAR			DEFAULT &apos;&apos;&apos;||viewName||&apos;&apos;&apos;;
+	DECLARE stagingTableName		VARCHAR			DEFAULT &apos;&apos;&apos;||stagingTableName||&apos;&apos;&apos;;
+	DECLARE prefix					VARCHAR			DEFAULT &apos;&apos;[Delta] &apos;&apos;;
+	-- CommonTypes variables
+	DECLARE constantsPath 			VARCHAR(4096) 	DEFAULT &apos;&apos;&apos;||constantsPath||&apos;&apos;&apos;;
+	DECLARE CommonTypesPath			VARCHAR(4096) 	DEFAULT &apos;||CommonTypesPath||&apos;.CommonTypesPath;
+	DECLARE constantsType			VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;&apos;ApplicationConstantsType&apos;&apos;); -- [Oracle, SqlServer, Netezza]
+	DECLARE cachekeyName	 		VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;&apos;CachekeyName&apos;&apos;);
+	DECLARE TruncateTableSQL		VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, constantsType||&apos;&apos;TruncateTable&apos;&apos;);
+	DECLARE MergeTableSql	 		LONGVARCHAR		DEFAULT getConstant(CommonTypesPath, constantsType||&apos;&apos;MergeTableSql&apos;&apos;);
+	DECLARE IU_CACHE_KEY 			VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;&apos;IU_CACHE_KEY&apos;&apos;);
+	DECLARE D_CACHE_KEY 			VARCHAR(4096)	DEFAULT getConstant(CommonTypesPath, &apos;&apos;D_CACHE_KEY&apos;&apos;);
+	-- General Types
+	DECLARE DEBUG_LEVEL_ERROR 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_ERROR&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_AUDIT 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_AUDIT&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_INFO 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_INFO&apos;&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 		INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;&apos;DEBUG_LEVEL_DEBUG&apos;&apos;) AS INTEGER);
+	DECLARE datasourceCatalogName 	VARCHAR(4096)	DEFAULT emptyStr(getConstant(constantsPath, &apos;&apos;DefaultCacheDSCatalogName&apos;&apos;));
+	DECLARE datasourceSchemaName 	VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;&apos;DefaultCacheDSSchemaName&apos;&apos;);
+	DECLARE cachekey 				BIGINT			DEFAULT 0;
+	DECLARE sequenceName			VARCHAR(4096)	DEFAULT cacheViewName;
+	DECLARE sequenceNum				BIGINT			DEFAULT 0;
+	DECLARE origUserName			VARCHAR;
+	DECLARE origSequenceNum			BIGINT;
+	DECLARE incrKeyStartingValue	&apos;||keyType||&apos; 		DEFAULT CAST(&apos;&apos;&apos;||keyStartingValue||&apos;&apos;&apos; AS &apos;||keyType||&apos;);
+	DECLARE minI					&apos;||keyType||&apos;;	-- minimum  incremental value to query
+	DECLARE maxI 					&apos;||keyType||&apos;;	-- maximum insert/update value
+	DECLARE maxD 					&apos;||keyType||&apos;;	-- maximum delete value
+	DECLARE incrMaintLevel 			VARCHAR;
+	DECLARE numRowsIU, numRowsD     BIGINT;
+	DECLARE errStatus 				VARCHAR;
+	DECLARE errMessage 				LONGVARCHAR;
+    DECLARE cacheSelectList 		LONGVARCHAR DEFAULT &apos;&apos;
+	&apos;||sepBeg||cachekeyName||sepEnd||cacheSelectList||&apos;&apos;&apos;;
+    DECLARE joinCriteria 			LONGVARCHAR DEFAULT &apos;&apos;
+&apos;||joinCriteria||&apos;
+&apos;&apos;;
+    DECLARE cacheUpdateList 		LONGVARCHAR DEFAULT &apos;&apos;
+&apos;||cacheUpdateList||&apos;&apos;&apos;;
+    DECLARE cacheInsertColList 		LONGVARCHAR DEFAULT &apos;&apos;
+	&apos;||sepBeg||cachekeyName||sepEnd||cacheInsertColList||&apos;
+&apos;&apos;;
+	-- In the text below, $cachekeyValue get replaced with the actual cachekey value at execution time.
+    DECLARE cacheInsertValueList 	LONGVARCHAR DEFAULT &apos;&apos;
+	$cachekeyValue&apos;||cacheInsertValueList||&apos;
+&apos;&apos;;
+
+	/* 1. Get the correlated sequence number or generate one if it does not exist. */
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequenceByName(sequenceName, 0, NULL, constantsPath, prefix, origSequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/GetDBSequence(sequenceName, origSequenceNum, origUserName, constantsPath, prefix, sequenceNum, origUserName, errStatus);
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;sequenceName=&apos;&apos;||sequenceName||&apos;&apos;  sequenceNum=&apos;&apos;||emptyStr(sequenceNum));
+
+	/* 2. Retrieve cache key from request environment */
+	CALL /lib/util/GetEnvironment(&apos;&apos;System.CACHED_RESOURCE_CACHE_KEY&apos;&apos;, cachekey);
+	IF (cachekey IS NULL OR cachekey &lt;= 0) THEN
+		RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exInvalidParameter 
+				VALUE &apos;&apos;The System.CACHED_RESOURCE_CACHE_KEY is not set properly.  cachekey=[&apos;&apos;||emptyStr(cachekey)||&apos;&apos;]&apos;&apos;;
+	END IF;
+
+	/* 3. Retrieve incremental maintenance level from request environment and determine the minimum starting query value. */
+	CALL /lib/util/GetEnvironment(&apos;&apos;System.CACHED_RESOURCE_INCREMENTAL_MAINTENANCE_LEVEL&apos;&apos;, incrMaintLevel);
+	SET minI = COALESCE(incrMaintLevel, incrKeyStartingValue);
+
+	CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+			prefix||&apos;&apos;Refreshing cache for cachekey=&apos;&apos;||emptyStr(cachekey)||&apos;&apos; incrMaintLevel=&apos;&apos;||emptyStr(incrMaintLevel)||&apos;&apos; minI=&apos;&apos;||emptyStr(minI)||&apos;&apos; : &apos;&apos;||cacheViewName);
+
+		--Refresh the staging view with original data but only get the incremental rows
+	BEGIN INDEPENDENT TRANSACTION
+		/* 4. Start caching the staging table */
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+				prefix||&apos;&apos;Refreshing staging table &apos;&apos; || stagingTableName || &apos;&apos; for view &apos;&apos; || cacheViewName);
+
+		--TRUNCATE  staging table
+		SET TruncateTableSQL = REPLACE(TruncateTableSQL, &apos;&apos;$CatalogName&apos;&apos;, datasourceCatalogName);
+		SET TruncateTableSQL = REPLACE(TruncateTableSQL, &apos;&apos;$SchemaName&apos;&apos;, datasourceSchemaName);
+		SET TruncateTableSQL = REPLACE(TruncateTableSQL, &apos;&apos;$TableName&apos;&apos;, stagingTableName);
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/ExecuteDDL(sequenceNum, origUserName, constantsPath, stagingTableName, TruncateTableSQL, cachekey, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;SUCCESS&apos;&apos;) THEN
+			-- Determine the max row in source table
+			SELECT { option no_data_cache } 
+				MAX(&apos;||CISSepBeg||keyName||CISSepEnd||&apos;) maxI INTO maxI
+			FROM &apos; || viewPath || &apos;;
+			SET maxI = COALESCE(maxI, incrKeyStartingValue);
+
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+					prefix||&apos;&apos;Refresh staging with &quot;INSERTED/UPDATED&quot; rows from history table. cachkey=&apos;||IU_CACHE_KEY||
+							 &apos;: WHERE &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &gt; minI[&apos;&apos;||emptyStr(minI)||&apos;&apos;] AND &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &lt;= maxI[&apos;&apos;||emptyStr(maxI)||&apos;&apos;]&apos;&apos;);
+
+			-- Insert new rows from source into staging table [Insert/Update rows]
+			INSERT INTO &apos; || stageDatabasePath || &apos; 
+				SELECT { option disable_data_cache }
+					IU_CACHE_KEY &apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos;, -- 99999999
+					S.*
+				FROM &apos; || viewPath || &apos; S 
+				WHERE &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &gt; minI AND &apos; ||CISSepBeg||keyName||CISSepEnd|| &apos; &lt;= maxI;
+&apos;;
+		IF (isEmpty(historyTablePath) = NotEmpty AND isEmpty(historyTablePKCSV) = NotEmpty AND isEmpty(startDateCol) = NotEmpty) THEN
+/*
+	        &lt;attribute&gt;&lt;name&gt;INCR_KEY_NAME&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
+	        &lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
+	        &lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
+		    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+		    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoORA/COMPOSITE_CACHE/TEST_INCR_DEL&lt;/value&gt;&lt;/attribute&gt;
+		    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
+	 	    &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_DELDT_COL&lt;/name&gt;&lt;value&gt;DEL&lt;/value&gt;&lt;/attribute&gt;
+*/
+			-- Build up the column insert list from the primary key
+			IF (isEmpty(cacheViewPkCSV) = NotEmpty) THEN
+				SET i = 0;
+				FOR pk AS SELECT * FROM /shared/ASAssets/Utilities/string/ParseCSVLine(cacheViewPkCSV||&apos;,&apos;||keyName, &apos;,&apos;, &apos;&quot;&apos;)
+							WHERE CSValue IS NOT NULL AND LENGTH(TRIM(CSValue)) &gt; 0 
+				DO
+					SET colName = TRIM(pk.CSValue);
+					IF (i = 0) THEN
+						SET cacheInsertColListCIS = &apos;&apos;;
+					ELSE
+						SET cacheInsertColListCIS = cacheInsertColListCIS || &apos;, &apos;;
+					END IF;
+					SET cacheInsertColListCIS = cacheInsertColListCIS || CISSepBeg||colName||CISSepEnd;
+					SET i = i + 1; 
+				END FOR;				
+			END IF;
+
+			-- Build up the deleted table select list from the deleted table primary key
+			IF (isEmpty(historyTablePKCSV) = NotEmpty) THEN
+				SET i = 0;
+				FOR pk AS SELECT * FROM /shared/ASAssets/Utilities/string/ParseCSVLine(historyTablePKCSV, &apos;,&apos;, &apos;&quot;&apos;)
+							WHERE CSValue IS NOT NULL AND LENGTH(TRIM(CSValue)) &gt; 0 
+				DO
+					SET colName = TRIM(pk.CSValue);
+					IF (i = 0) THEN
+						SET cacheSelectHistoryTableList = &apos;&apos;;
+					ELSE
+						SET cacheSelectHistoryTableList = cacheSelectHistoryTableList || &apos;, &apos;;
+					END IF;
+					SET cacheSelectHistoryTableList = cacheSelectHistoryTableList || CISSepBeg||colName||CISSepEnd;
+					SET i = i + 1; 
+				END FOR;				
+			END IF;
+
+			-- Build up the having join for the deleted table primary key: s.&quot;K1&quot; = d.&quot;K1&quot;, s.&quot;K2&quot; = d.&quot;K2&quot;
+			IF (isEmpty(cacheUpdateList) = NotEmpty) THEN
+				SET i = 0;
+				FOR pk AS SELECT * FROM /shared/ASAssets/Utilities/string/ParseCSVLine(historyTablePKCSV, &apos;,&apos;, &apos;&quot;&apos;)
+							WHERE CSValue IS NOT NULL AND LENGTH(TRIM(CSValue)) &gt; 0 
+				DO
+					SET colName = TRIM(pk.CSValue);
+					IF (i = 0) THEN
+						SET cacheHavingJoinHistoryTableList = &apos;&apos;;
+					ELSE
+						SET cacheHavingJoinHistoryTableList = cacheHavingJoinHistoryTableList || &apos; AND &apos;;
+					END IF;
+					SET cacheHavingJoinHistoryTableList = cacheHavingJoinHistoryTableList || &apos;s.&apos;||CISSepBeg||colName||CISSepEnd||&apos; = h.&apos;||CISSepBeg||colName||CISSepEnd;
+					SET i = i + 1; 
+				END FOR;				
+			END IF;
+
+			SET sqlScriptStr = sqlScriptStr || &apos;
+			-- Insert rows from history audit table into staging table [Delete rows]
+			-- Determine the max row in source history table
+			SELECT { option no_data_cache } 
+				MAX(&apos;||CISSepBeg||startDateCol||CISSepEnd||&apos;) maxD INTO maxD
+			FROM &apos; || historyTablePath || &apos;;
+			SET maxD = COALESCE(maxD, incrKeyStartingValue);
+
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+					prefix||&apos;&apos;Refresh staging with &quot;DELETED&quot; rows from history table. cachekey=&apos;||D_CACHE_KEY||
+							 &apos;: WHERE &apos;||startDateCol||&apos; &gt; minI[&apos;&apos;||emptyStr(minI)||&apos;&apos;] AND &apos;||startDateCol||&apos; &lt;= maxD[&apos;&apos;||emptyStr(maxD)||&apos;&apos;]&apos;&apos;);
+
+	        -- This query identifies records that have been deleted from the source and history table and need to be removed from the cache table.
+			INSERT INTO &apos; || stageDatabasePath || &apos; (
+                &apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos;,
+                 -- Staging table primary key list: CACHING_DATA.ATTRIBUTES[&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;]
+                &apos;||cacheInsertColListCIS||&apos;
+	    	)
+                SELECT
+                    D_CACHE_KEY &apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos;, -- 99999998
+					dr.*
+                FROM
+                    (SELECT &apos;||cacheSelectHistoryTableList||&apos;, -- History table primary key list: CACHING_DATA.ATTRIBUTES[&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;]
+						   MAX(h.&apos;||CISSepBeg||startDateCol||CISSepEnd||&apos;) DELETED_DATE
+                        FROM  &apos; || historyTablePath || &apos; h
+                        WHERE h.&apos;||CISSepBeg||startDateCol||CISSepEnd||&apos; &gt; minI AND h.&apos;||CISSepBeg||startDateCol||CISSepEnd||&apos; &lt;= maxD
+						  AND h.&apos;||CISSepBeg||endDateCol||CISSepEnd||&apos; IS NOT NULL AND h.&apos;||CISSepBeg||endDateCol||CISSepEnd||&apos; &lt;&gt; TO_DATE(&apos;&apos;9999-12-31 00:00:00&apos;&apos;, &apos;&apos;YYYY-MM-DD HH24:MI:SS&apos;&apos;)
+                        GROUP BY &apos;||TRIM(cacheSelectHistoryTableList)||&apos;
+                        HAVING (SELECT { option disable_data_cache } COUNT(*) cnt 
+                                        FROM &apos;||viewPath||&apos; s 
+                                        WHERE &apos;||TRIM(cacheHavingJoinHistoryTableList)||&apos;) = 0   -- Identify records from history (h) that are not in the source (s) table
+                     ) dr;  -- (Delete Row) - history table primary key list
+&apos;;
+		END IF;
+
+		SET sqlScriptStr = sqlScriptStr || &apos;
+			-- Get the number of rows processed for insert/update
+			SELECT COUNT(*) cnt INTO numRowsIU
+			FROM &apos; || stageDatabasePath || &apos;
+			WHERE &apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos; = IU_CACHE_KEY;		-- INSERT/UPDATE ROWS
+			-- Get the number of rows processed for delete
+			SELECT COUNT(*) cnt INTO numRowsD
+			FROM &apos; || stageDatabasePath || &apos;
+			WHERE &apos;||CISSepBeg||cachekeyName||CISSepEnd||&apos; = D_CACHE_KEY;		-- DELETE ROWS
+
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath,
+					prefix||&apos;&apos;Refreshed staging table &apos;&apos; || stagingTableName || &apos;&apos; for view &apos;&apos; || cacheViewName || &apos;&apos; numRows Ins/Upd=&apos;&apos;||numRowsIU || &apos;&apos; numRows Del=&apos;&apos;||numRowsD);
+		END IF;
+	EXCEPTION
+		ELSE
+			SET errStatus = &apos;&apos;FAIL&apos;&apos;;
+			SET errMessage = CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+	END;
+	IF errStatus != &apos;&apos;SUCCESS&apos;&apos; THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath,
+			prefix||&apos;&apos;Refresh failed on staging table &apos;&apos; || stagingTableName || &apos;&apos; for view &apos;&apos; || cacheViewName || &apos;&apos;  Error=&apos;&apos;||emptyStr(errMessage));
+		SET IncrementalMaintenanceLevel = incrMaintLevel;
+	ELSE 
+		/* 5. Determine delta snapshot level based on comparing the source table and the history table max keys */
+		IF (maxI IS NOT NULL AND maxD IS NOT NULL AND maxD &gt; maxI) THEN
+			SET maxI = maxD;
+		END IF;
+
+		/* 6. Prepare the the MERGE INTO SQL statement */
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;Refresh cachekey=&apos;&apos;||emptyStr(cachekey)||&apos;&apos; WHERE &apos;||CISSepBeg||keyName||CISSepEnd||
+						&apos; &gt; minI[&apos;&apos;||emptyStr(minI)||&apos;&apos;] AND &apos;||CISSepBeg||keyName||CISSepEnd||&apos; &lt;= maxI[&apos;&apos;||emptyStr(maxI)||&apos;&apos;] : &apos;&apos;||cacheViewName);
+
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$CatalogName&apos;&apos;, datasourceCatalogName);
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$SchemaName&apos;&apos;, emptyStr(datasourceSchemaName));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$TableName&apos;&apos;, emptyStr(cacheViewName));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$cacheSelectList&apos;&apos;, emptyStr(cacheSelectList));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$stagingTableName&apos;&apos;, emptyStr(stagingTableName));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$CachekeyName&apos;&apos;, emptyStr(cachekeyName));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$joinCriteria&apos;&apos;, emptyStr(joinCriteria));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$cacheUpdateList&apos;&apos;, emptyStr(cacheUpdateList));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$cacheInsertColList&apos;&apos;, emptyStr(cacheInsertColList));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$cacheInsertValueList&apos;&apos;, emptyStr(cacheInsertValueList));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$cachekeyValue&apos;&apos;, emptyStr(cachekey));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$IU_CACHE_KEY&apos;&apos;, emptyStr(IU_CACHE_KEY));
+		SET MergeTableSql = REPLACE(MergeTableSql, &apos;&apos;$D_CACHE_KEY&apos;&apos;, emptyStr(D_CACHE_KEY));
+
+/* *** Native SQL Template and Example ***
+============================
+TEMPLATE - &apos;||constantsType||&apos; Merge:
+============================
+&apos;||MergeTableSql||&apos;
+============================
+EXAMPLE - &apos;||constantsType||&apos; Merge:
+============================
+&apos;||MergeTableExample||&apos;
+*/
+		/* 7. Perform the MERGE INTO to refresh the cache target table */
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/ExecuteDDL(sequenceNum, origUserName, constantsPath, cacheViewName, MergeTableSql, cachekey, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned 
+				VALUE &apos;&apos;Refresh cache failed on cache view &apos;&apos; || cacheViewName || &apos;&apos;  errMessage=&apos;&apos;||emptyStr(errMessage);
+		END IF;
+
+		/* 8. Update incremental maintenance level */
+		SET IncrementalMaintenanceLevel = CAST(maxI AS VARCHAR);
+		SET incrMaintLevel = IncrementalMaintenanceLevel;
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;Refreshed cache for: &apos;&apos;||cacheViewName||&apos;&apos;  numRows Ins/Upd=&apos;&apos; || COALESCE(numRowsIU, 0)||&apos;&apos;  numRows Del=&apos;&apos; || COALESCE(numRowsD, 0)||&apos;&apos;  IncrementalMaintenanceLevel=&apos;&apos;||emptyStr(IncrementalMaintenanceLevel));
+	END IF;
+
+	/* 9. Reset the audit log sequence to null for this view. */
+	-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+	IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+		CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+		IF (errStatus = &apos;&apos;FAIL&apos;&apos;) THEN
+			RAISE &apos;||CacheFrameworkPath||&apos;/Scripts/CommonTypes.exErrorReturned VALUE errMessage;
+		END IF;
+	END IF;
+EXCEPTION
+	ELSE
+		SET IncrementalMaintenanceLevel = incrMaintLevel;
+		BEGIN INDEPENDENT TRANSACTION
+			CALL &apos;||CacheFrameworkPath||&apos;/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, cacheViewName, cachekey,  constantsPath, 
+				prefix||&apos;&apos;IncrementalMaintenanceLevel=&apos;&apos;||emptyStr(IncrementalMaintenanceLevel)||&apos;&apos;  ERROR: &apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+			-- Remove the sequence from the audit log sequence table if it was generated within this procedure
+			IF (origSequenceNum IS NULL OR origSequenceNum = 0) THEN
+				CALL &apos;||CacheFrameworkPath||&apos;/Scripts/HelperScripts/DeleteDBSequence(sequenceName, sequenceNum, origUserName, constantsPath, prefix, errStatus, errMessage);
+			END IF;
+		EXCEPTION
+			ELSE
+				CALL LOG(moduleName||&apos;&apos; : [&apos;&apos;||cacheViewName||&apos;&apos;] ERROR=&apos;&apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+		END;
+END&apos;;
+
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_DEBUG, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;SQL Script Procedure: &apos; || sqlScriptStr);
+
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /services/webservices/system/admin/resource/operations/updateSqlScriptProcedure(&apos;
+&lt;resource:updateSqlScriptProcedure xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;
+  &lt;resource:path&gt;&apos; || resourcePathDelta || &apos;&lt;/resource:path&gt;
+  &lt;resource:detail&gt;NONE&lt;/resource:detail&gt;
+  &lt;resource:scriptText&gt;&lt;![CDATA[&apos;||sqlScriptStr||&apos;]]&gt;&lt;/resource:scriptText&gt;
+  &lt;resource:isExplicitDesign&gt;false&lt;/resource:isExplicitDesign&gt;
+  &lt;resource:annotation&gt;Script autogenerated&lt;/resource:annotation&gt;
+&lt;/resource:updateSqlScriptProcedure&gt;&apos;, upResResp, fault);
+		END;
+		IF fault IS NULL THEN
+			CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, null, moduleName, viewName, cachekey,  constantsPath,
+				prefix||&apos;Updated Delta Load Script: &apos; || resourcePathDelta);
+		ELSE -- resource not  created 
+			RAISE /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned VALUE CAST(fault AS LONGVARCHAR);
+		END IF;
+	END IF;
+	SET errStatus = &apos;SUCCESS&apos;;
+
+EXCEPTION
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter THEN
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath, prefix||CURRENT_EXCEPTION.TRACE);
+		SET errStatus = &apos;FAIL&apos;;
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exErrorReturned  THEN
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath, prefix||CURRENT_EXCEPTION.TRACE);
+		SET errStatus = &apos;FAIL&apos;;
+	ELSE
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, null, moduleName, viewName, cachekey,  constantsPath, prefix||CURRENT_EXCEPTION.TRACE);
+		SET errStatus = &apos;FAIL&apos;;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1384794645262</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,125 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GetAttributeNameValueProc" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueProc" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="attributeName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="attributeXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="attributeValue" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueXform" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="request" direction="IN">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="outputs" direction="OUT" nullable="false">
+        <datatype type="TABLE" refId="3">
+          <element name="name">
+            <datatype namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="32768"/>
+          </element>
+          <element name="value">
+            <datatype namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* GetAttributeNameValueProc:
+
+	This procedure is used to extract name/value pairs from a generic no-namespace XML.
+	
+	Sample XML:
+		&lt;attributes&gt;
+		    &lt;attribute&gt;&lt;name&gt;string1&lt;/name&gt;&lt;value&gt;value1&lt;/value&gt;&lt;/attribute&gt;
+    		&lt;attribute&gt;&lt;name&gt;string2&lt;/name&gt;&lt;value&gt;value2&lt;/value&gt;&lt;/attribute&gt;
+    		&lt;attribute&gt;&lt;name&gt;string3&lt;/name&gt;&lt;value&gt;value 3 &lt;/value&gt;&lt;/attribute&gt;
+    		&lt;attribute&gt;&lt;name&gt;string4&lt;/name&gt;&lt;value&gt;BLANK&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Return an explicit blank value --&gt;
+    		&lt;attribute&gt;&lt;name&gt;string5&lt;/name&gt;&lt;value&gt;NULL&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Return an explicit null value --&gt;
+    		&lt;attribute&gt;&lt;name&gt;string6&lt;/name&gt;&lt;value&gt;&lt;/value&gt;&lt;/attribute&gt; 		&lt;!-- This value is automatically converted to null --&gt;
+    		&lt;attribute&gt;&lt;name&gt;string7&lt;/name&gt;&lt;value&gt;EMPTY&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Return an explicit empty string --&gt;
+    		&lt;attribute&gt;&lt;name&gt;string8&lt;/name&gt;&lt;value&gt;BLANK2&lt;/value&gt;&lt;/attribute&gt; 	&lt;!-- Return an explicit 2 blanks --&gt;
+		&lt;/attributes&gt;
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE GetAttributeNameValueProc(
+	IN	attributeName		VARCHAR,
+	IN  attributeXML		LONGVARCHAR,
+	OUT attributeValue		LONGVARCHAR
+)
+BEGIN
+	DECLARE i, blankNum		INTEGER;
+	DECLARE blankNumStr		VARCHAR;
+	DECLARE ex				EXCEPTION;
+
+	SET attributeValue = null;
+	attributeLoop:
+	FOR r AS SELECT * FROM /shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueXform(attributeXML) DO
+		IF (r.name = attributeName) THEN
+			SET attributeValue = r.&quot;value&quot;;
+			-- Explicitly set the value to null if the string = &apos;NULL&apos;
+			IF (UPPER(attributeValue) = &apos;NULL&apos;) THEN
+				SET attributeValue = null;
+			END IF;
+			-- Explicitly set the value to empty if the string = &apos;EMPTY&apos;
+			IF (UPPER(attributeValue) = &apos;EMPTY&apos;) THEN
+				SET attributeValue = &apos;&apos;;
+			END IF;
+			-- Explicitly set the value to blank if the string = &apos;BLANK&apos;
+			IF (POSITION(&apos;BLANK&apos; IN attributeValue) &gt; 0) THEN
+				SET blankNumStr = TRIM(REPLACE(UPPER(attributeValue), &apos;BLANK&apos;, &apos;&apos;));
+				-- Determine how many blanks to generate
+				--call print(&apos;blankNumStr=[&apos;||blankNumStr||&apos;]  length=&apos;||LENGTH(blankNumStr));
+				IF (LENGTH(blankNumStr) = 0) THEN
+					SET blankNum = 1;
+				ELSE
+					-- Validate to insure there are all digits in the string
+					SET i = 1;
+					WHILE (i &lt;= LENGTH(blankNumStr)) DO
+						IF (POSITION(SUBSTR(blankNumStr, i, 1) IN &apos;0123456789&apos;) = 0) THEN
+							RAISE ex VALUE &apos;Invalid attribute value for BLANK.  The characters following BLANK may only be numeric digits. name=&apos;||r.name||&apos; value=&apos;||r.&quot;value&quot;;
+						END IF;
+						SET i = i + 1;
+					END WHILE;
+					SET blankNum = CAST(blankNumStr AS INTEGER);
+				END IF;
+				-- Add spaces for the number of blanks specified
+				--call print(&apos;blankNum=&apos;||blankNum);
+				SET attributeValue = &apos;&apos;;
+				SET i = 1;					
+				WHILE (i &lt;= blankNum) DO
+					SET attributeValue = attributeValue || &apos; &apos;;
+					SET i = i + 1;
+				END WHILE;
+			END IF;
+			LEAVE attributeLoop;
+		END IF;
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1409828324879</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1413938057186</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

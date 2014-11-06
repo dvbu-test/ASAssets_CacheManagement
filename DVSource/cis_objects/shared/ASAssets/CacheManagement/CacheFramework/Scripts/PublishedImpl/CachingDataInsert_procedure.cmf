@@ -1,0 +1,555 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="CachingDataInsert" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/CachingDataInsert" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="deleteAllRecords" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="RUN_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="DROP_RECREATE_VIEW_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="DROP_RECREATE_TABLE_YN">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="CACHE_TYPE">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="RESOURCE_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+        </element>
+        <element name="ORGANIZATION">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="APPLICATION_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="CONSTANTS_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+        </element>
+        <element name="ATTRIBUTES">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="MessageValue" type="STRING" maxLength="64000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/Pause" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="timeInMilliSeconds" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* CachingDataInsert:
+
+	This script provides a way of inserting rows from the CachingData() procedure into the CACHING_DATA table.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/  
+PROCEDURE CachingDataInsert(
+	IN  constantsPath	 	VARCHAR(4096),	-- Path to the application constants procedure.
+	IN	deleteAllRecords	INTEGER,-- 1=true delete all records per OrganizationName and ApplicationName, 
+									-- 0=false (delete individual records) per OrganizationName and ApplicationName
+	OUT	result 				CURSOR /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CachingDataType
+)
+BEGIN
+	DECLARE moduleName 					VARCHAR(255) DEFAULT &apos;CachingDataInsert&apos;;-- name of SQL Script
+	-- Full path to the custom constants procedure.
+	DECLARE organizationName			VARCHAR 		DEFAULT getConstant(constantsPath, &apos;OrganizationName&apos;);
+	DECLARE applicationName				VARCHAR 		DEFAULT getConstant(constantsPath, &apos;ApplicationName&apos;);
+ 	DECLARE CachingDataTablePath		VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;CachingDataTablePath&apos;);
+ 	DECLARE CachingDataProcedure		VARCHAR(4096)	DEFAULT getConstant(constantsPath, &apos;CachingDataProcedure&apos;);
+	DECLARE deleteSqlStatementBase		LONGVARCHAR;
+	DECLARE selectSqlStatement			LONGVARCHAR;
+	DECLARE deleteSqlStatement			LONGVARCHAR;
+	DECLARE insertSqlStatementBase		LONGVARCHAR;
+	DECLARE insertSqlStatement			LONGVARCHAR;
+	DECLARE cachingDataSelect			VARCHAR(1024);
+	DECLARE CachingDataCurs				CURSOR /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CachingDataType;
+	DECLARE CommonTypesPath				VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.CommonTypesPath;
+	DECLARE DefaultCachingDBSchemaName	VARCHAR(4096);
+	DECLARE attributes					LONGVARCHAR;
+	DECLARE b_attributes, e_attributes	LONGVARCHAR;
+	DECLARE bpos, epos					INTEGER;
+	DECLARE ex							EXCEPTION;
+
+	IF (CachingDataTablePath IS NULL OR LENGTH(CachingDataTablePath) = 0) THEN
+		RAISE ex VALUE &apos;The constant &quot;CachingDataTablePath&quot; is null or empty.  Please provide a valid constant in the procedure=&apos;||emptyStr(constantsPath);
+	END IF;
+	SET deleteSqlStatementBase = REPLACE(getConstant(CommonTypesPath, &apos;CachingDataDelete&apos;), &apos;$CachingDataTablePath&apos;, CachingDataTablePath);
+	SET insertSqlStatementBase = REPLACE(getConstant(CommonTypesPath, &apos;CachingDataInsert&apos;), &apos;$CachingDataTablePath&apos;, CachingDataTablePath);
+	SET cachingDataSelect 	   = REPLACE(getConstant(CommonTypesPath, &apos;CachingDataSelect&apos;), &apos;$CachingDataTablePath&apos;, CachingDataTablePath) ||
+									&apos; WHERE ORGANIZATION = &apos;&apos;&apos;||emptyStr(organizationName)||&apos;&apos;&apos; AND APPLICATION_NAME = &apos;&apos;&apos;||emptyStr(applicationName)||&apos;&apos;&apos;&apos;;
+
+	IF (deleteAllRecords = 1) THEN
+		set deleteSqlStatement = deleteSqlStatementBase || &apos; &apos;||
+				&apos;WHERE ORGANIZATION = &apos;&apos;&apos;||organizationName||&apos;&apos;&apos;&apos;||
+				&apos;  AND APPLICATION_NAME = &apos;&apos;&apos;||applicationName||&apos;&apos;&apos;&apos;;
+
+		CALL PRINT(&apos;deleteSqlStatement=&apos;||deleteSqlStatement);
+		CALL PAUSE(1000);
+		BEGIN INDEPENDENT TRANSACTION
+			EXECUTE IMMEDIATE deleteSqlStatement;
+		END;
+	END IF;
+
+	SET selectSqlStatement = &apos;SELECT * FROM &apos;||CachingDataProcedure||&apos;()&apos;;
+	OPEN CachingDataCurs FOR selectSqlStatement;
+	FOR r AS CachingDataCurs DO
+
+		IF (deleteAllRecords = 0) THEN
+			set deleteSqlStatement = deleteSqlStatementBase || &apos; &apos;||
+				&apos;WHERE ORGANIZATION = &apos;&apos;&apos;||organizationName||&apos;&apos;&apos;&apos;||
+				&apos;  AND APPLICATION_NAME = &apos;&apos;&apos;||applicationName||&apos;&apos;&apos;&apos;||
+				&apos;  AND RESOURCE_PATH = &apos;&apos;&apos;||r.RESOURCE_PATH||&apos;&apos;&apos;&apos;;
+
+			CALL PRINT(&apos;deleteSqlStatement=&apos;||deleteSqlStatement);
+			CALL PAUSE(1000);
+			BEGIN INDEPENDENT TRANSACTION
+				EXECUTE IMMEDIATE deleteSqlStatement;
+			END;
+		END IF;
+
+		-- Remove the comments from the attribute text before inserting into the database to conserve space
+		set attributes = r.ATTRIBUTES;
+		IF (attributes IS NOT NULL) THEN
+			SET attributes = REPLACE(attributes, CHR(9), &apos;&apos;);
+			SET attributes = REPLACE(attributes, CHR(10), &apos;&apos;);
+			SET attributes = REPLACE(attributes, CHR(12), &apos;&apos;);
+			SET attributes = REPLACE(attributes, &apos;&lt;/attribute&gt;  &lt;attribute&gt;&apos;, &apos;&lt;/attribute&gt;&lt;attribute&gt;&apos;);
+			SET attributes = REPLACE(attributes, &apos;&lt;/attribute&gt; &lt;attribute&gt;&apos;, &apos;&lt;/attribute&gt;&lt;attribute&gt;&apos;);
+			--call print(&apos;START:&apos;||attributes);
+
+			set bpos = POSITION(&apos;&lt;!--&apos; IN attributes);
+			set epos = POSITION(&apos;--&gt;&apos; IN attributes);
+			WHILE (bpos &gt; 0 and epos &gt; 0) DO
+				set b_attributes = SUBSTRING(attributes, 1, bpos-1);
+				set e_attributes = SUBSTRING(attributes, epos+3, LENGTH(attributes));
+				set attributes = b_attributes || e_attributes;
+				set bpos = POSITION(&apos;&lt;!--&apos; IN attributes);	
+				set epos = POSITION(&apos;--&gt;&apos; IN attributes);
+			END WHILE;
+			--call print(&apos;END:&apos;||attributes);
+		END IF;
+
+		set insertSqlStatement = insertSqlStatementBase || &apos;(&apos;&apos;&apos;||
+				r.RUN_YN||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				r.DROP_RECREATE_VIEW_YN||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				r.DROP_RECREATE_TABLE_YN||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				r.CACHE_TYPE||&apos;&apos;&apos;,&apos;&apos;&apos;||
+				r.RESOURCE_PATH||&apos;&apos;&apos;, &apos;&apos;&apos;||
+                NVL(r.ORGANIZATION, &apos;NULL&apos;)||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				NVL(r.APPLICATION_NAME, &apos;NULL&apos;)||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				r.CONSTANTS_PATH||&apos;&apos;&apos;, &apos;&apos;&apos;||
+				NVL(attributes, &apos;NULL&apos;)||
+				&apos;&apos;&apos;)&apos;;
+
+		CALL PRINT(&apos;insertSqlStatement=&apos;||insertSqlStatement);
+		CALL PAUSE(1000);
+		BEGIN INDEPENDENT TRANSACTION
+			EXECUTE IMMEDIATE insertSqlStatement;
+		END;
+	END FOR;
+
+	CALL PRINT(&apos;cachingDataSelect=&apos;||emptyStr(cachingDataSelect));
+	OPEN result FOR cachingDataSelect;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410969107426</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/66</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/65</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">7/113</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/107</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/106</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/49</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/48</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

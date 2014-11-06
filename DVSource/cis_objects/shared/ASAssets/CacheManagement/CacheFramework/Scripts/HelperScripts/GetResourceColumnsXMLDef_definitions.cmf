@@ -1,0 +1,200 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="GetResourceColumnsXMLDef" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetResourceColumnsXMLDef" type="DEFINITION_SET" subtype="XML_SCHEMA_DEFINITION_SET" changeToken="0">
+  <definitions>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}impactLevel" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}ownerName" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}name" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/util/common}sqlType" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/util/common}name" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}enabled" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/util/common}nativeType" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}type" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}resources" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}id" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}resource" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}isNullable" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}column" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}ownerDomain" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}dataType" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}getResourceResponse" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}changeId" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/util/common}definition" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/util/common}proprietaryModel" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}subtype" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}columns" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+    <definition name="{http://www.compositesw.com/services/system/admin/resource}path" type="ELEMENT">
+      <attribute name="creationDate" type="LONG">0</attribute>
+      <attribute name="creatorUserDomain" type="STRING"/>
+      <attribute name="creatorUserName" type="STRING"/>
+    </definition>
+  </definitions>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="creationDate" type="LONG">1385053097121</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1409258334102</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">ldap</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="sources" type="LIST">
+    <list type="OBJECT">rO0ABXNyADVjb20uY29tcG9zaXRlc3cuY29tbW9uLnJlcG9zaXRvcnkuRGVmaW5pdGlvblNldFNv
+dXJjZVYpv6Zr2hqJAgACTAAIbG9jYXRpb250ABJMamF2YS9sYW5nL1N0cmluZztMAApzb3VyY2VU
+ZXh0cQB+AAF4cHQAC2RlZmF1bHQueHNkdAqQPHhzOnNjaGVtYSB4bWxuczp4cz0iaHR0cDovL3d3
+dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOmNvbW1vbj0iaHR0cDovL3d3dy5jb21wb3Np
+dGVzdy5jb20vc2VydmljZXMvc3lzdGVtL3V0aWwvY29tbW9uIiB4bWxuczpyZXNvdXJjZT0iaHR0
+cDovL3d3dy5jb21wb3NpdGVzdy5jb20vc2VydmljZXMvc3lzdGVtL2FkbWluL3Jlc291cmNlIiBh
+dHRyaWJ1dGVGb3JtRGVmYXVsdD0idW5xdWFsaWZpZWQiIGVsZW1lbnRGb3JtRGVmYXVsdD0icXVh
+bGlmaWVkIiB0YXJnZXROYW1lc3BhY2U9Imh0dHA6Ly93d3cuY29tcG9zaXRlc3cuY29tL3NlcnZp
+Y2VzL3N5c3RlbS9hZG1pbi9yZXNvdXJjZSI+DQogIDx4czppbXBvcnQgbmFtZXNwYWNlPSJodHRw
+Oi8vd3d3LmNvbXBvc2l0ZXN3LmNvbS9zZXJ2aWNlcy9zeXN0ZW0vdXRpbC9jb21tb24iIHNjaGVt
+YUxvY2F0aW9uPSJjb21tb24ueHNkIi8+DQogIDx4czplbGVtZW50IG5hbWU9ImdldFJlc291cmNl
+UmVzcG9uc2UiPg0KICAgIDx4czpjb21wbGV4VHlwZT4NCiAgICAgIDx4czpzZXF1ZW5jZT4NCiAg
+ICAgICAgPHhzOmVsZW1lbnQgcmVmPSJyZXNvdXJjZTpyZXNvdXJjZXMiLz4NCiAgICAgIDwveHM6
+c2VxdWVuY2U+DQogICAgPC94czpjb21wbGV4VHlwZT4NCiAgPC94czplbGVtZW50Pg0KICA8eHM6
+ZWxlbWVudCBuYW1lPSJyZXNvdXJjZXMiPg0KICAgIDx4czpjb21wbGV4VHlwZT4NCiAgICAgIDx4
+czpzZXF1ZW5jZT4NCiAgICAgICAgPHhzOmVsZW1lbnQgcmVmPSJyZXNvdXJjZTpyZXNvdXJjZSIv
+Pg0KICAgICAgPC94czpzZXF1ZW5jZT4NCiAgICA8L3hzOmNvbXBsZXhUeXBlPg0KICA8L3hzOmVs
+ZW1lbnQ+DQogIDx4czplbGVtZW50IG5hbWU9InJlc291cmNlIj4NCiAgICA8eHM6Y29tcGxleFR5
+cGU+DQogICAgICA8eHM6c2VxdWVuY2U+DQogICAgICAgIDx4czplbGVtZW50IHJlZj0icmVzb3Vy
+Y2U6bmFtZSIvPg0KICAgICAgICA8eHM6ZWxlbWVudCByZWY9InJlc291cmNlOnBhdGgiLz4NCiAg
+ICAgICAgPHhzOmVsZW1lbnQgcmVmPSJyZXNvdXJjZTp0eXBlIi8+DQogICAgICAgIDx4czplbGVt
+ZW50IHJlZj0icmVzb3VyY2U6c3VidHlwZSIvPg0KICAgICAgICA8eHM6ZWxlbWVudCByZWY9InJl
+c291cmNlOmlkIi8+DQogICAgICAgIDx4czplbGVtZW50IHJlZj0icmVzb3VyY2U6Y2hhbmdlSWQi
+Lz4NCiAgICAgICAgPHhzOmVsZW1lbnQgcmVmPSJyZXNvdXJjZTpvd25lckRvbWFpbiIvPg0KICAg
+ICAgICA8eHM6ZWxlbWVudCByZWY9InJlc291cmNlOm93bmVyTmFtZSIvPg0KICAgICAgICA8eHM6
+ZWxlbWVudCByZWY9InJlc291cmNlOmltcGFjdExldmVsIi8+DQogICAgICAgIDx4czplbGVtZW50
+IHJlZj0icmVzb3VyY2U6ZW5hYmxlZCIvPg0KICAgICAgICA8eHM6ZWxlbWVudCByZWY9InJlc291
+cmNlOmNvbHVtbnMiLz4NCiAgICAgIDwveHM6c2VxdWVuY2U+DQogICAgPC94czpjb21wbGV4VHlw
+ZT4NCiAgPC94czplbGVtZW50Pg0KICA8eHM6ZWxlbWVudCBuYW1lPSJwYXRoIiB0eXBlPSJ4czpz
+dHJpbmciLz4NCiAgPHhzOmVsZW1lbnQgbmFtZT0idHlwZSIgdHlwZT0ieHM6TkNOYW1lIi8+DQog
+IDx4czplbGVtZW50IG5hbWU9InN1YnR5cGUiIHR5cGU9InhzOk5DTmFtZSIvPg0KICA8eHM6ZWxl
+bWVudCBuYW1lPSJpZCIgdHlwZT0ieHM6aW50ZWdlciIvPg0KICA8eHM6ZWxlbWVudCBuYW1lPSJj
+aGFuZ2VJZCIgdHlwZT0ieHM6aW50ZWdlciIvPg0KICA8eHM6ZWxlbWVudCBuYW1lPSJvd25lckRv
+bWFpbiIgdHlwZT0ieHM6TkNOYW1lIi8+DQogIDx4czplbGVtZW50IG5hbWU9Im93bmVyTmFtZSIg
+dHlwZT0ieHM6TkNOYW1lIi8+DQogIDx4czplbGVtZW50IG5hbWU9ImltcGFjdExldmVsIiB0eXBl
+PSJ4czpOQ05hbWUiLz4NCiAgPHhzOmVsZW1lbnQgbmFtZT0iZW5hYmxlZCIgdHlwZT0ieHM6Ym9v
+bGVhbiIvPg0KICA8eHM6ZWxlbWVudCBuYW1lPSJjb2x1bW5zIj4NCiAgICA8eHM6Y29tcGxleFR5
+cGU+DQogICAgICA8eHM6c2VxdWVuY2U+DQogICAgICAgIDx4czplbGVtZW50IG1heE9jY3Vycz0i
+dW5ib3VuZGVkIiByZWY9InJlc291cmNlOmNvbHVtbiIvPg0KICAgICAgPC94czpzZXF1ZW5jZT4N
+CiAgICA8L3hzOmNvbXBsZXhUeXBlPg0KICA8L3hzOmVsZW1lbnQ+DQogIDx4czplbGVtZW50IG5h
+bWU9ImNvbHVtbiI+DQogICAgPHhzOmNvbXBsZXhUeXBlPg0KICAgICAgPHhzOnNlcXVlbmNlPg0K
+ICAgICAgICA8eHM6ZWxlbWVudCByZWY9InJlc291cmNlOm5hbWUiLz4NCiAgICAgICAgPHhzOmVs
+ZW1lbnQgcmVmPSJyZXNvdXJjZTpkYXRhVHlwZSIvPg0KICAgICAgICA8eHM6ZWxlbWVudCBtaW5P
+Y2N1cnM9IjAiIHJlZj0icmVzb3VyY2U6aXNOdWxsYWJsZSIvPg0KICAgICAgPC94czpzZXF1ZW5j
+ZT4NCiAgICA8L3hzOmNvbXBsZXhUeXBlPg0KICA8L3hzOmVsZW1lbnQ+DQogIDx4czplbGVtZW50
+IG5hbWU9ImRhdGFUeXBlIj4NCiAgICA8eHM6Y29tcGxleFR5cGU+DQogICAgICA8eHM6c2VxdWVu
+Y2U+DQogICAgICAgIDx4czplbGVtZW50IHJlZj0iY29tbW9uOnNxbFR5cGUiLz4NCiAgICAgIDwv
+eHM6c2VxdWVuY2U+DQogICAgPC94czpjb21wbGV4VHlwZT4NCiAgPC94czplbGVtZW50Pg0KICA8
+eHM6ZWxlbWVudCBuYW1lPSJpc051bGxhYmxlIiB0eXBlPSJ4czpOQ05hbWUiLz4NCiAgPHhzOmVs
+ZW1lbnQgbmFtZT0ibmFtZSIgdHlwZT0ieHM6TkNOYW1lIi8+DQo8L3hzOnNjaGVtYT4NCg==</list>
+    <list type="OBJECT">rO0ABXNyADVjb20uY29tcG9zaXRlc3cuY29tbW9uLnJlcG9zaXRvcnkuRGVmaW5pdGlvblNldFNv
+dXJjZVYpv6Zr2hqJAgACTAAIbG9jYXRpb250ABJMamF2YS9sYW5nL1N0cmluZztMAApzb3VyY2VU
+ZXh0cQB+AAF4cHQACmNvbW1vbi54c2R0BBY8P3htbCB2ZXJzaW9uPSIxLjAiIGVuY29kaW5nPSJ1
+dGYtOCI/Pjx4czpzY2hlbWEgeG1sbnM6eHM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2No
+ZW1hIiB4bWxuczpjb21tb249Imh0dHA6Ly93d3cuY29tcG9zaXRlc3cuY29tL3NlcnZpY2VzL3N5
+c3RlbS91dGlsL2NvbW1vbiIgeG1sbnM6cmVzb3VyY2U9Imh0dHA6Ly93d3cuY29tcG9zaXRlc3cu
+Y29tL3NlcnZpY2VzL3N5c3RlbS9hZG1pbi9yZXNvdXJjZSIgYXR0cmlidXRlRm9ybURlZmF1bHQ9
+InVucXVhbGlmaWVkIiBlbGVtZW50Rm9ybURlZmF1bHQ9InF1YWxpZmllZCIgdGFyZ2V0TmFtZXNw
+YWNlPSJodHRwOi8vd3d3LmNvbXBvc2l0ZXN3LmNvbS9zZXJ2aWNlcy9zeXN0ZW0vdXRpbC9jb21t
+b24iPg0KICA8eHM6aW1wb3J0IG5hbWVzcGFjZT0iaHR0cDovL3d3dy5jb21wb3NpdGVzdy5jb20v
+c2VydmljZXMvc3lzdGVtL2FkbWluL3Jlc291cmNlIiBzY2hlbWFMb2NhdGlvbj0iZGVmYXVsdC54
+c2QiLz4NCiAgPHhzOmVsZW1lbnQgbmFtZT0ic3FsVHlwZSI+DQogICAgPHhzOmNvbXBsZXhUeXBl
+Pg0KICAgICAgPHhzOnNlcXVlbmNlPg0KICAgICAgICA8eHM6ZWxlbWVudCByZWY9ImNvbW1vbjpk
+ZWZpbml0aW9uIi8+DQogICAgICAgIDx4czplbGVtZW50IHJlZj0iY29tbW9uOm5hdGl2ZVR5cGUi
+Lz4NCiAgICAgICAgPHhzOmVsZW1lbnQgcmVmPSJjb21tb246cHJvcHJpZXRhcnlNb2RlbCIvPg0K
+ICAgICAgICA8eHM6ZWxlbWVudCByZWY9ImNvbW1vbjpuYW1lIi8+DQogICAgICA8L3hzOnNlcXVl
+bmNlPg0KICAgIDwveHM6Y29tcGxleFR5cGU+DQogIDwveHM6ZWxlbWVudD4NCiAgPHhzOmVsZW1l
+bnQgbmFtZT0iZGVmaW5pdGlvbiIgdHlwZT0ieHM6c3RyaW5nIi8+DQogIDx4czplbGVtZW50IG5h
+bWU9Im5hdGl2ZVR5cGUiIHR5cGU9InhzOnN0cmluZyIvPg0KICA8eHM6ZWxlbWVudCBuYW1lPSJw
+cm9wcmlldGFyeU1vZGVsIiB0eXBlPSJ4czpiYXNlNjRCaW5hcnkiLz4NCiAgPHhzOmVsZW1lbnQg
+bmFtZT0ibmFtZSIgdHlwZT0ieHM6TkNOYW1lIi8+DQo8L3hzOnNjaGVtYT4NCg==</list>
+  </attribute>
+</metadata>

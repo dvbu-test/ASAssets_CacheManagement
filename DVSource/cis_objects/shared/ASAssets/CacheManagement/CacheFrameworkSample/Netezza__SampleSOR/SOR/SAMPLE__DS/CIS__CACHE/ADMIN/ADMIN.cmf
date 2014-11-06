@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="ADMIN" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/ADMIN" type="CONTAINER" subtype="SCHEMA" changeToken="0">
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="autoAddChildren" type="BOOLEAN">false</attribute>
+  <attribute name="creationDate" type="LONG">1414101261718</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1414616276753</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="selectionState" type="INTEGER">1</attribute>
+  <attribute name="userDeletedSet" type="SET">
+    <item type="NAME_TYPE_PAIR">
+      <name>V_TEST_DATATYPES_STG</name>
+      <type>2</type>
+    </item>
+    <item type="NAME_TYPE_PAIR">
+      <name>TEST</name>
+      <type>2</type>
+    </item>
+    <item type="NAME_TYPE_PAIR">
+      <name>V_TEST_INCR_HYB_N_STG</name>
+      <type>2</type>
+    </item>
+  </attribute>
+</metadata>

@@ -1,0 +1,772 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="IntrospectTables" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/IntrospectTables" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inSequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="inOrigUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="datasourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="catalogName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="schemaName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="tableName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="debugLoggingTypeOverride" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errMessage" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="OracleObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OracleMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="OracleCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCreateIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateUniqueIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropIndex" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SqlServerMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="SqlServerCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectTableExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaObjectIndexExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCreateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaIndexSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCreateSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaDropSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaGetSequence" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaExecuteTableExpressStats" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaObjectNameMaxLength" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaCachekeyName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaTruncateTable" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeSupported" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="NetezzaMergeTableSql" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaMergeTableExample" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaCachingDataCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="NetezzaAuditTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCreateDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDropDDL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataSelectDeployment" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataDelete" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsert" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CISSepBeg" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CISSepEnd" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="IU_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="D_CACHE_KEY" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_SINGLE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_FULL_MULTI" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_INCREMENTAL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_HYBRID_DNS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE1" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE2" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CACHE_TYPE_MERGE_TYPE4" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAll" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllFull" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllHybrid" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllMerge" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ValidCacheTypesAllIncremental" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CacheStatusSelect" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CacheStatusSelectByResPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureGenerationPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureTemplate" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sequenceNum" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="origUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debugLevel" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debugLoggingTypeOverride" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cachekey" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/introspectResourcesResult" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="taskId" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="block" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="pageSize" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="pageStart" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="totalResults">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="completed">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="status">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="introspectorVersion">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="startTime">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="endTime">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="addedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="removedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="updatedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="skippedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="totalCompletedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="toBeAddedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="toBeRemovedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="toBeUpdatedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="totalToBeCompletedCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="warningCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="errorCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="action">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="durationMs">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="entryStatus">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="code">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="name">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="message">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="detail">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="severity">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/introspectResourcesTask" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="dsPath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="updateAllIntrospectedResources" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="failFast" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="commitOnFailure" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="autoRollback" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="scanForNewResourcesToAutoAdd" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="runInBackgroundTransaction" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="entries" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="IntrospectionPlanEntry" type="TREE" refId="2">
+              <element name="path">
+                <datatype name="ResourcePath" referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+              </element>
+              <element name="type">
+                <datatype name="ResourceType" referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+              </element>
+              <element name="subtype">
+                <datatype name="ResourceType" referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+              </element>
+              <element name="action">
+                <datatype name="VARCHAR" type="STRING" maxLength="40"/>
+              </element>
+              <element name="attributes">
+                <datatype name="AttributesVectorType" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <datatype name="Attribute" type="TREE" refId="3">
+                      <element name="name">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                      <element name="type">
+                        <datatype name="VARCHAR" type="STRING" maxLength="40"/>
+                      </element>
+                      <element name="value">
+                        <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </itemDatatype>
+                </datatype>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="dsAttributes" direction="IN">
+        <datatype name="AttributesVectorType" type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <reference refId="3"/>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="taskId" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="totalResults" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="completed" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* IntrospectTables:
+
+	This script is used to provide a consistent and generic interface for introspecting database tables.
+
+	Evaluate the results
+			Values: CURSOR (
+                        totalResults            INTEGER,
+                        completed               BIT,
+                        status                  VARCHAR(32768),
+                        introspectorVersion     INTEGER,
+                        startTime               TIMESTAMP,
+                        endTime                 TIMESTAMP,
+                        addedCount              INTEGER,
+                        removedCount            INTEGER,
+                        updatedCount            INTEGER,
+                        skippedCount            INTEGER,
+                        totalCompletedCount     INTEGER,
+                        toBeAddedCount          INTEGER,
+                        toBeRemovedCount        INTEGER,
+                        toBeUpdatedCount        INTEGER,
+                        totalToBeCompletedCount INTEGER,
+                        warningCount            INTEGER,
+                        errorCount              INTEGER,
+                        &quot;path&quot;                  VARCHAR(4096),
+                        &quot;type&quot;                  VARCHAR(40),
+                        subtype                 VARCHAR(40),
+                        &quot;action&quot;                VARCHAR(32768),
+                        durationMs              INTEGER,
+                        entryStatus             VARCHAR(32768),
+                        code                    VARCHAR(32768),
+                        name                    VARCHAR(32768),
+                        message                 VARCHAR(32768),
+                        detail                  VARCHAR(32768),
+                        severity                VARCHAR(32768)
+                    )
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	01/20/2014		Manny Bhatia		6.2.5			Created new
+	09/25/2014		Mike Tinius			6.2.6			Modified to make cache framework generic. 
+*/
+PROCEDURE IntrospectTables(
+	IN  inSequenceNum				BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  inOrigUserName				VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.
+	IN  constantsPath	 			VARCHAR(4096),	-- Path to the application constants procedure.
+	IN  datasourcePath 				VARCHAR(4096),
+	IN  catalogName 				VARCHAR,
+	IN  schemaName 					VARCHAR,
+	IN  tableName 					VARCHAR,
+	IN  debugLoggingTypeOverride	VARCHAR,		-- NULL or override the constants procedure debugLoggingType to avoid exceptions being thrown when &quot;DB&quot; is configured.
+	OUT errStatus 					VARCHAR,
+	OUT errMessage 					LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName 						VARCHAR(255) 	DEFAULT &apos;IntrospectTables&apos;;-- name of SQL Script
+	DECLARE sequenceNum						BIGINT 			DEFAULT inSequenceNum;
+	DECLARE origUserName					VARCHAR			DEFAULT inOrigUserName;
+	DECLARE sequenceName					VARCHAR;
+	DECLARE seqMessage						LONGVARCHAR;
+	DECLARE DEBUG_LEVEL_INFO 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_ERROR 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	DECLARE DEBUG_LEVEL_DEBUG 				INTEGER		 	DEFAULT CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	DECLARE cachekey						INTEGER 		DEFAULT 0;
+	DECLARE taskId 							VARCHAR(3000000000);
+	DECLARE totalResults 					INTEGER;
+	DECLARE isCompleted 					BIT;
+    DECLARE vDSAttributes  					/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.AttributesVectorType;
+	DECLARE vTablesEntities 				/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.IntrospectionPlanVectorType;
+	DECLARE vTablesEntitiesString			LONGVARCHAR 	DEFAULT &apos;&apos;;
+	DECLARE reintrospectionStatus 			LONGVARCHAR;
+	DECLARE reintrospectionResult 			LONGVARCHAR;
+	DECLARE i								INTEGER;
+
+	-- Variables for introspection of data source
+	DECLARE tableEntryPath					VARCHAR 		DEFAULT &apos;&apos;;
+	DECLARE tableEntryType					VARCHAR;
+	DECLARE tableEntrySubtype				VARCHAR;
+    DECLARE updateAllIntrospectedResources	BIT 			DEFAULT 0;
+    DECLARE failFast						BIT 			DEFAULT 1;
+    DECLARE commitOnFailure					BIT 			DEFAULT 1;
+    DECLARE autoRollback					BIT 			DEFAULT 0;
+    DECLARE scanForNewResourcesToAutoAdd	BIT 			DEFAULT 0;
+    DECLARE runInBackgroundTransaction		BIT 			DEFAULT 0;
+    DECLARE block     						BIT 			DEFAULT 1;
+    DECLARE pageSize  						INTEGER 		DEFAULT 1;
+    DECLARE pageStart 						INTEGER 		DEFAULT 1;
+
+	-- Set defaults values for Introspection 
+	SET vDSAttributes = VECTOR[(&apos;autoAddChildren&apos;,  &apos;BOOLEAN&apos;, &apos;true&apos;)];
+
+	SET vTablesEntities = VECTOR[(null)];
+	SET i = 1;
+	IF (catalogName IS NOT NULL AND LENGTH(catalogName) &gt; 0) THEN
+		SET tableEntryPath = tableEntryPath || catalogName;
+		SET vTablesEntities[i].&quot;path&quot; = tableEntryPath;
+		SET vTablesEntities[i].&quot;type&quot; = &apos;CONTAINER&apos;;
+		SET vTablesEntities[i].&quot;subtype&quot; = &apos;CATALOG_CONTAINER&apos;;
+		SET vTablesEntities[i].&quot;action&quot; = &apos;ADD_OR_UPDATE&apos;;
+		SET vTablesEntities[i].attributes = null;
+		SET vTablesEntities = EXTEND(vTablesEntities, 1);
+		SET i = i + 1;
+		SET vTablesEntitiesString = vTablesEntitiesString || &apos;(&apos;&apos;&apos;||tableEntryPath||&apos;&apos;&apos;, &apos;&apos;CONTAINER&apos;&apos;, &apos;&apos;CATALOG_CONTAINER&apos;&apos;, &apos;&apos;ADD_OR_UPDATE&apos;&apos;, NULL),&apos;||CHR(10);
+	END IF;
+	IF (schemaName IS NOT NULL AND LENGTH(schemaName) &gt; 0) THEN
+		IF (LENGTH(tableEntryPath) &gt; 0) THEN
+			set tableEntryPath = tableEntryPath || &apos;/&apos;;
+		END IF;
+		SET tableEntryPath = tableEntryPath || schemaName;
+		SET vTablesEntities[i].&quot;path&quot; = tableEntryPath;
+		SET vTablesEntities[i].&quot;type&quot; = &apos;CONTAINER&apos;;
+		SET vTablesEntities[i].&quot;subtype&quot; = &apos;SCHEMA_CONTAINER&apos;;
+		SET vTablesEntities[i].&quot;action&quot; = &apos;ADD_OR_UPDATE&apos;;
+		SET vTablesEntities[i].attributes = null;
+		SET vTablesEntities = EXTEND(vTablesEntities, 1);
+		SET i = i + 1;
+		SET vTablesEntitiesString = vTablesEntitiesString || &apos;(&apos;&apos;&apos;||tableEntryPath||&apos;&apos;&apos;, &apos;&apos;CONTAINER&apos;&apos;, &apos;&apos;SCHEMA_CONTAINER&apos;&apos;, &apos;&apos;ADD_OR_UPDATE&apos;&apos;, NULL),&apos;||CHR(10);
+	END IF;
+	IF (tableName IS NOT NULL AND LENGTH(tableName) &gt; 0) THEN
+		IF (LENGTH(tableEntryPath) &gt; 0) THEN
+			set tableEntryPath = tableEntryPath || &apos;/&apos;;
+		END IF;
+		SET tableEntryPath = tableEntryPath || tableName;
+		SET vTablesEntities[i].&quot;path&quot; = tableEntryPath;
+		SET vTablesEntities[i].&quot;type&quot; = &apos;TABLE&apos;;
+		SET vTablesEntities[i].&quot;subtype&quot; = &apos;DATABASE_TABLE&apos;;
+		SET vTablesEntities[i].&quot;action&quot; = &apos;ADD_OR_UPDATE&apos;;
+		SET vTablesEntities[i].attributes = null;
+		SET vTablesEntities = EXTEND(vTablesEntities, 1);
+		SET vTablesEntitiesString = vTablesEntitiesString || &apos;(&apos;&apos;&apos;||tableEntryPath||&apos;&apos;&apos;, &apos;&apos;TABLE&apos;&apos;, &apos;&apos;DATABASE_TABLE&apos;&apos;, &apos;&apos;ADD_OR_UPDATE&apos;&apos;, NULL)&apos;||CHR(10);
+	END IF;
+	SET vTablesEntities = TRUNCATE(vTablesEntities, 1);
+
+	CALL /shared/ASAssets/Utilities/repository/introspectResourcesTask(
+		datasourcePath,
+		updateAllIntrospectedResources,
+		failFast,
+		commitOnFailure,
+		autoRollback,
+		scanForNewResourcesToAutoAdd,
+		runInBackgroundTransaction,
+		vTablesEntities, 
+		vDSAttributes, 
+		taskId, 
+		totalResults, 
+		isCompleted
+	);
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, debugLoggingTypeOverride, moduleName, tableName, cachekey,  constantsPath, 
+			&apos;INTROSPECT REQUEST: Waiting on introspection report for caching tables with task ID: &apos; || taskId || 
+			&apos;  datasourcePath=&apos;||NVL(datasourcePath,&apos;UNKNOWN&apos;) ||
+			&apos;  AttributesVector[&apos;&apos;autoAddChildren&apos;&apos;,  &apos;&apos;BOOLEAN&apos;&apos;, &apos;&apos;true&apos;&apos;]&apos; ||
+			&apos;  vTablesEntities[&apos;||CHR(10)||vTablesEntitiesString||&apos;]&apos;);
+
+	SET i = 1;
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/introspectResourcesResult(taskId, block, pageSize, pageStart) DO
+		SET errStatus = NVL(r.status, &apos;SUCCESS&apos;);
+		set reintrospectionStatus = NVL(r.status, &apos;NULL&apos;) || &apos;  completed=&apos;||NVL(CAST(r.completed AS VARCHAR), &apos;NULL&apos;);
+		IF (i = 1) THEN
+			set reintrospectionResult = &apos;
+				 totalResults=&apos;||NVL(CAST(r.totalResults AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 completed=&apos;||NVL(CAST(r.completed AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 status=&apos;||NVL(CAST(r.status AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 introspectorVersion=&apos;||NVL(CAST(r.introspectorVersion AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 startTime=&apos;||NVL(CAST(r.startTime AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 endTime=&apos;||NVL(CAST(r.endTime AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 addedCount=&apos;||NVL(CAST(r.addedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 removedCount=&apos;||NVL(CAST(r.removedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 updatedCount=&apos;||NVL(CAST(r.updatedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 skippedCount=&apos;||NVL(CAST(r.skippedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 totalCompletedCount=&apos;||NVL(CAST(r.totalCompletedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 toBeAddedCount=&apos;||NVL(CAST(r.toBeAddedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 toBeRemovedCount=&apos;||NVL(CAST(r.toBeRemovedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 toBeUpdatedCount=&apos;||NVL(CAST(r.toBeUpdatedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 totalToBeCompletedCount=&apos;||NVL(CAST(r.totalToBeCompletedCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 warningCount=&apos;||NVL(CAST(r.warningCount AS VARCHAR),&apos;NULL&apos;)||&apos;,
+				 errorCount=&apos;||NVL(CAST(r.errorCount AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 &quot;path&quot;=&apos;||NVL(CAST(r.&quot;path&quot; AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 &quot;type&quot;=&apos;||NVL(CAST(r.&quot;type&quot; AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 subtype=&apos;||NVL(CAST(r.subtype AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 &quot;action&quot;=&apos;||NVL(CAST(r.&quot;action&quot; AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 durationMs=&apos;||NVL(CAST(r.durationMs AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 entryStatus=&apos;||NVL(CAST(r.entryStatus AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 code=&apos;||NVL(CAST(r.code AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 name=&apos;||NVL(CAST(r.name AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 message=&apos;||NVL(CAST(r.message AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 detail=&apos;||NVL(CAST(r.detail AS VARCHAR),&apos;NULL&apos;)||&apos;
+				 severity=&apos;||NVL(CAST(r.severity AS VARCHAR),&apos;NULL&apos;)|| CHR(10);
+		ELSE
+			set reintrospectionResult = reintrospectionResult || &apos;[message=&apos;||NVL(CAST(r.message AS VARCHAR),&apos;NULL&apos;)||&apos;]&apos;||CHR(10);
+		END IF;
+		SET i = i + 1;
+	END FOR;
+
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_INFO, debugLoggingTypeOverride, moduleName, tableName, cachekey,  constantsPath, 
+		&apos;INTROSPECT RESPONSE: Completed re-introspection of datasource with task ID: &apos; || NVL(taskId, &apos;UNKNOWN&apos;) || &apos;; Status: &apos; || reintrospectionStatus || 
+		&apos; Report: &apos;|| reintrospectionResult);
+
+	SET errMessage = NULL;
+
+EXCEPTION
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exResourceNotFound THEN
+		SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, debugLoggingTypeOverride, moduleName, tableName, cachekey,  constantsPath, errMessage);
+		SET errStatus = &apos;FAIL&apos;;
+	WHEN /shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes.exNotNullParameter THEN
+		SET errMessage = CURRENT_EXCEPTION.MESSAGE;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, debugLoggingTypeOverride, moduleName, tableName, cachekey,  constantsPath, errMessage);
+		SET errStatus = &apos;FAIL&apos;;
+	ELSE
+		SET errMessage = CURRENT_EXCEPTION.TRACE;
+		CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog(sequenceNum, origUserName, DEBUG_LEVEL_ERROR, debugLoggingTypeOverride, moduleName, tableName, cachekey,  constantsPath, errMessage);
+		SET errStatus = &apos;FAIL&apos;;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1398383331017</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">nbklsvb</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415054676443</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

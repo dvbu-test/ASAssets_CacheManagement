@@ -1,0 +1,166 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="insert_TEST_INCR_orig" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/insert_TEST_INCR_orig" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="numRowsToInsertIn" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="SEQ">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K1">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="K2">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C3">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="C4">
+          <datatype name="DECIMAL" type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+        </element>
+        <element name="ACTIVITY">
+          <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+        </element>
+        <element name="SDT">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_HIST" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="SEQ">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0" minValue="0" maxValue="18446744073709551615"/>
+      </element>
+      <element name="K1">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="K2">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="C3">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="C4">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="2"/>
+      </element>
+      <element name="ACTIVITY">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SDT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EDT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE insert_TEST_INCR_orig(
+	IN  numRowsToInsertIn	INTEGER,
+	OUT result				CURSOR(SEQ INTEGER, K1 INTEGER, K2 VARCHAR, C3 VARCHAR, C4 DECIMAL(10,2), ACTIVITY VARCHAR(1), SDT TIMESTAMP)
+)
+BEGIN
+	DECLARE numRowsToInsert INTEGER	DEFAULT CAST(NVL(CAST(numRowsToInsertIn AS VARCHAR), &apos;1&apos;) AS INTEGER);
+	DECLARE pk,pk1,pk2		INTEGER;
+	DECLARE i				INTEGER DEFAULT 1;
+	DECLARE C4_				DECIMAL(10,2);
+
+	BEGIN INDEPENDENT TRANSACTION
+		WHILE (i &lt;= numRowsToInsert) DO
+			SELECT { option no_data_cache } 
+				MAX(K1) 
+				INTO pk1 
+			FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR;
+			SELECT { option no_data_cache } 
+				MAX(K1) 
+				INTO pk2
+			FROM /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR_HIST;
+			IF (pk1 IS NULL) THEN SET pk1 = 0; END IF;
+			IF (pk2 IS NULL) THEN SET pk2 = 0; END IF;
+			IF (pk1 &gt; pk2) THEN
+				SET pk = pk1;
+			ELSE
+				SET pk = pk2;
+			END IF;
+			set pk = pk + 1;
+
+			SET C4_ = CAST(pk||&apos;.00&apos; AS DECIMAL(10,2));
+
+			INSERT INTO /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR  (K1, K2, C3, C4, ACTIVITY, SDT)
+				VALUES(pk, &apos;id&apos;||pk, &apos;desc-&apos;||pk, C4_, &apos;I&apos;, CURRENT_TIMESTAMP);
+			SET i = i + 1;
+		END WHILE;
+	COMMIT;
+	END;
+
+	OPEN result FOR SELECT { option no_data_cache } * From /shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/TEST_INCR ORDER BY K1,K2,SDT;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1408540429593</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415111348005</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

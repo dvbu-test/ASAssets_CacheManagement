@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="_README" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/_README" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	IMPORTANT:
+		SQL Server SAMPLE_DS is being used for a system of record (SOR) and a cache target sample.
+
+	1. Edit the SAMPLE_DS connection parameters for your SQL Server data source.
+		a. Create a database catalog in the SQL Server data source called &quot;CIS_CACHE&quot;
+		b. Creat a user ciscache
+	2. Execute create_TEST_INCR to create the following:
+		a. TEST_INCR
+		b. TEST_INCR_DEL
+		c. TEST_INCR_HIST
+		d. TEST_INCR_TRIGGER
+		e. TEST_INCR_DEL_TRIGGER
+	3. Open the target data source and Re-introspect the data source
+	4. Validate the SOR tables.
+		a. Right click on ../SOR/TEST_INCR and &quot;Execute&quot; to insure no error is thrown.
+		b. Repeat for TEST_INCR_DEL
+		c. Repeat for TEST_INCR_HIST
+	5. Insert/Update/Delete rows as needed using various scripts:
+		a. insert_TEST_INCR
+		b. update_TEST_INCR
+		c. deletePK_TEST_INCR
+
+
+Privileges for the Composite Cache user for this demo:
+-------------------------------------------------------
+USE [CIS_CACHE]
+GO
+GRANT CREATE SEQUENCE ON SCHEMA::dbo TO [ciscache]
+GO
+
+*/
+PROCEDURE &quot;_README&quot;()
+BEGIN
+END</attribute>
+  <attribute name="creationDate" type="LONG">1412016706979</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1414605784458</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

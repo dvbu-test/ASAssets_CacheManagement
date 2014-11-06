@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="PackagedQueryDDLScripts" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_Application/PackagedQueryDDLScripts" type="CONTAINER" subtype="FOLDER" changeToken="0">
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="creationDate" type="LONG">1409330264702</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1415051327470</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+</metadata>

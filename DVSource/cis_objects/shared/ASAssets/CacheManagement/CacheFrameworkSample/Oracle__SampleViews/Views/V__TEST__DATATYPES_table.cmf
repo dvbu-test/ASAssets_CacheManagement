@@ -1,0 +1,307 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="V_TEST_DATATYPES" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleViews/Views/V_TEST_DATATYPES" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="SEQ" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char255_t" nullable="true">
+      <datatype type="STRING" minLength="255" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char256_t" nullable="true">
+      <datatype type="STRING" minLength="256" maxLength="256"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char2000_t" nullable="true">
+      <datatype type="STRING" minLength="2000" maxLength="2000"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char2001_t" nullable="true">
+      <datatype type="STRING" minLength="2001" maxLength="2001"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char64000_t" nullable="true">
+      <datatype type="STRING" minLength="64000" maxLength="64000"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="char64001_t" nullable="true">
+      <datatype type="STRING" minLength="64001" maxLength="64001"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="varchar255_t" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="varchar1024_t" nullable="true">
+      <datatype type="STRING" maxLength="1024"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="varchar4000_t" nullable="true">
+      <datatype type="STRING" maxLength="4000"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="varchar4001_t" nullable="true">
+      <datatype type="STRING" maxLength="4001"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="VARCHAR64000_t" nullable="true">
+      <datatype type="STRING" maxLength="64000"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="VARCHAR64001_t" nullable="true">
+      <datatype type="STRING" maxLength="64001"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="longvarchar_t" nullable="true">
+      <datatype type="STRING" maxLength="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="xml_t" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="clob_t" nullable="true">
+      <datatype type="CLOB" maxLength="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="bit_t" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="tinyint_t" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="smallint_t" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="integer_t" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="bigint_t" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="decimal38_0_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="decimal38_38_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="38"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="decimal39_0_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="39" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="numeric38_0_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="numeric38_38_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="38" maxFractionalDigits="38"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="numeric39_0_t" nullable="true">
+      <datatype type="DECIMAL" maxDigits="39" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="double_t" nullable="true">
+      <datatype type="FLOAT"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="float_t" nullable="true">
+      <datatype type="FLOAT" minValue="1.1754943508222875E-38" maxValue="3.4028234663852886E38"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="real_t" nullable="true">
+      <datatype type="FLOAT" minValue="1.1754943508222875E-38" maxValue="3.4028234663852886E38"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="timestamp_t" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="date_t" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="time_t" nullable="true">
+      <datatype type="TIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="interval_day_t" nullable="true">
+      <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_DAY" intervalPrecision="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="interval_mon_t" nullable="true">
+      <datatype type="INTERVAL_YEAR" intervalMode="INTERVAL_MONTH" intervalPrecision="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="interval_year_t" nullable="true">
+      <datatype type="INTERVAL_YEAR" intervalMode="INTERVAL_YEAR" intervalPrecision="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="binary_t" nullable="true">
+      <datatype type="BINARY" minLength="1024" maxLength="1024"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="varbinary_t" nullable="true">
+      <datatype type="BINARY" maxLength="1024"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/request/DUAL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="A">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(1 AS INTEGER)				SEQ,
+	-- String
+	CAST(&apos;A&apos; AS CHAR(255)) 			char255_t,
+	CAST(&apos;A&apos; AS CHAR(256)) 			char256_t,
+	CAST(&apos;A&apos; AS CHAR(2000)) 		char2000_t,
+	CAST(&apos;A&apos; AS CHAR(2001)) 		char2001_t,
+	CAST(&apos;A&apos; AS CHAR(64000)) 		char64000_t,
+	CAST(&apos;A&apos; AS CHAR(64001)) 		char64001_t,
+	CAST(&apos;A&apos; AS VARCHAR(255)) 		varchar255_t,
+	CAST(&apos;A&apos; AS VARCHAR(1024)) 		varchar1024_t,
+	CAST(&apos;A&apos; AS VARCHAR(4000)) 		varchar4000_t,
+	CAST(&apos;A&apos; AS VARCHAR(4001)) 		varchar4001_t,
+	CAST(&apos;A&apos; AS VARCHAR(64000)) 	VARCHAR64000_t,
+	CAST(&apos;A&apos; AS VARCHAR(64001)) 	VARCHAR64001_t,
+	CAST(&apos;A&apos; AS LONGVARCHAR) 		longvarchar_t,
+	CAST(&apos;&lt;a&gt;data&lt;/a&gt;&apos; AS XML) 		xml_t,
+	CAST(&apos;clob&apos; AS CLOB)			clob_t,
+	-- Integer
+	CAST(1 AS BIT) 					bit_t,
+	CAST(-128 AS TINYINT) 			tinyint_t,
+	CAST(32767 AS SMALLINT) 		smallint_t,
+	CAST(65536 AS INTEGER) 			integer_t,
+	CAST(2147483647 AS BIGINT)		bigint_t,
+	-- Decimal/Numeric
+	CAST(NULL AS DECIMAL(38,0)) 	decimal38_0_t,
+	CAST(NULL AS DECIMAL(38,38))	decimal38_38_t,
+	CAST(NULL AS DECIMAL(39,0)) 	decimal39_0_t,
+	CAST(NULL AS NUMERIC(38,0)) 	numeric38_0_t,
+	CAST(NULL AS NUMERIC(38,38))	numeric38_38_t,
+	CAST(NULL AS NUMERIC(39,0)) 	numeric39_0_t,
+	CAST(NULL AS DOUBLE) 			double_t,
+	CAST(1.1234567890 AS FLOAT) 	float_t,
+	CAST(0 AS REAL) 				real_t,
+	-- Date/Time
+	CAST(&apos;2014-09-18 14:10:30.100&apos; AS TIMESTAMP) timestamp_t,
+	CAST(&apos;2014-09-18&apos; AS DATE) 		date_t,
+	CAST(&apos;12:45:10.123&apos; AS TIME) 	time_t,
+	CAST(&apos;10&apos; AS INTERVAL DAY) 		interval_day_t,
+	CAST(&apos;10&apos; AS INTERVAL MONTH) 	interval_mon_t,
+	CAST(&apos;2014&apos; AS INTERVAL YEAR(4))interval_year_t,
+	-- Binary
+	CAST(null AS BINARY) 			binary_t,
+	CAST(null AS VARBINARY) 		varbinary_t	
+FROM    
+	/shared/ASAssets/Utilities/request/DUAL  
+</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/cache_tracking</attribute>
+  <attribute name="creationDate" type="LONG">1410844772169</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415123430633</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

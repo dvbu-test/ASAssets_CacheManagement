@@ -1,0 +1,448 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="Constants" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_Application/Constants/Constants" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="ApplicationConstantsPathValue" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationConstantsType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LEVEL_ERROR" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LEVEL_INFO" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LEVEL_AUDIT" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LEVEL_DEBUG" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LEVEL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_ENABLE_CIS_LOG" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_ENABLE_AUDIT_LOG" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DEBUG_LOGGING_TYPE" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OrganizationName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ApplicationName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ApplicationScriptsBasePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationIncrScriptsPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationStageViewPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationTriggersPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationCacheProcPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationCacheProcImplPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationPkgQryPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationRunDDLPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationObjectExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationPkgQryTempDS" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationExecutePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationRefreshCachePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="ApplicationPurgeCachePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="DefaultCacheDSType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultCacheDSPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="DefaultCacheDSCatalogName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultCacheDSSchemaName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultCacheDSFullPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="DefaultCacheDSURL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="DefaultCacheTablePrefix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultStageTablePrefix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultCacheTableSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultStageTableSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultInitialLoadScriptSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultDeltaLoadScriptSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultSameLoadScriptSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultTriggerNameSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultPurgeTriggerNameSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultPreCallbackSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultPreCallbackImplSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultPostCallbackSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="DefaultPostCallbackImplSuffix" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CachingDataDBPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataCatalogName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CachingDataSchemaName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CachingDataTableName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CachingDataTablePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataTableURL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataScriptsPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataProcedure" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataInsertProcedure" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditTableDBPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditTableCatalogName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditTableSchemaName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditTableName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditTablePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditTableURL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditSeqTableDBPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditSeqTableCatalogName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditSeqTableSchemaName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditSeqTableName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="AuditSeqTablePath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditSeqTableURL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="cachePollingInterval" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/repository/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="fixedResourcePath" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString1" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inputString2" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/concatNotNull" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* Constants:
+
+	The constants procedure is used to provide the application context for the cache framework.
+	The core purpose is to provide the cache database and cache scripts information for the generic
+	cache framework.  The developer can modify variables indicated by /*MOD*/
+/*
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Modified to make cache framework generic. 
+*/
+PROCEDURE Constants(
+	OUT ApplicationConstantsPathValue	VARCHAR(4096),
+	OUT ApplicationConstantsType		VARCHAR,
+	OUT DEBUG_LEVEL_ERROR				VARCHAR,
+	OUT DEBUG_LEVEL_INFO				VARCHAR,
+	OUT DEBUG_LEVEL_AUDIT				VARCHAR,
+	OUT DEBUG_LEVEL_DEBUG				VARCHAR,
+	OUT DEBUG_LEVEL						VARCHAR,
+	OUT DEBUG_ENABLE_CIS_LOG			VARCHAR,
+	OUT DEBUG_ENABLE_AUDIT_LOG			VARCHAR,
+	OUT DEBUG_LOGGING_TYPE				VARCHAR,
+
+	OUT OrganizationName				VARCHAR,
+	OUT ApplicationName					VARCHAR,
+	OUT ApplicationScriptsBasePath		VARCHAR(4096),
+	OUT ApplicationIncrScriptsPath		VARCHAR(4096),
+	OUT ApplicationStageViewPath	 	VARCHAR(4096),
+	OUT ApplicationTriggersPath			VARCHAR(4096),
+	OUT ApplicationCacheProcPath		VARCHAR(4096),
+	OUT ApplicationCacheProcImplPath	VARCHAR(4096),
+	OUT ApplicationPkgQryPath			VARCHAR(4096),
+	OUT ApplicationRunDDLPath			VARCHAR(4096),
+	OUT ApplicationObjectExists			VARCHAR(4096),
+	OUT ApplicationPkgQryTempDS			VARCHAR(4096),
+	OUT ApplicationExecutePath			VARCHAR(4096),
+	OUT ApplicationRefreshCachePath		VARCHAR(4096),
+	OUT ApplicationPurgeCachePath		VARCHAR(4096),
+
+	OUT	DefaultCacheDSType				VARCHAR,
+	OUT DefaultCacheDSPath 				VARCHAR(4096),
+	OUT DefaultCacheDSCatalogName		VARCHAR,
+	OUT DefaultCacheDSSchemaName 		VARCHAR,
+	OUT DefaultCacheDSFullPath			VARCHAR(4096),
+	OUT DefaultCacheDSURL				VARCHAR(4096),
+	OUT DefaultCacheTablePrefix 		VARCHAR,
+	OUT DefaultStageTablePrefix 		VARCHAR,
+	OUT DefaultCacheTableSuffix 		VARCHAR,
+	OUT DefaultStageTableSuffix 		VARCHAR,
+	OUT DefaultInitialLoadScriptSuffix 	VARCHAR,
+	OUT DefaultDeltaLoadScriptSuffix 	VARCHAR,
+	OUT DefaultSameLoadScriptSuffix		VARCHAR,
+	OUT DefaultTriggerNameSuffix 		VARCHAR,
+	OUT DefaultPurgeTriggerNameSuffix	VARCHAR,
+	OUT DefaultPreCallbackSuffix 		VARCHAR,
+	OUT DefaultPreCallbackImplSuffix 	VARCHAR,
+	OUT DefaultPostCallbackSuffix 		VARCHAR,
+	OUT DefaultPostCallbackImplSuffix 	VARCHAR,
+
+	OUT CachingDataDBPath 				VARCHAR(4096),
+	OUT CachingDataCatalogName			VARCHAR,
+	OUT CachingDataSchemaName			VARCHAR,
+	OUT CachingDataTableName			VARCHAR,
+	OUT CachingDataTablePath			VARCHAR(4096),
+	OUT CachingDataTableURL				VARCHAR(4096),
+	OUT CachingDataScriptsPath			VARCHAR(4096),
+	OUT CachingDataProcedure			VARCHAR(4096),
+	OUT CachingDataInsertProcedure		VARCHAR(4096),
+
+	OUT AuditTableDBPath 				VARCHAR(4096),
+	OUT AuditTableCatalogName			VARCHAR,
+	OUT AuditTableSchemaName			VARCHAR,
+	OUT AuditTableName					VARCHAR,
+	OUT AuditTablePath 					VARCHAR(4096),
+	OUT AuditTableURL					VARCHAR(4096),
+
+	OUT AuditSeqTableDBPath 			VARCHAR(4096),
+	OUT AuditSeqTableCatalogName		VARCHAR,
+	OUT AuditSeqTableSchemaName			VARCHAR,
+	OUT AuditSeqTableName				VARCHAR,
+	OUT AuditSeqTablePath 				VARCHAR(4096),
+	OUT AuditSeqTableURL				VARCHAR(4096),
+
+	OUT cachePollingInterval 			VARCHAR
+)
+BEGIN
+/* Default constants */
+		-- This is the location of the application base path folder.  All other application paths are derived from this path.
+/*MOD*/	DECLARE PUBLIC ApplicationBasePathConstant			CONSTANT VARCHAR(4096) DEFAULT &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_Application&apos;;
+		-- This is the location of this procedure.  Change the DEFAULT path if the location of this procedure changes.
+		DECLARE PUBLIC ApplicationConstantsPath				CONSTANT VARCHAR(4096) DEFAULT ApplicationBasePathConstant||&apos;/Constants/Constants&apos;;
+
+/* Default variables */
+		-- The Application Constants Path Variable
+		SET ApplicationConstantsPathValue	= ApplicationConstantsPath;
+		-- The Application Constants Type is used as a prefix to variables in the CommonTypes procedure (DO NOT MODIFY)
+		SET ApplicationConstantsType		= &apos;Netezza&apos;;																		-- Allowed case sensitive types: [Oracle, SqlServer, Netezza]
+
+		-- debug levels. affects amount of information output to the logging target [CIS logs or Audit table] when a refresh is run.
+    	SET DEBUG_LEVEL_ERROR				= &apos;0&apos;;																				-- Output error message to log file with severity level ERROR.  No command line print.
+    	SET DEBUG_LEVEL_AUDIT				= &apos;1&apos;;																				-- Output audit message to log file with severity level INFO.  No command line print.
+    	SET DEBUG_LEVEL_INFO				= &apos;2&apos;;																				-- Output info message to log file with severity level INFO.  No command line print.
+    	SET DEBUG_LEVEL_DEBUG				= &apos;3&apos;;																				-- Output debug message to log file with severity level INFO.  No command line print.
+/*MOD*/	SET DEBUG_LEVEL						= DEBUG_LEVEL_INFO;																	-- Default level of debugging for this application.
+/*MOD*/	SET DEBUG_LOGGING_TYPE				= &apos;DB PRINT&apos;;																		-- Logging options.  1 or more [LOG, EMAIL, DB, PRINT].
+
+		-- Application level variables
+/*MOD*/	SET OrganizationName				= &apos;OrgNetezza&apos;;																		-- Application Organization.  May not be null.
+/*MOD*/	SET ApplicationName					= &apos;TestNetezza&apos;;																	-- Application Name.  May not be null.
+/*MOD*/	SET ApplicationScriptsBasePath		= &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_SampleViews/Scripts&apos;;-- Base path for this application
+/*MOD*/	SET ApplicationIncrScriptsPath 		= ApplicationScriptsBasePath || &apos;/CacheLoadScripts&apos;;								-- Incremental cache load scripts path
+/*MOD*/	SET ApplicationStageViewPath 		= ApplicationScriptsBasePath || &apos;/CacheStagingViews&apos;;								-- Cache staging view path
+/*MOD*/	SET ApplicationTriggersPath 		= ApplicationScriptsBasePath || &apos;/CacheTriggers&apos;;									-- Cache trigger path
+/*MOD*/	SET ApplicationCacheProcPath 		= ApplicationScriptsBasePath || &apos;/CacheCallbackScripts&apos;;							-- Generated Pre/Post-Refresh Callback procedure path
+/*MOD*/	SET ApplicationCacheProcImplPath 	= ApplicationScriptsBasePath || &apos;/CacheCallbackScripts&apos;;							-- Application implementation path for pre/post-refresh callback procedures
+/*MOD*/	SET ApplicationPkgQryPath			= ApplicationBasePathConstant || &apos;/PackagedQueryDDLScripts&apos;;						-- Path to the application packaged queries.
+		SET ApplicationRunDDLPath			= ApplicationPkgQryPath || &apos;/ExecuteDDL&apos;;											-- Execute a generic DDL statement against the bound cache datasource.
+		SET ApplicationObjectExists			= ApplicationPkgQryPath || &apos;/GetIntResult&apos;;											-- Execute a any SQL statement to get any integer result against the bound cache datasource.
+		SET ApplicationPkgQryTempDS			= ApplicationPkgQryPath || &apos;/TEMP_DS&apos;;												-- Temporary data source for rebinding packaged queries to the actual cache datasource.
+		SET ApplicationExecutePath			= ApplicationBasePathConstant||&apos;/Execute&apos;;											-- Path to the Execute folder.
+		SET ApplicationRefreshCachePath		= ApplicationExecutePath||&apos;/RefreshCache&apos;;											-- Path to the RefreshCache procedure.
+		SET ApplicationPurgeCachePath		= ApplicationExecutePath||&apos;/PurgeCacheData&apos;;										-- Path to the PurgeCacheData procedure.
+
+		-- Default Cache Database variables
+		SET DefaultCacheDSType	 			= &apos;NETEZZA&apos;;																		-- Supported Values [ORACLE, SQLSERVER, NETEZZA]
+/*MOD*/	SET DefaultCacheDSPath	 			= &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_SampleSOR/SOR/SAMPLE_DS&apos;;-- CIS Path to cache database
+/*MOD*/	SET DefaultCacheDSCatalogName		= &apos;CIS_CACHE&apos;; 																		-- this is the catalog name
+/*MOD*/	SET DefaultCacheDSSchemaName		= &apos;ADMIN&apos;; 																			-- this is the schema name
+        SET DefaultCacheDSFullPath			= applyReservedListToPath(concatNotNull(DefaultCacheDSPath,&apos;/&apos;,3)||					-- Cache database full path down to schema name applying reserved list to double quote path when necessary
+												concatNotNull(DefaultCacheDSCatalogName,&apos;/&apos;,3)||								-- 		Only include catalog if it exists
+												concatNotNull(DefaultCacheDSSchemaName,&apos;/&apos;,3),null);							--		Only include schema name if it exists
+        SET DefaultCacheDSURL				= concatNotNull(DefaultCacheDSCatalogName,&apos;.&apos;,3)||DefaultCacheDSSchemaName;			-- Cache database URL &quot;CATALOG.SCHEMA&quot; or &quot;SCHEMA&quot;
+/*MOD*/	SET DefaultCacheTablePrefix 		= NULL; 																			-- NULL or short string like &apos;C_&apos; to signify a cache database table prefix
+/*MOD*/	SET DefaultStageTablePrefix 		= NULL;																				-- A short string value such as &apos;S_&apos; or &apos;STG_&apos; to signify a staging table prefix.
+/*MOD*/	SET DefaultCacheTableSuffix 		= NULL; 																			-- NULL or short string like &apos;_C&apos; to signify a cache database table suffix
+/*MOD*/	SET DefaultStageTableSuffix 		= &apos;_STG&apos;;																				-- A short string value such as &apos;_S&apos; or &apos;_STG&apos; to signify a staging table suffix.
+/*MOD*/	SET DefaultInitialLoadScriptSuffix 	= &apos;_CacheInitialLoad&apos;;																-- Cache initial load script suffix
+/*MOD*/	SET DefaultDeltaLoadScriptSuffix 	= &apos;_CacheDeltaLoad&apos;;																-- Cache delta load script suffix
+/*MOD*/	SET DefaultSameLoadScriptSuffix 	= &apos;_CacheLoad&apos;;																		-- Cache same initial/delta load script suffix
+/*MOD*/	SET DefaultTriggerNameSuffix 		= &apos;_CacheTrigger&apos;;																	-- Cache trigger suffix
+/*MOD*/	SET DefaultPurgeTriggerNameSuffix	= &apos;_PurgeTrigger&apos;;																	-- Purge Cache trigger suffix
+/*MOD*/	SET DefaultPreCallbackSuffix 		= &apos;_preCallback&apos;;																	-- Full cache pre-refresh callback suffix
+/*MOD*/	SET DefaultPreCallbackImplSuffix 	= &apos;_preCallbackImpl&apos;;																-- Full cache pre-refresh callback implementation suffix
+/*MOD*/	SET DefaultPostCallbackSuffix 		= &apos;_postCallback&apos;;																	-- Full cache post-refresh callback suffix
+/*MOD*/	SET DefaultPostCallbackImplSuffix 	= &apos;_postCallbackImpl&apos;;																-- Full cache post-refresh callback implementation suffix
+
+		-- Caching Data table variables
+/*MOD*/	SET CachingDataDBPath 				= DefaultCacheDSPath;																-- Caching Data database path.  May be same or different than Default Caching Database
+/*MOD*/	SET CachingDataCatalogName			= DefaultCacheDSCatalogName; 														-- Caching Data catalog name.  May be same or different than Default Caching Database catalog
+/*MOD*/	SET CachingDataSchemaName			= DefaultCacheDSSchemaName; 														-- Caching Data schema name.  May be same or different than Default Caching Database schema
+		SET CachingDataTableName			= &apos;CACHING_DATA&apos;;																	-- Caching Data table name
+		SET CachingDataTablePath			= applyReservedListToPath(concatNotNull(CachingDataDBPath,&apos;/&apos;,3)||					-- Caching data table full path down to table name applying reserved list to double quote path when necessary
+												concatNotNull(CachingDataCatalogName,&apos;/&apos;,3)||									-- 		Only include catalog if it exists
+												concatNotNull(CachingDataSchemaName,&apos;/&apos;,3)||									--		Only include schema name if it exists
+												CachingDataTableName,null);														--		Include table name
+		SET CachingDataTableURL				= concatNotNull(CachingDataCatalogName,&apos;.&apos;,3)||										-- Cache database URL &quot;CATALOG.SCHEMA.TABLE&quot; or &quot;SCHEMA.TABLE&quot;
+												concatNotNull(CachingDataSchemaName,&apos;.&apos;,3)||CachingDataTableName;
+		SET CachingDataScriptsPath			= ApplicationBasePathConstant||&apos;/DataScripts&apos;;										-- Path to the DataScripts folder.
+		SET CachingDataProcedure			= CachingDataScriptsPath||&apos;/CachingData&apos;;											-- Path to the CachingData() procedure.
+		SET CachingDataInsertProcedure		= CachingDataScriptsPath||&apos;/CachingData_Insert&apos;;									-- Path to the CachingData_Insert() procedure.
+
+		-- Audit Logger variables
+/*MOD*/	SET AuditTableDBPath 				= DefaultCacheDSPath;																-- Audit Log database path.  May be same or different than Default Caching Database
+/*MOD*/	SET AuditTableCatalogName			= DefaultCacheDSCatalogName; 														-- Audit Log catalog name.  May be same or different than Default Caching Database catalog
+/*MOD*/	SET AuditTableSchemaName			= DefaultCacheDSSchemaName; 														-- Audit Log schema name.  May be same or different than Default Caching Database schema
+		SET AuditTableName					= &apos;AUDIT_LOG&apos;;																		-- Audit table name
+		SET AuditTablePath					= applyReservedListToPath(concatNotNull(AuditTableDBPath,&apos;/&apos;,3)||					-- Audit table full path down to table name applying reserved list to double quote path when necessary
+												concatNotNull(AuditTableCatalogName,&apos;/&apos;,3)||									-- 		Only include catalog if it exists
+												concatNotNull(AuditTableSchemaName,&apos;/&apos;,3)||										--		Only include schema name if it exists
+												AuditTableName,null);															--		Include table name
+		SET AuditTableURL					= concatNotNull(AuditTableCatalogName,&apos;.&apos;,3)||										-- Audit Log URL &quot;CATALOG.SCHEMA.TABLE&quot; or &quot;SCHEMA.TABLE&quot;
+												concatNotNull(AuditTableSchemaName,&apos;.&apos;,3)||AuditTableName;
+
+		-- Audit Log Sequence variables
+/*MOD*/	SET AuditSeqTableDBPath 			= DefaultCacheDSPath;																-- Audit Log Sequence database path.  May be same or different than Default Caching Database
+/*MOD*/	SET AuditSeqTableCatalogName		= DefaultCacheDSCatalogName; 														-- Audit Log Sequence catalog name.  May be same or different than Default Caching Database catalog
+/*MOD*/	SET AuditSeqTableSchemaName			= DefaultCacheDSSchemaName; 														-- Audit Log Sequence schema name.  May be same or different than Default Caching Database schema
+		SET AuditSeqTableName				= &apos;AUDIT_LOG_SEQ&apos;;																	-- Audit table name
+		SET AuditSeqTablePath				= applyReservedListToPath(concatNotNull(AuditSeqTableDBPath,&apos;/&apos;,3)||				-- Audit Sequence table full path down to table name applying reserved list to double quote path when necessary
+												concatNotNull(AuditSeqTableCatalogName,&apos;/&apos;,3)||									-- 		Only include catalog if it exists
+												concatNotNull(AuditSeqTableSchemaName,&apos;/&apos;,3)||									--		Only include schema name if it exists
+												AuditSeqTableName,null);														--		Include table name
+		SET AuditSeqTableURL				= concatNotNull(AuditSeqTableCatalogName,&apos;.&apos;,3)||									-- Audit Log Sequence URL &quot;CATALOG.SCHEMA.TABLE&quot; or &quot;SCHEMA.TABLE&quot;
+												concatNotNull(AuditSeqTableSchemaName,&apos;.&apos;,3)||AuditSeqTableName;
+
+/*MOD*/	SET cachePollingInterval 			= &apos;30000&apos;; 																			-- 30 seconds. Frequency (in ms) to poll for the cache refresh outcome.
+END</attribute>
+  <attribute name="creationDate" type="LONG">1387223842865</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415123370756</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="public_constants" type="MAP">
+    <item>
+      <key type="STRING">ApplicationConstantsPath</key>
+      <value type="BYTE_ARRAY">EBsGAgAGAFMAdAByAGkAbgBnAxIAAAABATsABAUAAAAAAAAAFAQEAAAAAAAAEBQBEwH//w==</value>
+    </item>
+    <item>
+      <key type="STRING">ApplicationBasePathConstant</key>
+      <value type="BYTE_ARRAY">EBsGAgAEAEMASABBAFIDEgAAAAEBOwAEBQAAAAAAAABJBAQAAAAAAAAASQETAf//</value>
+    </item>
+  </attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

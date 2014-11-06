@@ -1,0 +1,45 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="ExecuteDDL" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/ExecuteDDL" type="PROCEDURE" subtype="EXTERNAL_SQL_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inputSQL" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CURSOR" type="TABLE" refId="1">
+        <element name="outputValue">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+      </datatype>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">&lt;version 2&gt;multipartseparator=;+;
+{0}; ;
+commit; ;
+select 1 result from dual; ;</attribute>
+  <attribute name="creationDate" type="LONG">1410975449771</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="isSingleSelect" type="STRING">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1415111348005</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="p:0:Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+  <attribute name="p:1:Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+  <attribute name="passThroughSource" type="STRING">/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS</attribute>
+  <attribute name="userDeletedSet" type="SET">
+    <item type="NAME_TYPE_PAIR">
+      <name>outputValue</name>
+      <type>7</type>
+    </item>
+  </attribute>
+</metadata>

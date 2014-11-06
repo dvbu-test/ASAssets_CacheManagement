@@ -1,0 +1,261 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="Create_CACHING_DATA" path="/shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateNetezza/Initialize/Create_CACHING_DATA" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errMessage" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateNetezza/Constants/Constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="ApplicationConstantsPathValue" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationConstantsType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_ERROR" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_INFO" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_AUDIT" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL_DEBUG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LEVEL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_ENABLE_CIS_LOG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_ENABLE_AUDIT_LOG" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEBUG_LOGGING_TYPE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OrganizationName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ApplicationName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ApplicationScriptsBasePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationIncrScriptsPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationStageViewPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationTriggersPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationCacheProcPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationCacheProcImplPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPkgQryPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationRunDDLPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationObjectExists" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPkgQryTempDS" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationExecutePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationRefreshCachePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="ApplicationPurgeCachePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheDSFullPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheDSURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="DefaultCacheTablePrefix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultStageTablePrefix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultCacheTableSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultStageTableSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultInitialLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultDeltaLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultSameLoadScriptSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultTriggerNameSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPurgeTriggerNameSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPreCallbackSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPreCallbackImplSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPostCallbackSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DefaultPostCallbackImplSuffix" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CachingDataTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataScriptsPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataProcedure" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="CachingDataInsertProcedure" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTableSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableDBPath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableCatalogName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTableSchemaName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTableName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="AuditSeqTablePath" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="AuditSeqTableURL" direction="OUT">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="cachePollingInterval" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/Create_CACHING_DATA" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errMessage" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* Create_CACHING_DATA:
+
+	This script is an initialization script used to create the CACHING_DATA table.  This script only needs to be run once.
+	This script will automatically drop the CACHING_DATA table if it exists before creating it.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE Create_CACHING_DATA(
+	OUT errStatus 				VARCHAR,
+	OUT errMessage 				LONGVARCHAR
+)
+BEGIN
+	DECLARE constantsPath		VARCHAR(4096) 	DEFAULT /shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateNetezza/Constants/Constants.ApplicationConstantsPath;
+
+	/*******************************************
+	 * CREATE CACHING_DATA TABLE
+	 *******************************************/
+	CALL /shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/Create_CACHING_DATA(constantsPath, errStatus, errMessage);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1409282537519</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1413938057186</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

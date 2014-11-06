@@ -1,0 +1,390 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="cfLog" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/cfLog" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>icLog:
+
+	This procedure is used for logging debug, informational, and error messages to the
+    $CIS_HOME/cs_server.log file. There is no built-in facility for logging debug messages
+    so informational and debug messages will appear as INFO messages in the server log.
+    Error messages will appear as ERROR messages. The constant DEBUG_LEVEL found in
+    &lt;cache tools home&gt;/Configuration/Constants maintains the global debug setting and
+    can be set to different debug levels (set to DEBUG_LEVEL_INFO by default.)
+
+    This procedure can also be edited to support other types of logging facilities (flat file,
+    database table, etc.)
+
+
+	Input:
+		debugLevel - Indicates the severity of the input message.  
+			Values: See &lt;cache tools home&gt;/Configuration/Constants.DEBUG_LEVEL_* for valid values.
+
+		message -    The message to write to the log.  
+			Values: Any text string.
+
+
+	Output:
+		N/A
+
+
+	Exceptions:  none
+
+
+    Modified Date:	Modified By:		CSW Version:	Reason:
+    03/06/2013		Calvin Goodrich		6.2.1			Created new
+
+    © 2013, 2014 Cisco and/or its affiliates. All rights reserved.</annotation>
+  <parameters>
+    <parameter name="sequenceNum" direction="IN" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+    </parameter>
+    <parameter name="origUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="debugLevel" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="debugLoggingTypeOverride" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inModuleName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="resourceName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="cachekey" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="message" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/debug/Log" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToLog" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="MessageValue" type="STRING" maxLength="64000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/debug/LogError" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToLog" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="MessageValue" type="STRING" maxLength="64000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="MessageValue" type="STRING" maxLength="64000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/auditLogger" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="attributeVect" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="AttributeType" type="TREE" refId="2">
+              <element name="attrName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="attrValue">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/_debug" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="1000"/>
+      </element>
+      <element name="constantName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* cfLog:
+
+	This procedure is used for logging debug, informational, and error messages to the
+    $CIS_HOME/cs_server.log file. There is no built-in facility for logging debug messages
+    so informational and debug messages will appear as INFO messages in the server log.
+    Error messages will appear as ERROR messages. The constant DEBUG_LEVEL found in
+    &lt;cache tools home&gt;/Configuration/Constants maintains the global debug setting and
+    can be set to different debug levels (set to DEBUG_LEVEL_INFO by default.)
+
+    This procedure can also be edited to support other types of logging facilities (flat file, database table, etc.)
+
+	The application constants procedure instructs the application where to write the log message.
+	The debug logging type instructs the logger where to write the message
+		DEBUG_LOGGING_TYPE					= &apos;DB PRINT&apos;;		-- Logging options.  1 or more [LOG, EMAIL, DB, PRINT].
+
+	Input:
+		sequenceNum 			 - sequence number which correlates multiple actions together.
+		origUserName 			 - The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+		debugLevel 				 - Indicates the severity of the input message.  The debug level instructs the logger how much information to write to the log.
+				Affects amount of information output to &lt;CIS_HOME&gt;/logs/cs_server.log when a refresh is run.
+				SET DEBUG_LEVEL_ERROR				= &apos;0&apos;;				-- Output error message to log file with severity level ERROR.  No command line print.
+				SET DEBUG_LEVEL_AUDIT				= &apos;1&apos;;				-- Output audit message to log file with severity level INFO.  No command line print.
+				SET DEBUG_LEVEL_INFO				= &apos;2&apos;;				-- Output info message to log file with severity level INFO.  No command line print.
+				SET DEBUG_LEVEL_DEBUG				= &apos;3&apos;;				-- Output debug message to log file with severity level INFO.  No command line print.
+				SET DEBUG_LEVEL						= DEBUG_LEVEL_INFO;	-- Default level of debugging
+		debugLoggingTypeOverride - The override value for the debug logging type.  Usually NULL but when set it overrides the value in the constants procedure.
+		moduleName 				 - The name of the module invoking this procedure.
+		resourceName 			 - The name of the resource affected by the message.
+		cachekey 				 - The associated cachekey or 0 if not applicable.
+		constantsPath 			 - The path to the constants file.
+		message 				 - The message to write to the log.  
+
+	Output:  N/A
+
+	Exceptions:  none
+
+    Modified Date:	Modified By:		CSW Version:	Reason:
+    09/12/2014		Mike Tinius			6.2.6			Created new
+
+    © 2013, 2014 Cisco and/or its affiliates. All rights reserved.
+*/
+PROCEDURE cfLog(
+	IN  sequenceNum					BIGINT,			-- Leave null when called manually and a sequence will be generated otherwise it is passed in from the invoking procedure.
+	IN  origUserName				VARCHAR(255),	-- The original user@domain who started the process and transcends sessions.  If not set it will be retrieved from the environment.
+    IN  debugLevel 					INTEGER,		-- The current debug level value 0 - 3
+	IN  debugLoggingTypeOverride	VARCHAR,		-- The override value for the debug logging type.  Usually NULL but when set it overrides the value in the constants procedure.
+	IN  inModuleName				VARCHAR,		-- The module (procedure) that invoked cfLog.  Provides context of execution.
+	IN  resourceName				VARCHAR,		-- The resource name being logged providing context about the CIS object.
+	IN  cachekey					INTEGER,		-- The cachekey is 0 during non-caching operations otherwise contains the context of the refresh cache operation.
+	IN  constantsPath	 			VARCHAR(4096),	-- Path to the application constants procedure.
+    IN  message 					LONGVARCHAR		-- The message to log.
+)
+BEGIN
+	DECLARE debug 							CHAR(1)			DEFAULT /shared/ASAssets/Utilities/repository/&quot;_debug&quot;.debug;
+	DECLARE moduleName						VARCHAR			DEFAULT &apos;cfLog&apos;;
+	DECLARE debugLevel_						INTEGER 		DEFAULT debugLevel;
+	DECLARE msg								LONGVARCHAR; 
+	DECLARE defaultDebugLevel				INTEGER; 
+	DECLARE debugLevelError					INTEGER; 
+	DECLARE debugLevelAudit					INTEGER; 
+	DECLARE debugLevelInfo					INTEGER; 
+	DECLARE debugLevelDebug					INTEGER; 
+	DECLARE debugLevelDebugPrint			INTEGER; 
+	DECLARE auditTablePath					VARCHAR(4096); 
+ 	DECLARE organizationName 				VARCHAR(255);
+  	DECLARE applicationName 				VARCHAR(255);
+	DECLARE debugLoggingType				VARCHAR 		DEFAULT debugLoggingTypeOverride;
+	DECLARE notificationType				VARCHAR;
+	DECLARE resExists						BOOLEAN;
+	DECLARE attributeVect					VECTOR(/shared/ASAssets/Utilities/log/auditLogger.AttributeType);
+	DECLARE ex								EXCEPTION;
+
+	-- If the debug level could not be determined then assume it is an error and set to 0.
+	IF (debugLevel_ IS NULL) THEN
+		SET debugLevel_ = 0;
+		-- If the constants path cannot be located then no errors can be logged so log the error to the CIS log file and raise an exception.
+		CALL /lib/resource/ResourceExists(constantsPath, &apos;PROCEDURE&apos;, null, resExists);
+		IF (NOT resExists) THEN
+			SET msg = &apos;The &quot;constantsPath&quot; does not exist.  Input Parameters for this invocation:&apos;||
+				&apos; sequenceNum=&apos;|| emptyStr(sequenceNum)||
+				&apos; origUserName=&apos;|| emptyStr(origUserName)||
+				&apos; debugLevel=&apos;|| emptyStr(debugLevel)||
+				&apos; debugLoggingTypeOverride=&apos;|| emptyStr(debugLoggingTypeOverride)||
+				&apos; inModuleName=&apos;|| emptyStr(inModuleName)||
+				&apos; resourceName=&apos;|| emptyStr(resourceName)||
+				&apos; cachekey=&apos;|| emptyStr(cachekey)||
+				&apos; constantsPath=&apos;|| emptyStr(constantsPath)||
+				&apos; message=&apos;|| emptyStr(message);
+			CALL LogError(msg);
+			RAISE ex VALUE msg;
+		END IF;
+	END IF;
+
+	-- Set constants
+	SET defaultDebugLevel 		= CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL&apos;) AS INTEGER);
+	SET debugLevelError 		= CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_ERROR&apos;) AS INTEGER);
+	SET debugLevelAudit 		= CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_AUDIT&apos;) AS INTEGER);
+	SET debugLevelInfo 			= CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_INFO&apos;) AS INTEGER);
+	SET debugLevelDebug 		= CAST(getConstant(constantsPath, &apos;DEBUG_LEVEL_DEBUG&apos;) AS INTEGER);
+	SET debugLoggingType		= NVL(debugLoggingTypeOverride, getConstant(constantsPath, &apos;DEBUG_LOGGING_TYPE&apos;));  -- when the override is not null use it otherwise get the constants logging type
+	SET auditTablePath			= getConstant(constantsPath, &apos;AuditTablePath&apos;); 
+	SET organizationName 		= getConstant(constantsPath, &apos;OrganizationName&apos;);
+	SET applicationName 		= getConstant(constantsPath, &apos;ApplicationName&apos;);
+
+    -- if the input debug level value is lower (higher in priority) than the global debug level
+    -- setting then output the log message. Error messages are written as ERROR messages in the
+    -- log; all others are written out as INFO messages.
+    --
+    IF (debugLevel &lt;= defaultDebugLevel) THEN
+			/* 	Current implementation of cfLog uses an audit loger procedure:
+				auditLogger(
+					attrname: sequenceNum		BIGINT,  		-- sequence number used to correlate multiple messages across different inserts.
+					attrname: organizationName	VARCHAR, 		-- e.g. Mortgage, RiskTech
+					attrname: applicationName	VARCHAR, 		-- e.g. HomeLoans, Bankruptcy, etc.
+					attrname: origUserName		VARCHAR,		-- original user name from the application: format=username@domain.  e.g. nbkid@ldap
+					attrname: resourceName		VARCHAR(4096), 	-- e.g. Name of the resource being acted upon such as VIEW_NAME_INCR
+					attrname: moduleName 		VARCHAR, 		-- e.g. RefreshCache - the name of the procedure that calls this method
+					attrname: cachekey			INTEGER, 		-- e.g. the cachekey being used to refresh the cache or 0 if not applicable
+					attrname: loggingType 		VARCHAR, 		-- LOG, EMAIL, DB, PRINT
+					attrname: notificationType VARCHAR, 		-- ERROR, INFO, DEBUG, AUDIT
+					attrname: auditTablePath	VARCHAR(4096), 	-- /shared/Cache_DB/Cache_Repo/COMP6_CACHE1/AUDIT_LOG
+					attrname: debug 			VARCHAR(1), 	-- Y or N
+					attrname: messageText 		LONGVARCHAR		-- The message to log.
+			*/
+		BEGIN INDEPENDENT TRANSACTION
+			-- ERROR logging
+   		     IF (debugLevel = debugLevelError) THEN
+				SET notificationType = &apos;ERROR&apos;;
+			-- AUDIT logging
+			ELSEIF (debugLevel = debugLevelAudit) THEN
+				SET notificationType = &apos;AUDIT&apos;;
+			-- INFO logging
+			ELSEIF (debugLevel = debugLevelInfo) THEN
+				SET notificationType = &apos;INFO&apos;;
+			-- DEBUG logging
+			ELSEIF (debugLevel = debugLevelDebug) THEN
+				SET notificationType = &apos;DEBUG&apos;;
+   	    	 ELSE
+				SET notificationType = NULL; -- Do nothing
+   		     END IF;
+
+			-- Only invoke the procedure when there is a notificaiton type set
+			IF (notificationType IS NOT NULL) THEN
+				-- Set the attribute vector to be passed into auditLogger()
+				SET attributeVect = VECTOR[
+					-- Name					Value							Description
+					(&apos;sequenceNum&apos;, 		CAST(sequenceNum AS VARCHAR)),	-- A sequence number used to correlate multiple messages across different log messages.  
+																			-- This allows a common code base or framework to generate a sequence number and use it across multiple invocations.
+					(&apos;organizationName&apos;, 	organizationName),				-- The name of the organization which can be used to filter messages. e.g. Mortgage, Operations, CustomerSatisfaction.
+					(&apos;applicationName&apos;, 	applicationName),				-- The application name that is using Composite within the organization which can be used as an additional filter. e.g. HomeLoans, Bankruptcy, etc.
+					(&apos;origUserName&apos;, 		origUserName),					-- The original user name from the application: format=username@domain.  e.g. user1@ldap or user2@composite
+					(&apos;resourceName&apos;, 		resourceName),					-- The name of the resource being acted upon such as VIEW_NAME_INCR.
+					(&apos;moduleName&apos;, 			inModuleName),					-- The name of the module or procedure that is invoking the auditLoger which provides context for the code such as RefreshCache.
+					(&apos;cachekey&apos;, 			CAST(cachekey AS VARCHAR)),		-- The cachekey being used to refresh the cache or 0 if not applicable.  This is especially helpful when invoked from the incremental refresh scripts.
+					(&apos;loggingType&apos;, 		debugLoggingType),				-- One or more of this list: [LOG, EMAIL, DB, PRINT]
+																			--		LOG - write to the Composite log.
+																			--		EMAIL - send an email.
+																			--		DB - insert the message into the AUDI_LOG table. (created and introspected by developer during initialization)
+																			--		PRINT - print to the Studio command line.
+					(&apos;notificationType&apos;, 	notificationType),				-- One and only one of [ERROR|INFO|DEBUG|AUDIT]
+    																		--		ERROR - Output error message with severity level ERROR.
+    																		--		AUDIT - Output audit message with severity level INFO.
+    																		--		INFO - Output info message with severity level INFO.
+    																		--		DEBUG - Output debug message with severity level INFO.
+					(&apos;auditTablePath&apos;, 		auditTablePath),				-- The CIS path to the AUDIT_LOG table. e.g. /shared/Cache_DB/Cache_Repo/CACHE1/AUDIT_LOG
+					(&apos;debug&apos;, 				debug)							-- Y=debug or N=do not debug
+				];
+
+				-- Invoke the auditLogger implementation procedure
+				CALL /shared/ASAssets/Utilities/log/auditLogger(message, attributeVect);
+			END IF;
+		EXCEPTION
+			ELSE
+				CALL LOG(message);
+				CALL PRINT(message);
+				CALL LOG(moduleName||&apos;: LOGGING ERROR IN auditLogger(): &apos;||CURRENT_EXCEPTION.TRACE);
+				CALL PRINT(moduleName||&apos;: LOGGING ERROR IN auditLogger: &apos;||CURRENT_EXCEPTION.TRACE);
+		END;
+    END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1359047456182</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1414031639480</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">10/176</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/177</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/175</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/174</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/89</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>LogError</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

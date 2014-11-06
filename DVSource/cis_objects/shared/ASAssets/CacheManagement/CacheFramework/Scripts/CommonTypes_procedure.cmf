@@ -1,0 +1,1281 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="CommonTypes" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="OracleObjectTableExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleObjectIndexExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleCreateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleDropTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleIndexSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleCreateIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleCreateUniqueIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleDropIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleCreateSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleDropSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleGetSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleExecuteTableStats" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleSepBeg" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleSepEnd" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleObjectNameMaxLength" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleCachekeyName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleTruncateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleMergeSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="OracleMergeTableSql" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleMergeTableExample" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleAuditTableCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="OracleCachingDataCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerObjectTableExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerObjectIndexExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerCreateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerDropTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerIndexSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerCreateIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerCreateUniqueIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerDropIndex" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerCreateSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerDropSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerGetSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerExecuteTableStats" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerSepBeg" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerSepEnd" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerObjectNameMaxLength" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerCachekeyName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerTruncateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerMergeSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SqlServerMergeTableSql" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerMergeTableExample" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerAuditTableCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="SqlServerCachingDataCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaObjectTableExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaObjectIndexExists" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaCreateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaDropTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaIndexSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaCreateSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaDropSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaGetSequence" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaExecuteTableStats" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaExecuteTableExpressStats" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaSepBeg" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaSepEnd" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaObjectNameMaxLength" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaCachekeyName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaTruncateTable" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaMergeSupported" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="NetezzaMergeTableSql" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaMergeTableExample" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaCachingDataCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="NetezzaAuditTableCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditTableDropDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditSeqTableCreateDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="AuditSeqTableDropDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataDropDDL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataSelect" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataSelectDeployment" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataDelete" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CachingDataInsert" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CISSepBeg" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CISSepEnd" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="IU_CACHE_KEY" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="D_CACHE_KEY" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_FULL_SINGLE" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_FULL_MULTI" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_INCREMENTAL" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_HYBRID_DS" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_HYBRID_DNS" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_MERGE_TYPE1" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_MERGE_TYPE2" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CACHE_TYPE_MERGE_TYPE4" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ValidCacheTypesAll" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ValidCacheTypesAllFull" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ValidCacheTypesAllHybrid" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ValidCacheTypesAllMerge" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ValidCacheTypesAllIncremental" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="CacheStatusSelect" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="CacheStatusSelectByResPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="procedureGenerationPath" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="procedureTemplate" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/lib/resource/ResourceDefs" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* CommonTypes:
+
+	This script provides a common place to define public &quot;types&quot;, &quot;constants&quot; and &quot;variables&quot;.
+	This makes the cache framework more generic and easier to modify if there are changes.  All 
+	procedures will reference the public data types and constants.   The procedure &quot;getConstants&quot; 
+	is used to dynamically retrieve variables that are defined by OUT parameters.   The uses the
+	concept of late binding so that an application folder does not have to have hard bound references
+	to these variables.
+
+	***IMPORTANT***
+	If the path location of this procedure changes this variable **MUST** be modified: CacheFrameworkPath
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/  
+PROCEDURE CommonTypes(
+	-- Oracle specific variables
+	OUT OracleObjectTableExists			VARCHAR(4096),
+	OUT OracleObjectIndexExists			VARCHAR(4096),
+	OUT OracleCreateTable				VARCHAR(4096),
+	OUT OracleDropTable					VARCHAR(4096),
+	OUT OracleIndexSupported			VARCHAR,
+	OUT OracleCreateIndex				VARCHAR(4096),
+	OUT OracleCreateUniqueIndex			VARCHAR(4096),
+	OUT OracleDropIndex					VARCHAR(4096),
+	OUT OracleCreateSequence			VARCHAR(4096),
+	OUT OracleDropSequence				VARCHAR(4096),
+	OUT OracleGetSequence				VARCHAR(4096),
+	OUT OracleExecuteTableStats			VARCHAR(4096),
+	OUT OracleSepBeg					VARCHAR,
+	OUT OracleSepEnd					VARCHAR,
+	OUT	OracleObjectNameMaxLength		VARCHAR,
+	OUT	OracleCachekeyName				VARCHAR,
+	OUT OracleTruncateTable				VARCHAR(4096),
+	OUT OracleMergeSupported			VARCHAR,
+	OUT OracleMergeTableSql				VARCHAR(4096),
+	OUT OracleMergeTableExample			VARCHAR(4096),
+	OUT OracleAuditTableCreateDDL		VARCHAR(4096),
+	OUT OracleCachingDataCreateDDL		VARCHAR(4096),
+
+	-- SqlServer specific variables
+	OUT SqlServerObjectTableExists		VARCHAR(4096),
+	OUT SqlServerObjectIndexExists		VARCHAR(4096),
+	OUT SqlServerCreateTable			VARCHAR(4096),
+	OUT SqlServerDropTable				VARCHAR(4096),
+	OUT SqlServerIndexSupported			VARCHAR,
+	OUT SqlServerCreateIndex			VARCHAR(4096),
+	OUT SqlServerCreateUniqueIndex		VARCHAR(4096),
+	OUT SqlServerDropIndex				VARCHAR(4096),
+	OUT SqlServerCreateSequence			VARCHAR(4096),
+	OUT SqlServerDropSequence			VARCHAR(4096),
+	OUT SqlServerGetSequence			VARCHAR(4096),
+	OUT SqlServerExecuteTableStats		VARCHAR(4096),
+	OUT SqlServerSepBeg					VARCHAR,
+	OUT SqlServerSepEnd					VARCHAR,
+	OUT	SqlServerObjectNameMaxLength	VARCHAR,
+	OUT	SqlServerCachekeyName			VARCHAR,
+	OUT SqlServerTruncateTable			VARCHAR(4096),
+	OUT SqlServerMergeSupported			VARCHAR,
+	OUT SqlServerMergeTableSql			VARCHAR(4096),
+	OUT SqlServerMergeTableExample		VARCHAR(4096),
+	OUT SqlServerAuditTableCreateDDL	VARCHAR(4096),
+	OUT SqlServerCachingDataCreateDDL	VARCHAR(4096),
+
+	-- Netezza specific variables
+	OUT NetezzaObjectTableExists		VARCHAR(4096),
+	OUT NetezzaObjectIndexExists		VARCHAR(4096),
+	OUT NetezzaCreateTable				VARCHAR(4096),
+	OUT NetezzaDropTable				VARCHAR(4096),
+	OUT NetezzaIndexSupported			VARCHAR,
+	OUT NetezzaCreateSequence			VARCHAR(4096),
+	OUT NetezzaDropSequence				VARCHAR(4096),
+	OUT NetezzaGetSequence				VARCHAR(4096),
+	OUT NetezzaExecuteTableStats		VARCHAR(4096),
+	OUT NetezzaExecuteTableExpressStats	VARCHAR(4096),
+	OUT NetezzaSepBeg					VARCHAR,
+	OUT NetezzaSepEnd					VARCHAR,
+	OUT	NetezzaObjectNameMaxLength		VARCHAR,
+	OUT	NetezzaCachekeyName				VARCHAR,
+	OUT NetezzaTruncateTable			VARCHAR(4096),
+	OUT NetezzaMergeSupported			VARCHAR,
+	OUT NetezzaMergeTableSql			VARCHAR(4096),
+	OUT NetezzaMergeTableExample		VARCHAR(4096),
+	OUT NetezzaCachingDataCreateDDL		VARCHAR(4096),
+	OUT NetezzaAuditTableCreateDDL		VARCHAR(4096),
+
+	-- Generic SQL Statement variables
+	OUT AuditTableDropDDL				VARCHAR(4096),
+	OUT AuditSeqTableCreateDDL			VARCHAR(4096),
+	OUT AuditSeqTableDropDDL			VARCHAR(4096),
+	OUT	CachingDataDropDDL				VARCHAR(4096),
+	OUT CachingDataSelect				VARCHAR(4096),
+	OUT CachingDataSelectDeployment		VARCHAR(4096),
+	OUT CachingDataDelete				VARCHAR(4096),
+	OUT CachingDataInsert				VARCHAR(4096),
+
+	-- General variables
+	OUT CISSepBeg						VARCHAR,
+	OUT CISSepEnd						VARCHAR,
+	OUT IU_CACHE_KEY					VARCHAR,
+	OUT D_CACHE_KEY						VARCHAR,
+	OUT CACHE_TYPE_FULL_SINGLE			VARCHAR,
+	OUT CACHE_TYPE_FULL_MULTI			VARCHAR,
+	OUT CACHE_TYPE_INCREMENTAL			VARCHAR,
+	OUT CACHE_TYPE_HYBRID_DS			VARCHAR,
+	OUT CACHE_TYPE_HYBRID_DNS			VARCHAR,
+	OUT CACHE_TYPE_MERGE_TYPE1			VARCHAR,
+	OUT CACHE_TYPE_MERGE_TYPE2			VARCHAR,
+	OUT CACHE_TYPE_MERGE_TYPE4			VARCHAR,
+	OUT ValidCacheTypesAll				VARCHAR,
+	OUT ValidCacheTypesAllFull			VARCHAR,
+	OUT ValidCacheTypesAllHybrid		VARCHAR,
+	OUT ValidCacheTypesAllMerge			VARCHAR,
+	OUT ValidCacheTypesAllIncremental	VARCHAR,
+	OUT CacheStatusSelect				VARCHAR(4096),
+	OUT CacheStatusSelectByResPath		VARCHAR(4096),
+	OUT procedureGenerationPath			VARCHAR(4096),
+	OUT procedureTemplate				VARCHAR(4096)
+)
+BEGIN
+/*
+Exceptions
+*/
+        DECLARE PUBLIC exResourceNotFound			EXCEPTION;
+        DECLARE PUBLIC exNotNullParameter			EXCEPTION;
+        DECLARE PUBLIC exErrorReturned				EXCEPTION;
+		DECLARE PUBLIC exCacheDBTypeNotSupported	EXCEPTION;
+		DECLARE PUBLIC exObjectNameExceedsMaxLen	EXCEPTION;
+		DECLARE PUBLIC exInvalidParameter			EXCEPTION;
+/* 
+Type Definitions
+ */     
+ 		DECLARE PUBLIC TYPE Attribute ROW(name VARCHAR(255), &quot;type&quot; VARCHAR(40), &quot;value&quot; LONGVARCHAR);
+        DECLARE PUBLIC TYPE AttributesVectorType VECTOR(Attribute);
+		
+		DECLARE PUBLIC TYPE IntrospectionPlanEntry ROW (
+			&quot;path&quot; 					/lib/resource/ResourceDefs.ResourcePath,
+			&quot;type&quot; 					/lib/resource/ResourceDefs.ResourceType,	
+			&quot;subtype&quot; 				/lib/resource/ResourceDefs.ResourceType,
+			&quot;action&quot;	 			VARCHAR(40),
+			attributes 				AttributesVectorType);
+
+		DECLARE PUBLIC TYPE IntrospectionPlanVectorType VECTOR(IntrospectionPlanEntry);	
+
+		DECLARE PUBLIC TYPE indexRetrieveType	ROW(
+			sqlIndexName			VARCHAR,	-- name of the index
+			sqlIndexType			VARCHAR,	-- PRIMARY_KEY, OTHER
+			sqlIndexUnique 			INTEGER,	-- 1=unique or 0=not unique
+			sqlIndexColList			LONGVARCHAR -- Consists of the column name and order:  sqlIndexColName: C1,  sqlIndexColOrder: ASCENDING
+		);
+
+		DECLARE PUBLIC TYPE indexConfigType ROW(
+			actionType				VARCHAR,	-- DROP or CREATE.  Null means take no action.
+			dropCreateIdxFlag		INTEGER,	-- This is storageDropCreateIdx which is only set for multi-table.  It is null otherwise.
+			catalogName				VARCHAR,
+			schemaName				VARCHAR,
+			tableName	 			VARCHAR,
+			indexName				VARCHAR,
+			indexUnique				INTEGER,
+			indexColumns			LONGVARCHAR,
+			indexType				VARCHAR,
+			indexOptions			VARCHAR(2048)
+		);
+
+		DECLARE PUBLIC TYPE DataTypeMapping ROW (
+			CIS_TYPE 				VARCHAR,		-- The type of variable used by CIS to define the view data type.
+			NATIVE_TYPE 			VARCHAR,		-- The type of variable used by the target cache database.  This is the CIS to Native mapping.
+			MIN_PRECISION			INTEGER,		-- The minimum number of digits allowd to the left of the decimal or the number of characters in CHAR or VARCHAR.
+			MAX_PRECISION			INTEGER,		-- The maximum number of digits allowd to the right of the decimal or null if CHAR or VARCHAR.
+			USE_PRECISION			CHAR(1)			-- The use precision specifies whether this data should use the precision provided by the conversion.
+													-- Examples:  CIS_TYPE		 Native Type, 	Min Precision,  Max Precision,  Use Precision
+													-- Examples:  VARCHAR(4001), CLOB, 			4001, 			null, 			N [This is N because CLOB does not have precision qualifier.
+		);
+
+		DECLARE PUBLIC TYPE CachingDataType ROW (
+            RUN_YN 					CHAR(1),		-- Flag to filter what orchestrations should be run. &apos;Y&apos; to run N otherwise
+			DROP_RECREATE_VIEW_YN	CHAR(1),		-- Flag to drop and recreate views and scripts. Y=to Drop and Recreate, N =do not
+			DROP_RECREATE_TABLE_YN 	CHAR(1),		-- Flag to drop and recreate database cache tables.  Y=Drop and Recreate, N=do not
+			CACHE_TYPE 				VARCHAR(255),	-- FS=Full Single, FM=Full Multi-table, I=Incremental, HS=Hybrid with Delta Staging table, HN=Hybrid with Delta No Staging Table
+ 			RESOURCE_PATH 			VARCHAR(2048),	-- Full path to the resource that will be cached.  This can be found on the INFO tab for a resource.  Copy it and paste it into this column.
+            ORGANIZATION            VARCHAR(255),	-- Name of the organization
+            APPLICATION_NAME        VARCHAR(255),	-- Name of the application
+            CONSTANTS_PATH          VARCHAR(2048),	-- Full path in CIS to the application constants procedure e.g. /shared/Common/CachingFramework/ApplicationCustom/Constants/Constants
+            ATTRIBUTES				LONGVARCHAR		-- Name/Value pair attributes
+		);
+
+		-- cache_status table
+		DECLARE PUBLIC TYPE cacheStatus_Type ROW(
+			status						VARCHAR,		-- status of cache entry
+			starttime					TIMESTAMP,		-- cache status start time
+			finishtime					TIMESTAMP,		-- cache status finish time
+			cachekey					INTEGER,		-- cache key number
+			message						VARCHAR(1024),	-- cache status message
+			bucket						VARCHAR,		-- multi-table bucket
+			incrementalstatus			VARCHAR,		-- incremental cache status, I=in progress, null=no status
+			incrementalmaintenancelevel VARCHAR			-- incremental maintenance level
+		);
+
+		-- AUDIT_LOG type
+		DECLARE PUBLIC TYPE AuditLog_Type ROW(
+			&quot;cachekey&quot;					INTEGER,
+			SEQUENCE_NUM				BIGINT,
+			ORGANIZATION_NAME 			VARCHAR(255), 
+			APPLICATION_NAME 			VARCHAR(255), 
+			CURR_USER_NAME				VARCHAR(255), -- Format: user@domain
+			ORIG_USER_NAME				VARCHAR(255), -- Format: user@domain
+			RESOURCE_NAME 				VARCHAR(2048), 
+			MODULE_NAME 				VARCHAR(255), 
+			NOTIFCATION_TYPE 			VARCHAR(10), 
+			AUDIT_TIME 					TIMESTAMP,
+			MESSAGE_TEXT 				VARCHAR(2000)
+		);
+/*
+Default constants
+*/ 
+		-- This is the location of this procedure.
+		DECLARE PUBLIC CacheFrameworkPath	CONSTANT VARCHAR(4096) DEFAULT &apos;/shared/ASAssets/CacheManagement/CacheFramework&apos;;
+		-- This is the location of this procedure.
+		DECLARE PUBLIC CommonTypesPath		CONSTANT VARCHAR(4096) DEFAULT CacheFrameworkPath||&apos;/Scripts/CommonTypes&apos;;
+		-- CIS to ORACLE data type map used by GenerateCacheScriptsDDL()
+		DECLARE PUBLIC DataTypeMapping_CIS_TO_ORACLE CONSTANT VECTOR(DataTypeMapping) DEFAULT VECTOR[
+			--CIS_TYPE				NATIVE_TYPE				MIN_PRECISION, 	MAX_PRECISION, USE_PRECISION
+			-- String types
+			 (&apos;CHAR&apos;,				&apos;CHAR&apos;,					1,				2000,			&apos;Y&apos;)
+			,(&apos;CHAR&apos;,				&apos;CLOB&apos;,					2001,			NULL,			&apos;N&apos;)
+			,(&apos;VARCHAR&apos;,			&apos;VARCHAR2&apos;,				1,				4000,			&apos;Y&apos;)
+			,(&apos;VARCHAR&apos;,			&apos;CLOB&apos;,					4001,			NULL,			&apos;N&apos;)
+			,(&apos;LONGVARCHAR&apos;,		&apos;CLOB&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;XML&apos;,				&apos;CLOB&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;CLOB&apos;,				&apos;CLOB&apos;,					NULL,			NULL,			&apos;N&apos;)
+			-- Integer types
+			,(&apos;BIT&apos;,				&apos;NUMBER(1,0)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TINYINT&apos;,			&apos;NUMBER(3,0)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;SMALLINT&apos;,			&apos;NUMBER(5,0)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTEGER&apos;,			&apos;NUMBER(10,0)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;BIGINT&apos;,				&apos;NUMBER(19,0)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Decimal/Numeric types
+			,(&apos;DECIMAL&apos;,			&apos;NUMBER&apos;,				1,				38,				&apos;Y&apos;)
+			,(&apos;DECIMAL&apos;,			&apos;CLOB&apos;,					39,				NULL,			&apos;N&apos;)
+			,(&apos;NUMERIC&apos;,			&apos;NUMBER&apos;,				1,				38,				&apos;Y&apos;)
+			,(&apos;NUMERIC&apos;,			&apos;CLOB&apos;,					39,				NULL,			&apos;N&apos;)
+			,(&apos;DOUBLE&apos;,				&apos;BINARY_DOUBLE&apos;,		NULL,			NULL,			&apos;N&apos;)
+			,(&apos;FLOAT&apos;,				&apos;BINARY_FLOAT&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;REAL&apos;,				&apos;BINARY_FLOAT&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Date types
+			,(&apos;DATE&apos;,				&apos;DATE&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIMESTAMP&apos;,			&apos;TIMESTAMP(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIME&apos;,				&apos;VARCHAR(15)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL DAY&apos;,		&apos;VARCHAR(30)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL MONTH&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL YEAR&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Binary types
+			,(&apos;BINARY&apos;,				&apos;BLOB&apos;,					1,				NULL,			&apos;N&apos;)
+			,(&apos;VARBINARY&apos;,			&apos;RAW(1024)&apos;,			NULL,			NULL,			&apos;N&apos;)
+		];
+		-- CIS to SQL SERVER data type map used by GenerateCacheScriptsDDL()
+		DECLARE PUBLIC DataTypeMapping_CIS_TO_SQLSERVER CONSTANT VECTOR(DataTypeMapping) DEFAULT VECTOR[
+			--CIS_TYPE				NATIVE_TYPE				MIN_PRECISION, 	MAX_PRECISION	USE_PRECISION
+			-- String types
+			 (&apos;CHAR&apos;,				&apos;CHAR&apos;,					1,				255,			&apos;Y&apos;)
+			,(&apos;CHAR&apos;,				&apos;TEXT&apos;,					256,			NULL,			&apos;N&apos;)
+			,(&apos;VARCHAR&apos;,			&apos;VARCHAR&apos;,				1,				255,			&apos;Y&apos;)
+			,(&apos;VARCHAR&apos;,			&apos;TEXT&apos;,					256,			NULL,			&apos;N&apos;)
+			,(&apos;LONGVARCHAR&apos;,		&apos;TEXT&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;XML&apos;,				&apos;TEXT&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;CLOB&apos;,				&apos;TEXT&apos;,					NULL,			NULL,			&apos;N&apos;)
+			-- Integer types
+			,(&apos;BIT&apos;,				&apos;BIT&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TINYINT&apos;,			&apos;SMALLINT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;SMALLINT&apos;,			&apos;SMALLINT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTEGER&apos;,			&apos;INT&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;BIGINT&apos;,				&apos;BIGINT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			-- Decimal/Numeric types
+			,(&apos;DECIMAL&apos;,			&apos;DECIMAL&apos;,				1,				38,				&apos;Y&apos;)
+			,(&apos;DECIMAL&apos;,			&apos;TEXT&apos;,					39,				NULL,			&apos;N&apos;)
+			,(&apos;NUMERIC&apos;,			&apos;NUMERIC&apos;,				1,				38,				&apos;Y&apos;)
+			,(&apos;NUMERIC&apos;,			&apos;TEXT&apos;,					39,				NULL,			&apos;N&apos;)
+			,(&apos;DOUBLE&apos;,				&apos;FLOAT(53)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;FLOAT&apos;,				&apos;FLOAT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;REAL&apos;,				&apos;FLOAT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			-- Date types
+			,(&apos;DATE&apos;,				&apos;DATE&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIMESTAMP&apos;,			&apos;DATETIME2&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIME&apos;,				&apos;TIME&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL DAY&apos;,		&apos;VARCHAR(30)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL MONTH&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL YEAR&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Binary types
+			,(&apos;BINARY&apos;,				&apos;IMAGE&apos;,				1,				NULL,			&apos;N&apos;)
+			,(&apos;VARBINARY&apos;,			&apos;IMAGE&apos;,				1,				NULL,			&apos;N&apos;)
+		];
+		-- CIS to NETEZZA data type map used by GenerateCacheScriptsDDL()
+			-- Note: 
+				-- (1) Netezza cannot exceed total row length of 65535 bytes.
+				-- (2) Columns cannot exceed 64000 characters for a single char or varchar datatype
+				-- (3) Numeric precision cannot exceed 39
+				-- (4) XML column types are not supported.  transformColumnType: error reading type &apos;XML&apos;
+				-- (5) CLOB column types are not supported.  transformColumnType: error reading type &apos;CLOB&apos;
+		DECLARE PUBLIC DataTypeMapping_CIS_TO_NETEZZA CONSTANT VECTOR(DataTypeMapping) DEFAULT VECTOR[
+			--CIS_TYPE				NATIVE_TYPE				MIN_PRECISION, 	MAX_PRECISION	USE_PRECISION
+			-- String types
+			 (&apos;CHAR&apos;,				&apos;CHAR&apos;,					1,				64000,			&apos;Y&apos;)
+			,(&apos;CHAR&apos;,				&apos;CHAR&apos;,					64001,			NULL,			&apos;Y&apos;) -- Netezza cannot exceed 64000 characters for a single char datatype
+			,(&apos;VARCHAR&apos;,			&apos;CHARACTER VARYING&apos;,	1,				64000,			&apos;Y&apos;)
+			,(&apos;VARCHAR&apos;,			&apos;CHARACTER VARYING&apos;,	64001,			NULL,			&apos;Y&apos;) -- Netezza cannot exceed 64000 characters for a single varchar datatype
+			,(&apos;LONGVARCHAR&apos;,		&apos;CHARACTER VARYING&apos;,	NULL,			NULL,			&apos;N&apos;) -- Netezza cannot exceed 64000 characters for a single varchar(2147483647) datatype
+			-- Integer types
+			,(&apos;BIT&apos;,				&apos;BOOLEAN&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TINYINT&apos;,			&apos;SMALLINT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;SMALLINT&apos;,			&apos;SMALLINT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTEGER&apos;,			&apos;INTEGER&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;BIGINT&apos;,				&apos;NUMERIC(20)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Decimal/Numeric types
+			,(&apos;DECIMAL&apos;,			&apos;NUMERIC&apos;,				1,				NULL,			&apos;Y&apos;)
+			,(&apos;NUMERIC&apos;,			&apos;NUMERIC&apos;,				1,				NULL,			&apos;Y&apos;)
+			,(&apos;DOUBLE&apos;,				&apos;DOUBLE PRECISION&apos;,		NULL,			NULL,			&apos;N&apos;)
+			,(&apos;FLOAT&apos;,				&apos;FLOAT&apos;,				NULL,			NULL,			&apos;N&apos;)
+			,(&apos;REAL&apos;,				&apos;REAL&apos;,					NULL,			NULL,			&apos;N&apos;)
+			-- Date types
+			,(&apos;DATE&apos;,				&apos;DATE&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIMESTAMP&apos;,			&apos;TIMESTAMP&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;TIME&apos;,				&apos;TIME&apos;,					NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL DAY&apos;,		&apos;VARCHAR(30)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL MONTH&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			,(&apos;INTERVAL YEAR&apos;,		&apos;VARCHAR(9)&apos;,			NULL,			NULL,			&apos;N&apos;)
+			-- Binary types
+			,(&apos;BINARY&apos;,				&apos;VARBINARY(1024)&apos;,		1,				NULL,			&apos;N&apos;)
+		];
+/*
+Default variables used by getConstant(CommonTypesPath, &apos;ConstantName&apos;)
+*/  
+		-- Default object exist queries for table and index
+		-- Oracle: SQL to pass in to ApplicationObjectExists to check for table existence.  Resolve $TableName parameter first.
+		SET OracleObjectTableExists			= &apos;SELECT COUNT(*) c FROM all_tables WHERE UPPER(owner) = UPPER(&apos;&apos;$SchemaName&apos;&apos;) AND UPPER(table_name) = UPPER(&apos;&apos;$TableName&apos;&apos;)&apos;;
+		-- Oracle: SQL to pass in to ApplicationObjectExists to check for index existence.  Resolve $IndexName parameter first.
+		SET OracleObjectIndexExists			= &apos;SELECT COUNT(*) c FROM user_indexes WHERE index_name = &apos;&apos;$IndexName&apos;&apos;&apos;;
+		-- Oracle: Create Table
+		SET OracleCreateTable				= &apos;CREATE TABLE &quot;$SchemaName&quot;.&quot;$TableName&quot; ($ColumnList)&apos;;
+		-- Oracle: Drop Table
+		SET OracleDropTable					= &apos;DROP TABLE &quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		-- Oracle: Create Index
+		SET OracleIndexSupported			= &apos;true&apos;;
+		SET OracleCreateIndex				= &apos;CREATE INDEX &quot;$SchemaName&quot;.&quot;$IndexName&quot; $IndexType ON &quot;$SchemaName&quot;.&quot;$TableName&quot; ($ColumnList) $IndexOptions&apos;;
+		SET OracleCreateUniqueIndex			= &apos;CREATE UNIQUE INDEX &quot;$SchemaName&quot;.&quot;$IndexName&quot; $IndexType ON &quot;$SchemaName&quot;.&quot;$TableName&quot; ($ColumnList) $IndexOptions&apos;;
+		-- Oracle: Drop Index
+		SET OracleDropIndex					= &apos;DROP INDEX &quot;$SchemaName&quot;.&quot;$IndexName&quot;&apos;;
+		-- Oracle: Create Sequence
+		SET OracleCreateSequence			= &apos;CREATE SEQUENCE &quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot; START WITH 1 NOCYCLE CACHE 100 NOORDER&apos;;
+		-- Oracle: Drop Sequence
+		SET OracleDropSequence				= &apos;DROP SEQUENCE &quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot;&apos;;
+		-- Oracle: Get Sequence
+		SET OracleGetSequence				= &apos;SELECT &quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot;.NEXTVAL SEQID FROM DUAL&apos;;
+		-- Oracle: Execute table statistics
+		SET OracleExecuteTableStats			= &apos;call dbms_stats.gather_table_stats(&apos;&apos;&quot;$SchemaName&quot;&apos;&apos;, &apos;&apos;&quot;$TableName&quot;&apos;&apos;)&apos;;
+		-- Oracle:  Begin and end separators used around object names.
+		SET OracleSepBeg					= &apos;&quot;&apos;;
+		SET OracleSepEnd					= &apos;&quot;&apos;;
+		-- Oracle: Maximum object name length gets converted to integer.
+		SET OracleObjectNameMaxLength		= &apos;30&apos;;	
+		-- Oracle: Name of the &quot;cachekey&quot; column for creating indexes
+		SET OracleCachekeyName				= &apos;cachekey&apos;;	
+		-- Oracle: The merge SQL is used for incremental cache merge updates where merging insert, update, deletes is required.																	
+		SET OracleTruncateTable				= &apos;TRUNCATE TABLE &quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		SET OracleMergeSupported				= &apos;true&apos;;
+		SET OracleMergeTableSql				= 
+&apos;MERGE INTO &quot;$SchemaName&quot;.&quot;$TableName&quot; c USING
+    (SELECT $cacheSelectList
+        FROM &quot;$SchemaName&quot;.&quot;$StagingTableName&quot;
+        ORDER BY &quot;$CachekeyName&quot;) d
+        ON ($joinCriteria)
+    WHEN MATCHED THEN
+        UPDATE SET $cacheUpdateList
+        DELETE WHERE (d.&quot;$CachekeyName&quot; = $D_CACHE_KEY)
+    WHEN NOT MATCHED THEN
+        INSERT ($cacheInsertColList) VALUES ($cacheInsertValueList)
+            WHERE (d.&quot;$CachekeyName&quot; = $IU_CACHE_KEY)&apos;;
+		SET OracleMergeTableExample			= 
+&apos;MERGE INTO &quot;COMPOSITE_CACHE&quot;.&quot;V_TEST_INCR_HYB_MT1&quot; c USING
+	(SELECT &quot;cachekey&quot;, &quot;SEQ&quot;, &quot;K1&quot;, &quot;K2&quot;, &quot;C3&quot;, &quot;C4&quot;, &quot;ACTIVITY&quot;, &quot;SDT&quot; 
+		FROM &quot;COMPOSITE_CACHE&quot;.&quot;V_TEST_INCR_HYB_MT1_STG&quot; 
+		ORDER BY &quot;cachekey&quot;) d 
+		ON ( c.&quot;K1&quot; = d.&quot;K1&quot; AND c.&quot;K2&quot; = d.&quot;K2&quot;) 
+	WHEN MATCHED THEN 
+		UPDATE SET c.SEQ = d.SEQ, c.C3 = d.C3, c.C4 = d.C4, c.ACTIVITY = d.ACTIVITY, c.SDT = d.SDT 
+		DELETE WHERE (d.&quot;cachekey&quot; = 99999998) 
+	WHEN NOT MATCHED THEN 
+		INSERT (c.&quot;cachekey&quot;, c.&quot;SEQ&quot;, c.&quot;K1&quot;, c.&quot;K2&quot;, c.&quot;C3&quot;, c.&quot;C4&quot;, c.&quot;ACTIVITY&quot;, c.&quot;SDT&quot;) 
+			VALUES (3006, d.&quot;SEQ&quot;, d.&quot;K1&quot;, d.&quot;K2&quot;, d.&quot;C3&quot;, d.&quot;C4&quot;, d.&quot;ACTIVITY&quot;, d.&quot;SDT&quot;) 
+		WHERE (d.&quot;cachekey&quot; = 99999999)&apos;;
+
+		-- SqlServer: SQL to pass in to ApplicationObjectExists to check for table existence.  Resolve the parameter $TableName first.
+		SET SqlServerObjectTableExists		= &apos;SELECT COUNT(*) c FROM sys.objects WHERE OBJECT_ID = OBJECT_ID(N&apos;&apos;$SchemaName.$TableName&apos;&apos;) AND type = (N&apos;&apos;U&apos;&apos;)&apos;;
+		-- SqlServer: SQL to pass in to ApplicationObjectExists to check for index existence.  Resolve the parameters $IndexName and $TableName first.
+		SET SqlServerObjectIndexExists		= &apos;SELECT COUNT(*) c FROM sys.indexes WHERE name = &apos;&apos;$IndexName&apos;&apos; AND object_id = OBJECT_ID(&apos;&apos;$TableName&apos;&apos;)&apos;;
+		-- SqlServer: Create Table
+		SET SqlServerCreateTable			= &apos;CREATE TABLE [$CatalogName].[$SchemaName].[$TableName] ($ColumnList)&apos;;
+		-- SqlServer: Drop Table
+		SET SqlServerDropTable				= &apos;DROP TABLE [$CatalogName].[$SchemaName].[$TableName]&apos;;
+		-- SqlServer: Create Index
+		SET SqlServerIndexSupported			= &apos;true&apos;;
+		SET SqlServerCreateIndex			= &apos;CREATE INDEX [$IndexName] ON [$SchemaName].[$TableName] ($ColumnList) $IndexOptions&apos;;
+		SET SqlServerCreateUniqueIndex		= &apos;CREATE UNIQUE INDEX [$IndexName] ON [$SchemaName].[$TableName] ($ColumnList) $IndexOptions&apos;;
+		-- SqlServer: Drop Index
+		SET SqlServerDropIndex				= &apos;DROP INDEX [$TableName].[$IndexName]&apos;;
+		-- SqlServer: Create Sequence
+		SET SqlServerCreateSequence			= &apos;CREATE SEQUENCE [$SchemaName].[CACHE_FRAMEWORK_SEQ] AS [BIGINT] START WITH 1 INCREMENT BY 1 NO CYCLE CACHE&apos;;
+		-- SqlServer: Drop Sequence
+		SET SqlServerDropSequence			= &apos;DROP SEQUENCE [$SchemaName].[CACHE_FRAMEWORK_SEQ]&apos;;
+		-- SqlServer: Get Sequence
+		SET SqlServerGetSequence			= &apos;SELECT NEXT VALUE FOR [$SchemaName].[CACHE_FRAMEWORK_SEQ]&apos;;
+		-- SqlServer: Execute table statistics
+		SET SqlServerExecuteTableStats		= &apos;update statistics [$CatalogName].[$SchemaName].[$TableName]&apos;;
+		-- SqlServer: Begin and end separators used around object names.
+		SET SqlServerSepBeg					= &apos;[&apos;;
+		SET SqlServerSepEnd					= &apos;]&apos;;
+		-- SqlServer: Maximum object name length gets converted to integer.
+		SET SqlServerObjectNameMaxLength	= &apos;128&apos;;																				
+		-- SqlServer: Name of the &quot;cachekey&quot; column for creating indexes
+		SET SqlServerCachekeyName			= &apos;cachekey&apos;;
+		-- SqlServer: The merge SQL is used for incremental cache merge updates where merging insert, update, deletes is required.																	
+		SET SqlServerTruncateTable				= &apos;TRUNCATE TABLE [$CatalogName].[$SchemaName].[$TableName]&apos;;
+		SET SqlServerMergeSupported				= &apos;true&apos;;
+		SET SqlServerMergeTableSql				= 
+&apos;MERGE INTO [$CatalogName].[$SchemaName].[$TableName] AS c USING
+    (SELECT $cacheSelectList
+        FROM [$CatalogName].[$SchemaName].[$stagingTableName]) AS d 
+    ON ($joinCriteria ) 
+    WHEN MATCHED AND d.[$CachekeyName] = $D_CACHE_KEY THEN
+        DELETE
+    WHEN MATCHED THEN
+        UPDATE SET $cacheUpdateList 
+    WHEN NOT MATCHED AND d.[$CachekeyName] = $IU_CACHE_KEY THEN 
+        INSERT ($cacheInsertColList) 
+            VALUES ($cacheInsertValueList);&apos;;
+		SET SqlServerMergeTableExample			= 
+&apos;MERGE INTO [CIS_CACHE].[dbo].[V_TEST_INCR_HYB_MT1] AS c USING
+	(SELECT [cachekey], [SEQ], [K1], [K2], [C3], [C4], [ACTIVITY], [SDT]
+		FROM [CIS_CACHE].[dbo].[V_TEST_INCR_HYB_MT1_STG]) AS d 
+	ON ( c.[K1] = d.[K1] AND c.[K2] = d.[K2] ) 
+	WHEN MATCHED AND d.[cachekey] = 99999998 THEN
+		DELETE
+	WHEN MATCHED THEN
+		UPDATE SET c.SEQ = d.SEQ, c.C3 = d.C3, c.C4 = d.C4, c.ACTIVITY = d.ACTIVITY, c.SDT = d.SDT 
+	WHEN NOT MATCHED AND d.[cachekey] = 99999999 THEN 
+		INSERT ([cachekey], [SEQ], [K1], [K2], [C3], [C4], [ACTIVITY], [SDT]) 
+			VALUES (3006, d.[SEQ], d.[K1], d.[K2], d.[C3], d.[C4], d.[ACTIVITY], d.[SDT]);&apos;;
+
+		-- Netezza: SQL to pass in to ApplicationObjectExists to check for table existence.  Resolve the parameter $TableName first.
+		SET NetezzaObjectTableExists		= &apos;SELECT COUNT(*) c FROM _v_table WHERE UPPER(schema) = UPPER(&apos;&apos;$SchemaName&apos;&apos;) AND UPPER(tablename) = UPPER(&apos;&apos;$TableName&apos;&apos;)&apos;;
+		-- Netezza: There are no indexes in Netezza
+		SET NetezzaObjectIndexExists		= &apos;&apos;;
+		-- Netezza: Create Table
+		SET NetezzaCreateTable				= &apos;CREATE TABLE &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot; ($ColumnList)&apos;;
+		-- Netezza: Drop Table
+		SET NetezzaDropTable				= &apos;DROP TABLE &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		-- SqlServer: Create Index
+		SET NetezzaIndexSupported			= &apos;false&apos;;
+		-- Netezza: Create Sequence
+		SET NetezzaCreateSequence			= &apos;CREATE SEQUENCE &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot; AS INTEGER START WITH 1 INCREMENT BY 1 NO CYCLE&apos;;
+		-- Netezza: Drop Sequence
+		SET NetezzaDropSequence				= &apos;DROP SEQUENCE &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot;&apos;;
+		-- Netezza: Get Sequence
+		SET NetezzaGetSequence				= &apos;SELECT NEXT VALUE FOR &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;CACHE_FRAMEWORK_SEQ&quot;&apos;;
+		-- Netezza: Execute table statistics
+		SET NetezzaExecuteTableStats		= &apos;generate statistics on table &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		SET NetezzaExecuteTableExpressStats	= &apos;generate express statistics on table &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		-- Netezza: Begin and end separators used around object names.
+		SET NetezzaSepBeg					= &apos;&quot;&apos;;
+		SET NetezzaSepEnd					= &apos;&quot;&apos;;
+		-- Netezza: Maximum object name length gets converted to integer.
+		SET NetezzaObjectNameMaxLength		= &apos;128&apos;;																				
+		-- Netezza: Name of the &quot;cachekey&quot; column for creating indexes
+		SET NetezzaCachekeyName				= &apos;cachekey&apos;;
+		-- Netezza: The merge SQL is used for incremental cache merge updates where merging insert, update, deletes is required.																	
+		SET NetezzaTruncateTable				= &apos;TRUNCATE TABLE &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot;&apos;;
+		SET NetezzaMergeSupported				= &apos;false&apos;;
+		SET NetezzaMergeTableSql				= NULL;
+/* &apos;MERGE INTO &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$TableName&quot; AS c USING
+    (SELECT $cacheSelectList
+        FROM &quot;$CatalogName&quot;.&quot;$SchemaName&quot;.&quot;$StagingTableName&quot;
+        ORDER BY &quot;$CachekeyName&quot;) AS d
+        ON ($joinCriteria)
+    WHEN MATCHED THEN
+        UPDATE SET $cacheUpdateList
+        DELETE WHERE (d.&quot;$CachekeyName&quot; = $D_CACHE_KEY)
+    WHEN NOT MATCHED THEN
+        INSERT ($cacheInsertColList) VALUES ($cacheInsertValueList)
+            WHERE (d.&quot;$CachekeyName&quot; = $IU_CACHE_KEY)&apos;; */
+		SET NetezzaMergeTableExample			= NULL;
+/* &apos;MERGE INTO &quot;COMPOSITE_CATALOG&quot;.&quot;COMPOSITE_CACHE&quot;.&quot;V_TEST_INCR_HYB_MT1&quot; c USING
+	(SELECT &quot;cachekey&quot;, &quot;SEQ&quot;, &quot;K1&quot;, &quot;K2&quot;, &quot;C3&quot;, &quot;C4&quot;, &quot;ACTIVITY&quot;, &quot;SDT&quot; 
+		FROM &quot;COMPOSITE_CATALOG&quot;.&quot;COMPOSITE_CACHE&quot;.&quot;V_TEST_INCR_HYB_MT1_STG&quot; 
+		ORDER BY &quot;cachekey&quot;) d 
+		ON ( c.&quot;K1&quot; = d.&quot;K1&quot; AND c.&quot;K2&quot; = d.&quot;K2&quot;) 
+	WHEN MATCHED THEN 
+		UPDATE SET c.SEQ = d.SEQ, c.C3 = d.C3, c.C4 = d.C4, c.ACTIVITY = d.ACTIVITY, c.SDT = d.SDT 
+		DELETE WHERE (d.&quot;cachekey&quot; = 99999998) 
+	WHEN NOT MATCHED THEN 
+		INSERT (c.&quot;cachekey&quot;, c.&quot;SEQ&quot;, c.&quot;K1&quot;, c.&quot;K2&quot;, c.&quot;C3&quot;, c.&quot;C4&quot;, c.&quot;ACTIVITY&quot;, c.&quot;SDT&quot;) 
+			VALUES (3006, d.&quot;SEQ&quot;, d.&quot;K1&quot;, d.&quot;K2&quot;, d.&quot;C3&quot;, d.&quot;C4&quot;, d.&quot;ACTIVITY&quot;, d.&quot;SDT&quot;) 
+		WHERE (d.&quot;cachekey&quot; = 99999999)&apos;; */
+
+		-- The variable $AuditTableURL gets replaced by the actual table URL.  This is an abstraction of the actual DDL.
+		-- The purpose of the audit table is to allow saving audit log entries.
+		SET OracleAuditTableCreateDDL		= &apos;
+        CREATE TABLE $AuditTableURL(
+            &quot;cachekey&quot;              NUMERIC(10,0),  -- The cachekey is only relevant when a cache refresh is being performed.
+            SEQUENCE_NUM           	NUMERIC(19,0),  -- The unique sequence number that can be used to correlate a group of messages together as the Cache Framework does.
+            ORGANIZATION_NAME      	VARCHAR2(255),  -- The name of the organization.
+            APPLICATION_NAME       	VARCHAR2(255),  -- The name of the application [Business line, Business Area, Subject Area].
+            CURR_USER_NAME         	VARCHAR2(255),  -- The current user@domain captured in the auditLogger procedure.
+            ORIG_USER_NAME         	VARCHAR2(255),  -- The original user@domain who started the process and transcends sessions.
+            RESOURCE_NAME          	VARCHAR2(2048), -- The name of the CIS resource.
+            MODULE_NAME            	VARCHAR2(255),  -- The name of the CIS module (procedure) executing the code.
+            NOTIFICATION_TYPE      	VARCHAR2(10),   -- The type of notification [ERROR, AUDIT, INFO, DEBUG].
+            AUDIT_TIME             	TIMESTAMP(9),   -- The current timestamp when the log entry was made.
+            MESSAGE_TEXT           	VARCHAR2(2000)  -- The message to be inserted from the application.
+        )&apos;;
+		SET SqlServerAuditTableCreateDDL	= &apos;
+        CREATE TABLE $AuditTableURL(
+            &quot;cachekey&quot;              NUMERIC(10,0),  -- The cachekey is only relevant when a cache refresh is being performed.
+            SEQUENCE_NUM           	NUMERIC(19,0),  -- The unique sequence number that can be used to correlate a group of messages together as the Cache Framework does.
+            ORGANIZATION_NAME      	VARCHAR(255),   -- The name of the organization.
+            APPLICATION_NAME       	VARCHAR(255),   -- The name of the application [Business line, Business Area, Subject Area].
+            CURR_USER_NAME         	VARCHAR(255),   -- The current user@domain captured in the auditLogger procedure.
+            ORIG_USER_NAME         	VARCHAR(255),   -- The original user@domain who started the process and transcends sessions.
+            RESOURCE_NAME          	VARCHAR(2048),  -- The name of the CIS resource.
+            MODULE_NAME            	VARCHAR(255),   -- The name of the CIS module (procedure) executing the code.
+            NOTIFICATION_TYPE      	VARCHAR(10),    -- The type of notification [ERROR, AUDIT, INFO, DEBUG].
+            AUDIT_TIME             	DATETIME,       -- The current timestamp when the log entry was made.
+            MESSAGE_TEXT           	VARCHAR(2000)   -- The message to be inserted from the application.
+        )&apos;;
+		SET NetezzaAuditTableCreateDDL		= &apos;
+        CREATE TABLE $AuditTableURL(
+            &quot;cachekey&quot;              NUMERIC(10,0),  -- The cachekey is only relevant when a cache refresh is being performed.
+            SEQUENCE_NUM           	NUMERIC(19,0),  -- The unique sequence number that can be used to correlate a group of messages together as the Cache Framework does.
+            ORGANIZATION_NAME      	VARCHAR(255),   -- The name of the organization.
+            APPLICATION_NAME       	VARCHAR(255),   -- The name of the application [Business line, Business Area, Subject Area].
+            CURR_USER_NAME         	VARCHAR(255),   -- The current user@domain captured in the auditLogger procedure.
+            ORIG_USER_NAME         	VARCHAR(255),   -- The original user@domain who started the process and transcends sessions.
+            RESOURCE_NAME          	VARCHAR(2048),  -- The name of the CIS resource.
+            MODULE_NAME            	VARCHAR(255),   -- The name of the CIS module (procedure) executing the code.
+            NOTIFICATION_TYPE      	VARCHAR(10),    -- The type of notification [ERROR, AUDIT, INFO, DEBUG].
+            AUDIT_TIME             	TIMESTAMP,      -- The current timestamp when the log entry was made.
+            MESSAGE_TEXT           	VARCHAR(2000)   -- The message to be inserted from the application.
+        )&apos;;
+		SET	AuditTableDropDDL				= &apos;DROP TABLE $AuditTableURL&apos;;
+
+		-- The variable $AuditSeqTableURL gets replaced by the actual table URL.  This is an abstraction of the actual DDL.
+		-- The purpose of the audit sequence table is to allow the correlation of sequence number and user@domain to transcend user sessions.
+		SET AuditSeqTableCreateDDL			= &apos;
+        CREATE TABLE $AuditSeqTableURL(
+            SEQUENCE_NAME           VARCHAR(1024),  -- Unique sequence name used for looking up the sequence number across user sessions
+            SEQUENCE_NUM            NUMERIC(19,0),  -- The unique sequence number
+            ORIG_USER_NAME          VARCHAR(255)    -- The original user@domain who started the process and transcends sessions
+        )&apos;;
+		SET	AuditSeqTableDropDDL				= &apos;DROP TABLE $AuditSeqTableURL&apos;;
+
+		-- The cursor row type is defined within this CommonTypes procedure as &quot;CachingDataType ROW()&quot;.
+		-- The variable $CachingDataTableURL gets replaced by the actual table URL.  This is an abstraction of the actual DDL.
+		SET OracleCachingDataCreateDDL		= &apos;
+        CREATE TABLE $CachingDataTableURL(
+            RUN_YN                  CHAR(1),
+            DROP_RECREATE_VIEW_YN   CHAR(1),
+            DROP_RECREATE_TABLE_YN  CHAR(1),
+            CACHE_TYPE              VARCHAR(255),
+            RESOURCE_PATH           VARCHAR(2048), 
+            ORGANIZATION            VARCHAR(255),
+            APPLICATION_NAME        VARCHAR(255),
+            CONSTANTS_PATH          VARCHAR(2048),
+            ATTRIBUTES              CLOB
+        )&apos;;
+		SET SqlServerCachingDataCreateDDL	= &apos;
+        CREATE TABLE $CachingDataTableURL(
+            RUN_YN                  CHAR(1),
+            DROP_RECREATE_VIEW_YN   CHAR(1),
+            DROP_RECREATE_TABLE_YN  CHAR(1),
+            CACHE_TYPE              VARCHAR(255),
+            RESOURCE_PATH           VARCHAR(2048), 
+            ORGANIZATION            VARCHAR(255),
+            APPLICATION_NAME        VARCHAR(255),
+            CONSTANTS_PATH          VARCHAR(2048),
+            ATTRIBUTES              VARCHAR(4096)
+        )&apos;;
+		SET NetezzaCachingDataCreateDDL		= &apos;
+        CREATE TABLE $CachingDataTableURL(
+            RUN_YN                  CHAR(1),
+            DROP_RECREATE_VIEW_YN   CHAR(1),
+            DROP_RECREATE_TABLE_YN  CHAR(1),
+            CACHE_TYPE              VARCHAR(255),
+            RESOURCE_PATH           VARCHAR(2048), 
+            ORGANIZATION            VARCHAR(255),
+            APPLICATION_NAME        VARCHAR(255),
+            CONSTANTS_PATH          VARCHAR(2048),
+            ATTRIBUTES              VARCHAR(4096)
+        )&apos;;
+		SET	CachingDataDropDDL				= &apos;DROP TABLE $CachingDataTableURL&apos;;
+
+		-- CIS:  Begin and end separators used around object names within CIS sql script.
+		SET CISSepBeg						= &apos;&quot;&apos;;
+		SET CISSepEnd						= &apos;&quot;&apos;;
+
+		-- Merge SQL staging table Insert/Update cache key																	
+    	SET IU_CACHE_KEY                    = &apos;99999999&apos;;
+		-- Merge SQL staging table Delete cache key																	
+    	SET D_CACHE_KEY                     = &apos;99999998&apos;;
+		-- FS=Full Single
+		SET CACHE_TYPE_FULL_SINGLE			= &apos;FS&apos;;
+		-- FM=Full Multi-table
+		SET CACHE_TYPE_FULL_MULTI			= &apos;FM&apos;;
+		-- I=Incremental 
+		SET CACHE_TYPE_INCREMENTAL			= &apos;IN&apos;;
+		-- HS=Hybrid with Delta Staging table
+		SET CACHE_TYPE_HYBRID_DS			= &apos;HS&apos;;
+		-- HN=Hybrid with Delta No Staging Table
+		SET CACHE_TYPE_HYBRID_DNS			= &apos;HN&apos;;
+		-- MT1=Hybrid Merge Table
+		SET CACHE_TYPE_MERGE_TYPE1			= &apos;MT1&apos;; -- MT
+		-- MT2=Hybrid Merge Dimension
+		SET CACHE_TYPE_MERGE_TYPE2			= &apos;MT2&apos;; -- MD
+		-- MT4=Hybrid Merge Column (CDC style)
+		SET CACHE_TYPE_MERGE_TYPE4			= &apos;MT4&apos;; -- MC
+		-- All valid cache types
+		SET ValidCacheTypesAll				= CACHE_TYPE_FULL_SINGLE||&apos;,&apos;||
+											  CACHE_TYPE_FULL_MULTI||&apos;,&apos;||
+											  CACHE_TYPE_INCREMENTAL||&apos;,&apos;||
+											  CACHE_TYPE_HYBRID_DS||&apos;,&apos;||
+											  CACHE_TYPE_HYBRID_DNS||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE1 ||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE2||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE4;
+		-- Full valid cache types [Full Single and Full Multi-table]
+		SET ValidCacheTypesAllFull			= CACHE_TYPE_FULL_SINGLE||&apos;,&apos;||
+											  CACHE_TYPE_FULL_MULTI;
+		-- Hybrid valid cache types [Hybrid ]
+		SET ValidCacheTypesAllHybrid	= 	  CACHE_TYPE_HYBRID_DS||&apos;,&apos;||
+											  CACHE_TYPE_HYBRID_DNS;
+		-- Hybrid valid cache types [Merge]
+		SET ValidCacheTypesAllMerge	= 		  CACHE_TYPE_MERGE_TYPE1 ||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE2||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE4;
+		-- All Incremental valid cache types [Incremental + Hybrid + Merge]
+		SET ValidCacheTypesAllIncremental	= CACHE_TYPE_INCREMENTAL||&apos;,&apos;||
+											  CACHE_TYPE_HYBRID_DS||&apos;,&apos;||
+											  CACHE_TYPE_HYBRID_DNS||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE1 ||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE2||&apos;,&apos;||
+											  CACHE_TYPE_MERGE_TYPE4;
+
+		-- This Select statement should mimic the columns that are in the cursor row type that is defined within this CommonTypes procedure as &quot;CachingDataType ROW()&quot;.
+		-- The variable $CachingDataTablePath gets replaced by the actual CACHING_DATA table path.  This is an abstraction of the actual SQL.
+		-- This select returns all rows
+		SET CachingDataSelect				= &apos;
+        SELECT {option DISABLE_PLAN_CACHE, NO_DATA_CACHE}
+            RUN_YN,
+            DROP_RECREATE_VIEW_YN,
+            DROP_RECREATE_TABLE_YN,
+            CACHE_TYPE,
+            RESOURCE_PATH,
+            ORGANIZATION,
+            APPLICATION_NAME,
+            CONSTANTS_PATH,
+            CAST(ATTRIBUTES AS LONGVARCHAR) ATTRIBUTES
+        FROM $CachingDataTablePath
+        &apos;;
+
+		-- This Select statement should mimic the columns that are in the cursor row type that is defined within this CommonTypes procedure as &quot;CachingDataType ROW()&quot;.
+		-- The variable $CachingDataTablePath gets replaced by the actual CACHING_DATA table path.  This is an abstraction of the actual SQL.
+		-- This select is used **SPECIFICALLY** for deployment because the DROP_RECREATE_VIEW_YN is defaulted to N because we don&apos;t want to recreate the views on deployment.
+		SET CachingDataSelectDeployment		= &apos;
+        SELECT {option DISABLE_PLAN_CACHE, NO_DATA_CACHE}
+            RUN_YN,
+            &apos;&apos;N&apos;&apos; DROP_RECREATE_VIEW_YN,
+            DROP_RECREATE_TABLE_YN,
+            CACHE_TYPE,
+            RESOURCE_PATH,
+            ORGANIZATION,
+            APPLICATION_NAME,
+            CONSTANTS_PATH,
+            CAST(ATTRIBUTES AS LONGVARCHAR) ATTRIBUTES
+        FROM $CachingDataTablePath
+        &apos;;
+
+		-- This Insert statement needs to include the columns that are in the cursor row type that is defined within this CommonTypes procedure as &quot;CachingDataType ROW()&quot;.
+		-- The variable $CachingDataTablePath gets replaced by the actual CACHING_DATA table path.  This is an abstraction of the actual SQL.
+		SET CachingDataInsert				= &apos;INSERT INTO $CachingDataTablePath
+           (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE_TYPE, RESOURCE_PATH, ORGANIZATION, APPLICATION_NAME, CONSTANTS_PATH, ATTRIBUTES) 
+           VALUES&apos;;
+
+		-- This Delete statement
+		-- The variable $CachingDataTablePath gets replaced by the actual CACHING_DATA table path.  This is an abstraction of the actual SQL.
+		SET CachingDataDelete				= &apos;DELETE FROM $CachingDataTablePath&apos;;
+
+		-- cache_status table select
+		SET CacheStatusSelect 				= &apos;select status, starttime, finishtime, cachekey, message, bucket, incrementalstatus, incrementalmaintenancelevel from &apos;;
+
+		-- The variable $DefaultCacheStatusTablePath gets replaced by the actual cache_status table path.  This is an abstraction of the actual SQL.
+		-- This is used by DeleteReloadCache for incremental caches only.
+		SET CacheStatusSelectByResPath		= &apos;
+        SELECT  {option DISABLE_PLAN_CACHE, NO_DATA_CACHE}
+            cachekey 
+        FROM $DefaultCacheStatusTablePath
+        WHERE resourceid = inResourcePath
+          AND status = &apos;&apos;A&apos;&apos;;
+       )&apos;;
+
+		-- This is the procedure templated used by the generators to provide header information
+		SET procedureGenerationPath			= CacheFrameworkPath||&apos;/Scripts&apos;;
+		-- This is the procedure templated used by the generators to provide header information
+		SET procedureTemplate				= &apos;/*
+** Automatically generated with $DEF_PROC
+** by $DEF_USERID 
+** on $DEF_CURRENT_TIMESTAMP
+**
+** $DESCRIPTION
+*/
+&apos;;
+END	</attribute>
+  <attribute name="creationDate" type="LONG">1387223842865</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415060075960</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="public_constants" type="MAP">
+    <item>
+      <key type="STRING">DataTypeMapping_CIS_TO_NETEZZA</key>
+      <value type="BYTE_ARRAY">ECMGAgAeAEQAYQB0AGEAVAB5AHAAZQBNAGEAcABwAGkAbgBnAF8AQwBJAFMAXwBUAE8AXwBOAEUA
+VABFAFoAWgBBAxIAAAABBAQAAAAAAAAAAAgZEB8DEgAAAAIDEgAAAAIBEwEJFAAAAAUQIQMvAAAA
+AQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAEAEMASABBAFIDEgAAAAMBOwAE
+BQAAAAAAAAADBAQAAAAAAAAADgETAf////8QIQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg////
+/wMiAAAAAAgZEBsGAgAEAEMASABBAFIDEgAAAAQBOwAEBQAAAAAAAAAEBAQAAAAAAAAAEQETAf//
+//8QIQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBkGAgAHAEkATgBUAEUA
+RwBFAFIDEgAAAAUEBwAAAAAAAAABBAYAAAAAAAD6Af////8QIQMvAAAAAQMWAAAAAAMaAAAAAQMb
+AAAAAQMg/////wMiAAAAAAgZEBkGAgAHAEkATgBUAEUARwBFAFIDEgAAAAYEBwAAAAAAAPoABAYA
+AAAAAAD6AP////8QIQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAE
+AEMASABBAFIDEgAAAAcBOwAEBQAAAAAAAAABBAQAAAAAAAAAAQETAf//////////</value>
+    </item>
+    <item>
+      <key type="STRING">CacheFrameworkPath</key>
+      <value type="BYTE_ARRAY">EBsGAgAEAEMASABBAFIDEgAAAAEBOwAEBQAAAAAAAAAvBAQAAAAAAAAALwETAf//</value>
+    </item>
+    <item>
+      <key type="STRING">DataTypeMapping_CIS_TO_ORACLE</key>
+      <value type="BYTE_ARRAY">ECMGAgAdAEQAYQB0AGEAVAB5AHAAZQBNAGEAcABwAGkAbgBnAF8AQwBJAFMAXwBUAE8AXwBPAFIA
+QQBDAEwARQMSAAAAAQQEAAAAAAAAAAAIGRAfAxIAAAACAxIAAAACARMBCRQAAAAFECEDLwAAAAED
+FgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABABDAEgAQQBSAxIAAAADATsABAUA
+AAAAAAAAAwQEAAAAAAAAAA4BEwH/////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8D
+IgAAAAAIGRAbBgIABABDAEgAQQBSAxIAAAAEATsABAUAAAAAAAAABAQEAAAAAAAAAA0BEwH/////
+ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAZBgIABwBJAE4AVABFAEcA
+RQBSAxIAAAAFBAcAAAAAAAAAAQQGAAAAAAAAD6H/////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAA
+AAEDIP////8DIgAAAAAIGRAZBgIABwBJAE4AVABFAEcARQBSAxIAAAAGBAcAAAAAAAAAJgQGAAAA
+AAAAD6D/////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABABD
+AEgAQQBSAxIAAAAHATsABAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//////////w==</value>
+    </item>
+    <item>
+      <key type="STRING">CommonTypesPath</key>
+      <value type="BYTE_ARRAY">EBsGAgAGAFMAdAByAGkAbgBnAxIAAAABATsABAUAAAAAAAAAFAQEAAAAAAAAEBQBEwH//w==</value>
+    </item>
+    <item>
+      <key type="STRING">DataTypeMapping_CIS_TO_SQLSERVER</key>
+      <value type="BYTE_ARRAY">ECMGAgAgAEQAYQB0AGEAVAB5AHAAZQBNAGEAcABwAGkAbgBnAF8AQwBJAFMAXwBUAE8AXwBTAFEA
+TABTAEUAUgBWAEUAUgMSAAAAAQQEAAAAAAAAAAAIGRAfAxIAAAACAxIAAAACARMBCRQAAAAFECED
+LwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABABDAEgAQQBSAxIAAAAD
+ATsABAUAAAAAAAAAAwQEAAAAAAAAAA4BEwH/////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAED
+IP////8DIgAAAAAIGRAbBgIABABDAEgAQQBSAxIAAAAEATsABAUAAAAAAAAAAwQEAAAAAAAAAAsB
+EwH/////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAZBgIABwBJAE4A
+VABFAEcARQBSAxIAAAAFBAcAAAAAAAAAAQQGAAAAAAAAAQD/////ECEDLwAAAAEDFgAAAAADGgAA
+AAEDGwAAAAEDIP////8DIgAAAAAIGRAZBgIABwBJAE4AVABFAEcARQBSAxIAAAAGBAcAAAAAAAAA
+JgQGAAAAAAAAAP//////ECEDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAb
+BgIABABDAEgAQQBSAxIAAAAHATsABAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//////////w==</value>
+    </item>
+  </attribute>
+  <attribute name="public_exceptions" type="STRING_ARRAY">
+    <item>exCacheDBTypeNotSupported</item>
+    <item>exErrorReturned</item>
+    <item>exInvalidParameter</item>
+    <item>exNotNullParameter</item>
+    <item>exObjectNameExceedsMaxLen</item>
+    <item>exResourceNotFound</item>
+  </attribute>
+  <attribute name="public_types" type="MAP">
+    <item>
+      <key type="STRING">AttributesVectorType</key>
+      <value type="BYTE_ARRAY">ECMGAgAUAEEAdAB0AHIAaQBiAHUAdABlAHMAVgBlAGMAdABvAHIAVAB5AHAAZQYpAEMALwBzAGgA
+YQByAGUAZAAvAEEAUwBBAHMAcwBlAHQAcwAvAEMAYQBjAGgAZQBNAGEAbgBhAGcAZQBtAGUAbgB0
+AC8AQwBhAGMAaABlAEYAcgBhAG0AZQB3AG8AcgBrAC8AUwBjAHIAaQBwAHQAcwAvAEMAbwBtAG0A
+bwBuAFQAeQBwAGUAcwYqABQAQQB0AHQAcgBpAGIAdQB0AGUAcwBWAGUAYwB0AG8AcgBUAHkAcABl
+AxIAAAABBAQAAAAAAAAAAAgZEB8GAgAJAEEAdAB0AHIAaQBiAHUAdABlAxIAAAACAxIAAAACARMB
+CRQAAAADECEGFQAEAG4AYQBtAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAI
+GRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAADBAQAAAAAAAAA/wETAf////8QIQYVAAQAdAB5AHAA
+ZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAHAFYAQQBSAEMASABB
+AFIDEgAAAAQEBAAAAAAAAAAoARMB/////xAhBhUABQB2AGEAbAB1AGUDLwAAAAEDFgAAAAADGgAA
+AAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIACwBMAE8ATgBHAFYAQQBSAEMASABBAFIDEgAAAAUE
+BAAAAAB/////ARMB//////////8=</value>
+    </item>
+    <item>
+      <key type="STRING">IntrospectionPlanVectorType</key>
+      <value type="BYTE_ARRAY">ECMGAgAbAEkAbgB0AHIAbwBzAHAAZQBjAHQAaQBvAG4AUABsAGEAbgBWAGUAYwB0AG8AcgBUAHkA
+cABlBikAQwAvAHMAaABhAHIAZQBkAC8AQQBTAEEAcwBzAGUAdABzAC8AQwBhAGMAaABlAE0AYQBu
+AGEAZwBlAG0AZQBuAHQALwBDAGEAYwBoAGUARgByAGEAbQBlAHcAbwByAGsALwBTAGMAcgBpAHAA
+dABzAC8AQwBvAG0AbQBvAG4AVAB5AHAAZQBzBioAGwBJAG4AdAByAG8AcwBwAGUAYwB0AGkAbwBu
+AFAAbABhAG4AVgBlAGMAdABvAHIAVAB5AHAAZQMSAAAAAQQEAAAAAAAAAAAIGRAfBgIAFgBJAG4A
+dAByAG8AcwBwAGUAYwB0AGkAbwBuAFAAbABhAG4ARQBuAHQAcgB5AxIAAAACAxIAAAACARMBCRQA
+AAAFECEGFQAEAHAAYQB0AGgDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAb
+BgIADABSAGUAcwBvAHUAcgBjAGUAUABhAHQAaAYpABoALwBsAGkAYgAvAHIAZQBzAG8AdQByAGMA
+ZQAvAFIAZQBzAG8AdQByAGMAZQBEAGUAZgBzBioADABSAGUAcwBvAHUAcgBjAGUAUABhAHQAaAMS
+AAAAAwQEAAAAAAAAEAABEwH/////ECEGFQAEAHQAeQBwAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAA
+AAEDIP////8DIgAAAAAIGRAbBgIADABSAGUAcwBvAHUAcgBjAGUAVAB5AHAAZQYpABoALwBsAGkA
+YgAvAHIAZQBzAG8AdQByAGMAZQAvAFIAZQBzAG8AdQByAGMAZQBEAGUAZgBzBioADABSAGUAcwBv
+AHUAcgBjAGUAVAB5AHAAZQMSAAAABAQEAAAAAAAAACgBEwH/////ECEGFQAHAHMAdQBiAHQAeQBw
+AGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAADEgAAAAT//xAhBhUABgBhAGMA
+dABpAG8AbgMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAHAFYAQQBS
+AEMASABBAFIDEgAAAAUEBAAAAAAAAAAoARMB/////xAhBhUACgBhAHQAdAByAGkAYgB1AHQAZQBz
+Ay8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQIwYCABQAQQB0AHQAcgBpAGIA
+dQB0AGUAcwBWAGUAYwB0AG8AcgBUAHkAcABlAxIAAAAGBAQAAAAAAAAAAAgZEB8GAgAJAEEAdAB0
+AHIAaQBiAHUAdABlAxIAAAAHAxIAAAAHARMBCRQAAAADECEGFQAEAG4AYQBtAGUDLwAAAAEDFgAA
+AAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAAIBAQA
+AAAAAAAA/wETAf////8QIQYVAAQAdAB5AHAAZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg////
+/wMiAAAAAAMSAAAABf//ECEGFQAFAHYAYQBsAHUAZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg
+/////wMiAAAAAAgZEBsGAgALAEwATwBOAEcAVgBBAFIAQwBIAEEAUgMSAAAACQQEAAAAAH////8B
+EwH//////////////////w==</value>
+    </item>
+    <item>
+      <key type="STRING">AuditLog_Type</key>
+      <value type="BYTE_ARRAY">EB8GAgANAEEAdQBkAGkAdABMAG8AZwBfAFQAeQBwAGUGKQBDAC8AcwBoAGEAcgBlAGQALwBBAFMA
+QQBzAHMAZQB0AHMALwBDAGEAYwBoAGUATQBhAG4AYQBnAGUAbQBlAG4AdAAvAEMAYQBjAGgAZQBG
+AHIAYQBtAGUAdwBvAHIAawAvAFMAYwByAGkAcAB0AHMALwBDAG8AbQBtAG8AbgBUAHkAcABlAHMG
+KgANAEEAdQBkAGkAdABMAG8AZwBfAFQAeQBwAGUDEgAAAAEDEgAAAAEBEwEJFAAAAAsQIQYVAAgA
+YwBhAGMAaABlAGsAZQB5Ay8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQGQYC
+AAcASQBOAFQARQBHAEUAUgMSAAAAAgQH/////4AAAAAEBgAAAAB//////////xAhBhUADABTAEUA
+UQBVAEUATgBDAEUAXwBOAFUATQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZ
+EBkGAgAGAEIASQBHAEkATgBUAxIAAAADBAeAAAAAAAAAAP////8QIQYVABEATwBSAEcAQQBOAEkA
+WgBBAFQASQBPAE4AXwBOAEEATQBFAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAA
+CBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAABAQEAAAAAAAAAP8BEwH/////ECEGFQAQAEEAUABQ
+AEwASQBDAEEAVABJAE8ATgBfAE4AQQBNAEUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8D
+IgAAAAADEgAAAAT//xAhBhUADgBDAFUAUgBSAF8AVQBTAEUAUgBfAE4AQQBNAEUDLwAAAAEDFgAA
+AAADGgAAAAEDGwAAAAEDIP////8DIgAAAAADEgAAAAT//xAhBhUADgBPAFIASQBHAF8AVQBTAEUA
+UgBfAE4AQQBNAEUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAADEgAAAAT//xAh
+BhUADQBSAEUAUwBPAFUAUgBDAEUAXwBOAEEATQBFAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/
+////AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAABQQEAAAAAAAACAABEwH/////ECEG
+FQALAE0ATwBEAFUATABFAF8ATgBBAE0ARQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMi
+AAAAAAMSAAAABP//ECEGFQAQAE4ATwBUAEkARgBDAEEAVABJAE8ATgBfAFQAWQBQAEUDLwAAAAED
+FgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAAG
+BAQAAAAAAAAACgETAf////8QIQYVAAoAQQBVAEQASQBUAF8AVABJAE0ARQMvAAAAAQMWAAAAAAMa
+AAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBYGAgAJAFQASQBNAEUAUwBUAEEATQBQAxIAAAAH////
+/xAhBhUADABNAEUAUwBTAEEARwBFAF8AVABFAFgAVAMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg
+/////wMiAAAAAAgZEBsGAgAHAFYAQQBSAEMASABBAFIDEgAAAAgEBAAAAAAAAAfQARMB////////
+</value>
+    </item>
+    <item>
+      <key type="STRING">DataTypeMapping</key>
+      <value type="BYTE_ARRAY">EB8GAgAPAEQAYQB0AGEAVAB5AHAAZQBNAGEAcABwAGkAbgBnBikAQwAvAHMAaABhAHIAZQBkAC8A
+QQBTAEEAcwBzAGUAdABzAC8AQwBhAGMAaABlAE0AYQBuAGEAZwBlAG0AZQBuAHQALwBDAGEAYwBo
+AGUARgByAGEAbQBlAHcAbwByAGsALwBTAGMAcgBpAHAAdABzAC8AQwBvAG0AbQBvAG4AVAB5AHAA
+ZQBzBioADwBEAGEAdABhAFQAeQBwAGUATQBhAHAAcABpAG4AZwMSAAAAAQMSAAAAAQETAQkUAAAA
+BRAhBhUACABDAEkAUwBfAFQAWQBQAEUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAA
+AAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAACBAQAAAAAAAAA/wETAf////8QIQYVAAsATgBB
+AFQASQBWAEUAXwBUAFkAUABFAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIA
+AAAC//8QIQYVAA0ATQBJAE4AXwBQAFIARQBDAEkAUwBJAE8ATgMvAAAAAQMWAAAAAAMaAAAAAQMb
+AAAAAQMg/////wMiAAAAAAgZEBkGAgAHAEkATgBUAEUARwBFAFIDEgAAAAMEB/////+AAAAABAYA
+AAAAf/////////8QIQYVAA0ATQBBAFgAXwBQAFIARQBDAEkAUwBJAE8ATgMvAAAAAQMWAAAAAAMa
+AAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAA///ECEGFQANAFUAUwBFAF8AUABSAEUAQwBJAFMA
+SQBPAE4DLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABABDAEgAQQBS
+AxIAAAAEBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH///////8=</value>
+    </item>
+    <item>
+      <key type="STRING">Attribute</key>
+      <value type="BYTE_ARRAY">EB8GAgAJAEEAdAB0AHIAaQBiAHUAdABlBikAQwAvAHMAaABhAHIAZQBkAC8AQQBTAEEAcwBzAGUA
+dABzAC8AQwBhAGMAaABlAE0AYQBuAGEAZwBlAG0AZQBuAHQALwBDAGEAYwBoAGUARgByAGEAbQBl
+AHcAbwByAGsALwBTAGMAcgBpAHAAdABzAC8AQwBvAG0AbQBvAG4AVAB5AHAAZQBzBioACQBBAHQA
+dAByAGkAYgB1AHQAZQMSAAAAAQMSAAAAAQETAQkUAAAAAxAhBhUABABuAGEAbQBlAy8AAAABAxYA
+AAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAAAgQE
+AAAAAAAAAP8BEwH/////ECEGFQAEAHQAeQBwAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP//
+//8DIgAAAAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAADBAQAAAAAAAAAKAETAf////8QIQYV
+AAUAdgBhAGwAdQBlAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQGwYCAAsA
+TABPAE4ARwBWAEEAUgBDAEgAQQBSAxIAAAAEBAQAAAAAf////wETAf///////w==</value>
+    </item>
+    <item>
+      <key type="STRING">CachingDataType</key>
+      <value type="BYTE_ARRAY">EB8GAgAPAEMAYQBjAGgAaQBuAGcARABhAHQAYQBUAHkAcABlBikAQwAvAHMAaABhAHIAZQBkAC8A
+QQBTAEEAcwBzAGUAdABzAC8AQwBhAGMAaABlAE0AYQBuAGEAZwBlAG0AZQBuAHQALwBDAGEAYwBo
+AGUARgByAGEAbQBlAHcAbwByAGsALwBTAGMAcgBpAHAAdABzAC8AQwBvAG0AbQBvAG4AVAB5AHAA
+ZQBzBioADwBDAGEAYwBoAGkAbgBnAEQAYQB0AGEAVAB5AHAAZQMSAAAAAQMSAAAAAQETAQkUAAAA
+CRAhBhUABgBSAFUATgBfAFkATgMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZ
+EBsGAgAEAEMASABBAFIDEgAAAAIEBQAAAAAAAAABBAQAAAAAAAAAAQETAf////8QIQYVABUARABS
+AE8AUABfAFIARQBDAFIARQBBAFQARQBfAFYASQBFAFcAXwBZAE4DLwAAAAEDFgAAAAADGgAAAAED
+GwAAAAEDIP////8DIgAAAAADEgAAAAL//xAhBhUAFgBEAFIATwBQAF8AUgBFAEMAUgBFAEEAVABF
+AF8AVABBAEIATABFAF8AWQBOAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIA
+AAAC//8QIQYVAAoAQwBBAEMASABFAF8AVABZAFAARQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg
+/////wMiAAAAAAgZEBsGAgAHAFYAQQBSAEMASABBAFIDEgAAAAMEBAAAAAAAAAD/ARMB/////xAh
+BhUADQBSAEUAUwBPAFUAUgBDAEUAXwBQAEEAVABIAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/
+////AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAABAQEAAAAAAAACAABEwH/////ECEG
+FQAMAE8AUgBHAEEATgBJAFoAQQBUAEkATwBOAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////
+AyIAAAAAAxIAAAAD//8QIQYVABAAQQBQAFAATABJAEMAQQBUAEkATwBOAF8ATgBBAE0ARQMvAAAA
+AQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAA///ECEGFQAOAEMATwBOAFMAVABB
+AE4AVABTAF8AUABBAFQASAMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAA
+BP//ECEGFQAKAEEAVABUAFIASQBCAFUAVABFAFMDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP//
+//8DIgAAAAAIGRAbBgIACwBMAE8ATgBHAFYAQQBSAEMASABBAFIDEgAAAAUEBAAAAAB/////ARMB
+////////</value>
+    </item>
+    <item>
+      <key type="STRING">cacheStatus_Type</key>
+      <value type="BYTE_ARRAY">EB8GAgAQAGMAYQBjAGgAZQBTAHQAYQB0AHUAcwBfAFQAeQBwAGUGKQBDAC8AcwBoAGEAcgBlAGQA
+LwBBAFMAQQBzAHMAZQB0AHMALwBDAGEAYwBoAGUATQBhAG4AYQBnAGUAbQBlAG4AdAAvAEMAYQBj
+AGgAZQBGAHIAYQBtAGUAdwBvAHIAawAvAFMAYwByAGkAcAB0AHMALwBDAG8AbQBtAG8AbgBUAHkA
+cABlAHMGKgAQAGMAYQBjAGgAZQBTAHQAYQB0AHUAcwBfAFQAeQBwAGUDEgAAAAEDEgAAAAEBEwEJ
+FAAAAAgQIQYVAAYAcwB0AGEAdAB1AHMDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAA
+AAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAACBAQAAAAAAAAA/wETAf////8QIQYVAAkAcwB0
+AGEAcgB0AHQAaQBtAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAWBgIA
+CQBUAEkATQBFAFMAVABBAE0AUAMSAAAAA/////8QIQYVAAoAZgBpAG4AaQBzAGgAdABpAG0AZQMv
+AAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAA///ECEGFQAIAGMAYQBjAGgA
+ZQBrAGUAeQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBkGAgAHAEkATgBU
+AEUARwBFAFIDEgAAAAQEB/////+AAAAABAYAAAAAf/////////8QIQYVAAcAbQBlAHMAcwBhAGcA
+ZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAHAFYAQQBSAEMASABB
+AFIDEgAAAAUEBAAAAAAAAAQAARMB/////xAhBhUABgBiAHUAYwBrAGUAdAMvAAAAAQMWAAAAAAMa
+AAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAAv//ECEGFQARAGkAbgBjAHIAZQBtAGUAbgB0AGEA
+bABzAHQAYQB0AHUAcwMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAAv//
+ECEGFQAbAGkAbgBjAHIAZQBtAGUAbgB0AGEAbABtAGEAaQBuAHQAZQBuAGEAbgBjAGUAbABlAHYA
+ZQBsAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAC/////w==</value>
+    </item>
+    <item>
+      <key type="STRING">indexRetrieveType</key>
+      <value type="BYTE_ARRAY">EB8GAgARAGkAbgBkAGUAeABSAGUAdAByAGkAZQB2AGUAVAB5AHAAZQYpAEMALwBzAGgAYQByAGUA
+ZAAvAEEAUwBBAHMAcwBlAHQAcwAvAEMAYQBjAGgAZQBNAGEAbgBhAGcAZQBtAGUAbgB0AC8AQwBh
+AGMAaABlAEYAcgBhAG0AZQB3AG8AcgBrAC8AUwBjAHIAaQBwAHQAcwAvAEMAbwBtAG0AbwBuAFQA
+eQBwAGUAcwYqABEAaQBuAGQAZQB4AFIAZQB0AHIAaQBlAHYAZQBUAHkAcABlAxIAAAABAxIAAAAB
+ARMBCRQAAAAEECEGFQAMAHMAcQBsAEkAbgBkAGUAeABOAGEAbQBlAy8AAAABAxYAAAAAAxoAAAAB
+AxsAAAABAyD/////AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAAAgQEAAAAAAAAAP8B
+EwH/////ECEGFQAMAHMAcQBsAEkAbgBkAGUAeABUAHkAcABlAy8AAAABAxYAAAAAAxoAAAABAxsA
+AAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAA4AcwBxAGwASQBuAGQAZQB4AFUAbgBpAHEAdQBl
+Ay8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQGQYCAAcASQBOAFQARQBHAEUA
+UgMSAAAAAwQH/////4AAAAAEBgAAAAB//////////xAhBhUADwBzAHEAbABJAG4AZABlAHgAQwBv
+AGwATABpAHMAdAMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgALAEwA
+TwBOAEcAVgBBAFIAQwBIAEEAUgMSAAAABAQEAAAAAH////8BEwH///////8=</value>
+    </item>
+    <item>
+      <key type="STRING">IntrospectionPlanEntry</key>
+      <value type="BYTE_ARRAY">EB8GAgAWAEkAbgB0AHIAbwBzAHAAZQBjAHQAaQBvAG4AUABsAGEAbgBFAG4AdAByAHkGKQBDAC8A
+cwBoAGEAcgBlAGQALwBBAFMAQQBzAHMAZQB0AHMALwBDAGEAYwBoAGUATQBhAG4AYQBnAGUAbQBl
+AG4AdAAvAEMAYQBjAGgAZQBGAHIAYQBtAGUAdwBvAHIAawAvAFMAYwByAGkAcAB0AHMALwBDAG8A
+bQBtAG8AbgBUAHkAcABlAHMGKgAWAEkAbgB0AHIAbwBzAHAAZQBjAHQAaQBvAG4AUABsAGEAbgBF
+AG4AdAByAHkDEgAAAAEDEgAAAAEBEwEJFAAAAAUQIQYVAAQAcABhAHQAaAMvAAAAAQMWAAAAAAMa
+AAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAMAFIAZQBzAG8AdQByAGMAZQBQAGEAdABoBikA
+GgAvAGwAaQBiAC8AcgBlAHMAbwB1AHIAYwBlAC8AUgBlAHMAbwB1AHIAYwBlAEQAZQBmAHMGKgAM
+AFIAZQBzAG8AdQByAGMAZQBQAGEAdABoAxIAAAACBAQAAAAAAAAQAAETAf////8QIQYVAAQAdAB5
+AHAAZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAMAFIAZQBzAG8A
+dQByAGMAZQBUAHkAcABlBikAGgAvAGwAaQBiAC8AcgBlAHMAbwB1AHIAYwBlAC8AUgBlAHMAbwB1
+AHIAYwBlAEQAZQBmAHMGKgAMAFIAZQBzAG8AdQByAGMAZQBUAHkAcABlAxIAAAADBAQAAAAAAAAA
+KAETAf////8QIQYVAAcAcwB1AGIAdAB5AHAAZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg////
+/wMiAAAAAAMSAAAAA///ECEGFQAGAGEAYwB0AGkAbwBuAy8AAAABAxYAAAAAAxoAAAABAxsAAAAB
+AyD/////AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAABAQEAAAAAAAAACgBEwH/////
+ECEGFQAKAGEAdAB0AHIAaQBiAHUAdABlAHMDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8D
+IgAAAAAIGRAjBgIAFABBAHQAdAByAGkAYgB1AHQAZQBzAFYAZQBjAHQAbwByAFQAeQBwAGUDEgAA
+AAUEBAAAAAAAAAAACBkQHwYCAAkAQQB0AHQAcgBpAGIAdQB0AGUDEgAAAAYDEgAAAAYBEwEJFAAA
+AAMQIQYVAAQAbgBhAG0AZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsG
+AgAHAFYAQQBSAEMASABBAFIDEgAAAAcEBAAAAAAAAAD/ARMB/////xAhBhUABAB0AHkAcABlAy8A
+AAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAE//8QIQYVAAUAdgBhAGwAdQBl
+Ay8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAACBkQGwYCAAsATABPAE4ARwBWAEEA
+UgBDAEgAQQBSAxIAAAAIBAQAAAAAf////wETAf///////////////w==</value>
+    </item>
+    <item>
+      <key type="STRING">indexConfigType</key>
+      <value type="BYTE_ARRAY">EB8GAgAPAGkAbgBkAGUAeABDAG8AbgBmAGkAZwBUAHkAcABlBikAQwAvAHMAaABhAHIAZQBkAC8A
+QQBTAEEAcwBzAGUAdABzAC8AQwBhAGMAaABlAE0AYQBuAGEAZwBlAG0AZQBuAHQALwBDAGEAYwBo
+AGUARgByAGEAbQBlAHcAbwByAGsALwBTAGMAcgBpAHAAdABzAC8AQwBvAG0AbQBvAG4AVAB5AHAA
+ZQBzBioADwBpAG4AZABlAHgAQwBvAG4AZgBpAGcAVAB5AHAAZQMSAAAAAQMSAAAAAQETAQkUAAAA
+ChAhBhUACgBhAGMAdABpAG8AbgBUAHkAcABlAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////
+AyIAAAAACBkQGwYCAAcAVgBBAFIAQwBIAEEAUgMSAAAAAgQEAAAAAAAAAP8BEwH/////ECEGFQAR
+AGQAcgBvAHAAQwByAGUAYQB0AGUASQBkAHgARgBsAGEAZwMvAAAAAQMWAAAAAAMaAAAAAQMbAAAA
+AQMg/////wMiAAAAAAgZEBkGAgAHAEkATgBUAEUARwBFAFIDEgAAAAMEB/////+AAAAABAYAAAAA
+f/////////8QIQYVAAsAYwBhAHQAYQBsAG8AZwBOAGEAbQBlAy8AAAABAxYAAAAAAxoAAAABAxsA
+AAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAAoAcwBjAGgAZQBtAGEATgBhAG0AZQMvAAAAAQMW
+AAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAAv//ECEGFQAJAHQAYQBiAGwAZQBOAGEA
+bQBlAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAAkAaQBu
+AGQAZQB4AE4AYQBtAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAADEgAAAAL/
+/xAhBhUACwBpAG4AZABlAHgAVQBuAGkAcQB1AGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP//
+//8DIgAAAAADEgAAAAP//xAhBhUADABpAG4AZABlAHgAQwBvAGwAdQBtAG4AcwMvAAAAAQMWAAAA
+AAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgALAEwATwBOAEcAVgBBAFIAQwBIAEEAUgMS
+AAAABAQEAAAAAH////8BEwH/////ECEGFQAJAGkAbgBkAGUAeABUAHkAcABlAy8AAAABAxYAAAAA
+AxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAAwAaQBuAGQAZQB4AE8AcAB0AGkA
+bwBuAHMDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABwBWAEEAUgBD
+AEgAQQBSAxIAAAAFBAQAAAAAAAAIAAETAf///////w==</value>
+    </item>
+  </attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

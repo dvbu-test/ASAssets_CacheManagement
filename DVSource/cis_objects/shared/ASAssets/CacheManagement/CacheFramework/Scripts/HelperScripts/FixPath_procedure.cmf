@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="FixPath" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/FixPath" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="outPath" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="Script" type="STRING">/* FixPath:
+
+	This script is used to fix a CIS path to insure it abides by the following rules:
+		1) Has no double //
+		2) Any backslashes | are changed to forward slash /
+		3) There is no slash / at the end of the line.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	10/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE FixPath(
+	IN  inPath					LONGVARCHAR,
+	OUT outPath					LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR(255)	DEFAULT &apos;HelperScripts/FixPath&apos;;-- name of SQL Script
+
+	/******************************************************
+	 *  FIX PATH
+	 *****************************************************/
+	IF (inPath IS NOT NULL AND LENGTH(inPath) &gt; 0) THEN
+		SET outPath = REPLACE(inPath, &apos;\&apos;,&apos;/&apos;);
+		SET outPath = REPLACE(outPath, &apos;//&apos;,&apos;/&apos;);
+		IF (SUBSTRING(outPath, LENGTH(outPath), 1) = &apos;/&apos;) THEN
+			SET outPath = SUBSTRING(outPath, 1, LENGTH(outPath)-1);
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1409859317033</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1414256413041</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

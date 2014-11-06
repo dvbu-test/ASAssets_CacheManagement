@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="IntrospectTables" path="/services/databases/ASAssets/CacheManagement/CacheFramework/IntrospectTables" type="LINK" subtype="NONE" changeToken="0" virtual="true">
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/IntrospectTables" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSequenceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOrigUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="tableName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inPrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errMessage" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="creationDate" type="LONG">1415155141213</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1415155141225</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="targetPath" type="STRING">/shared/ASAssets/CacheManagement/CacheFramework/Scripts/PublishedImpl/IntrospectTables</attribute>
+  <attribute name="targetType" type="SHORT">3</attribute>
+</metadata>

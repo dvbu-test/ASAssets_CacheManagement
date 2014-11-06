@@ -1,0 +1,81 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<metadata name="ExtractColumnTypeParts" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/ExtractColumnTypeParts" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="inColumnType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="colTypeBase" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="colTypePrecision" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="colTypeScale" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+  </security>
+  <attribute name="Script" type="STRING">/* ExtractColumnTypeParts:
+
+	This script is used to extract the column type parts.  For example, INTEGER, VARCHAR(1024) or DECIMAL(10,2) are all treated separately.
+	This is used in conjunction with the CommonTypes.DataTypeMapping_CIS_TO_[ORACLE|SQLSERVER|NETEZZA] in order to figure out what the
+	mapping should be from CIS types to native types.
+
+	IN  inColumnType		VARCHAR,	-- The variable type
+	OUT colTypeBase			VARCHAR,	-- The base type for the passed in column
+	OUT colTypePrecision	INTEGER,	-- The number of digits to the left of the decimal point or the number of characters specified in a VARCHAR or CHAR field
+	OUT colTypeScale		INTEGER		-- The number of digits to the right of the decimal point or null when VARCHAR or CHAR
+
+	Examples:
+		inColumnType		colTypeBase		colTypePrecision		colTypeScale
+		VARCHAR(10)			VARCHAR				10					NULL
+		DECIMAL (10 , 3)	DECIMAL				10					3
+		CHAR( 1 )			CHAR				1					NULL
+		NUMBER ( 22  ,  6)	NUMBER				22					6
+	
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	09/25/2014		Mike Tinius			6.2.6			Created new to make cache framework generic. 
+*/
+PROCEDURE ExtractColumnTypeParts(
+	IN  inColumnType		VARCHAR,	-- The variable type
+	OUT colTypeBase			VARCHAR,	-- The base type for the passed in column
+	OUT colTypePrecision	INTEGER,	-- The number of digits to the left of the decimal point or the number of characters specified in a VARCHAR or CHAR field
+	OUT colTypeScale		INTEGER		-- The number of digits to the right of the decimal point or null when VARCHAR or CHAR
+)
+BEGIN
+	DECLARE columnType		VARCHAR DEFAULT TRIM(inColumnType);
+	DECLARE pos1, pos2, len	INTEGER;
+	DECLARE tempPrecision	VARCHAR;
+
+	SET pos1 = POSITION(&apos;(&apos; IN columnType);
+	SET pos2 = POSITION(&apos;)&apos; IN columnType);
+	SET len = (pos2-1) - (pos1+1) + 1;
+	IF (pos1 &gt; 0) THEN
+		SET colTypeBase = TRIM(SUBSTRING(columnType, 1, pos1-1));
+		SET tempPrecision = TRIM(SUBSTRING(columnType, pos1+1, len));
+		SET pos1 = POSITION(&apos;,&apos; IN tempPrecision);
+		IF (pos1 &gt; 0) THEN
+			SET colTypePrecision = CAST(TRIM(SUBSTRING(tempPrecision, 1, pos1-1)) AS INTEGER);
+			SET colTypeScale = CAST(TRIM(SUBSTRING(tempPrecision, pos1+1, LENGTH(tempPrecision))) AS INTEGER); 
+		ELSE
+			SET colTypePrecision = CAST(tempPrecision AS INTEGER);
+		END IF;
+	ELSE
+		SET colTypeBase = columnType;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410869918819</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1411709702661</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">ldap</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>
