@@ -2,7 +2,7 @@
 <metadata name="GetAttributeNameValueXML" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/GetAttributeNameValueXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
   <parameters>
     <parameter name="request" direction="IN" nullable="true">
-      <datatype name="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
         <schemaDatatype>
           <datatype name="XML" type="TREE" refId="1"></datatype>
         </schemaDatatype>
@@ -30,6 +30,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/HelperScripts/AttributeNameValueXMLDef" type="DEFINITION_SET">
     <datatype name="Tree" type="TREE" refId="1"></datatype>

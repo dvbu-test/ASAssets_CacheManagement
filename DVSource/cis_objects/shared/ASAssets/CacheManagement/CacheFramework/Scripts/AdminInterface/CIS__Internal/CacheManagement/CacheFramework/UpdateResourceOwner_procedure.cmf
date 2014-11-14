@@ -31,6 +31,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <attribute name="creationDate" type="LONG">1415155205370</attribute>
   <attribute name="creatorUserDomain" type="STRING">composite</attribute>

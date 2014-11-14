@@ -202,6 +202,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/shared/ASAssets/Utilities/repository/applyReservedListToPath" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1">
@@ -361,7 +362,7 @@ BEGIN
 
 		-- Default Cache Database variables
 		SET DefaultCacheDSType	 			= &apos;ORACLE&apos;;																			-- Supported Values [ORACLE, SQLSERVER, NETEZZA]
-/*MOD*/	SET DefaultCacheDSPath	 			= &apos;/shared/ASAssets/CacheManagement/CacheFrameworkSample/SampleSOR_oracle/SOR/SAMPLE_DS&apos;;-- CIS Path to cache database
+/*MOD*/	SET DefaultCacheDSPath	 			= &apos;/shared/ASAssets/CacheManagement/CacheFramework/ApplicationTemplateOracle/PackagedQueryDDLScripts/TEMP_DS&apos;;-- CIS Path to cache database
 /*MOD*/	SET DefaultCacheDSCatalogName		= NULL; 																			-- this is the catalog name
 /*MOD*/	SET DefaultCacheDSSchemaName		= &apos;COMPOSITE_CACHE&apos;; 																-- this is the schema name
         SET DefaultCacheDSFullPath			= applyReservedListToPath(concatNotNull(DefaultCacheDSPath,&apos;/&apos;,3)||					-- Cache database full path down to schema name applying reserved list to double quote path when necessary
@@ -429,7 +430,7 @@ END</attribute>
   <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
   <attribute name="impactLevel" type="INTEGER">0</attribute>
   <attribute name="impactMessage" type="NULL"/>
-  <attribute name="lastModifiedDate" type="LONG">1415060706278</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1415907041155</attribute>
   <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
   <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
   <attribute name="model" type="NULL"/>

@@ -2,6 +2,7 @@
 <metadata name="SOR" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR" type="CONTAINER" subtype="FOLDER" changeToken="0">
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="creationDate" type="LONG">1411763252092</attribute>
   <attribute name="creatorUserDomain" type="STRING">ldap</attribute>

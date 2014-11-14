@@ -2,6 +2,7 @@
 <metadata name="CIS_CACHE" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE" type="CONTAINER" subtype="SCHEMA" changeToken="0">
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="autoAddChildren" type="BOOLEAN">false</attribute>
   <attribute name="creationDate" type="LONG">1415114771721</attribute>

@@ -63,6 +63,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/lib/debug/Log" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1">
@@ -125,6 +126,16 @@
   <dependency target="/shared/ASAssets/Utilities/repository/_debug" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1"></datatype>
   </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/emptyStr" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outputString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
   <dependency target="/shared/ASAssets/Utilities/string/getConstant" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1">
       <element name="constantPath" direction="IN">
@@ -143,16 +154,6 @@
   </dependency>
   <dependency target="/system/customfunctions/getConstant" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1"></datatype>
-  </dependency>
-  <dependency target="/users/composite/admin/DoMultiStudents/emptyStr" type="PROCEDURE">
-    <datatype type="PROCEDURE" refId="1">
-      <element name="inputString" direction="IN">
-        <datatype type="STRING" maxLength="2147483647"/>
-      </element>
-      <element name="outputString" direction="OUT">
-        <datatype type="STRING" maxLength="2147483647"/>
-      </element>
-    </datatype>
   </dependency>
   <attribute name="Script" type="STRING">/* cfLog:
 

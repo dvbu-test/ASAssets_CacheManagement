@@ -3,6 +3,7 @@
   <annotation/>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/SqlServer_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/dbo/cache_status" type="TABLE">
     <datatype type="TABLE" refId="1">

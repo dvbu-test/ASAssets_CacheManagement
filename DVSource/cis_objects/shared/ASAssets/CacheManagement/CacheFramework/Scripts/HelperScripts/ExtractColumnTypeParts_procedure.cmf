@@ -16,6 +16,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <attribute name="Script" type="STRING">/* ExtractColumnTypeParts:
 

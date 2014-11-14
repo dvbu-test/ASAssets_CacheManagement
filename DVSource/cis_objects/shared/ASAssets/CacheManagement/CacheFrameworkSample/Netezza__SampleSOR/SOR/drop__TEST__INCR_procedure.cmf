@@ -13,6 +13,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/lib/debug/Print" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1">
@@ -111,7 +112,7 @@ END</attribute>
       </value>
     </item>
     <item>
-      <key type="STRING">10/42</key>
+      <key type="STRING">9/34</key>
       <value type="STRING_ARRAY">
         <item>lib</item>
         <item>debug</item>
@@ -119,7 +120,7 @@ END</attribute>
       </value>
     </item>
     <item>
-      <key type="STRING">9/34</key>
+      <key type="STRING">10/42</key>
       <value type="STRING_ARRAY">
         <item>lib</item>
         <item>debug</item>

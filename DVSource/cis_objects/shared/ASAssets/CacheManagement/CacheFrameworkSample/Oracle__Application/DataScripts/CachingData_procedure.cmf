@@ -35,6 +35,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/CommonTypes" type="PROCEDURE">
     <datatype type="PROCEDURE" refId="1">
@@ -739,7 +740,7 @@ INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
-	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoSS/CIS_CACHE/dbo/TEST_INCR_DEL&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/TEST_INCR_DEL&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_DELDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;
 
@@ -774,7 +775,7 @@ INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
-	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoORA/COMPOSITE_CACHE/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_STARTDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal start date. --&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ENDDT_COL&lt;/name&gt;&lt;value&gt;EDT&lt;/value&gt;&lt;/attribute&gt;		&lt;!-- Incremental Merge Type 2 - The column in the history table that indicates the bi-temporal end date. --&gt;
@@ -788,7 +789,7 @@ INSERT INTO result (RUN_YN, DROP_RECREATE_VIEW_YN, DROP_RECREATE_TABLE_YN, CACHE
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_TYPE&lt;/name&gt;&lt;value&gt;TIMESTAMP&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_KEY_STARTING_VALUE&lt;/name&gt;&lt;value&gt;1900-01-01 00:00:00&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_CACHE_VIEW_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
-	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/users/composite/admin/Cache_RepoORA/COMPOSITE_CACHE/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
+	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PATH&lt;/name&gt;&lt;value&gt;/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/TEST_INCR_HIST&lt;/value&gt;&lt;/attribute&gt;
 	&lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_PKCSV&lt;/name&gt;&lt;value&gt;K1,K2&lt;/value&gt;&lt;/attribute&gt;
     &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITYDT_COL&lt;/name&gt;&lt;value&gt;SDT&lt;/value&gt;&lt;/attribute&gt;	&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity date column. --&gt;
     &lt;attribute&gt;&lt;name&gt;INCR_MERGE_HISTORY_TABLE_ACTIVITY_COL&lt;/name&gt;&lt;value&gt;ACTIVITY&lt;/value&gt;&lt;/attribute&gt;&lt;!-- Incremental Merge Type 4- The column in the history table that indicates change data capture style activity.  e.g. ACTIVITY=[I|U|D] --&gt;
@@ -804,7 +805,7 @@ END</attribute>
   <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
   <attribute name="impactLevel" type="INTEGER">0</attribute>
   <attribute name="impactMessage" type="NULL"/>
-  <attribute name="lastModifiedDate" type="LONG">1415113689528</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1415210395846</attribute>
   <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
   <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
   <attribute name="model" type="NULL"/>

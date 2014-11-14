@@ -36,6 +36,7 @@
   <foreignKeys></foreignKeys>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
   </security>
   <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/MySQL_SampleSOR/SOR/SAMPLE_DS/test_incr_del" type="TABLE">
     <datatype type="TABLE" refId="1">

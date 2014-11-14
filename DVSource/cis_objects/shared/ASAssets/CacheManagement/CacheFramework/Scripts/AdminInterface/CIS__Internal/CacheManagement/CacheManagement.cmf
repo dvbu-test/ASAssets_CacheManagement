@@ -2,6 +2,7 @@
 <metadata name="CacheManagement" path="/shared/ASAssets/CacheManagement/CacheFramework/Scripts/AdminInterface/CIS_Internal/CacheManagement" type="CONTAINER" subtype="CATALOG" changeToken="0">
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="autoAddChildren" type="BOOLEAN">false</attribute>
   <attribute name="creationDate" type="LONG">1415155205127</attribute>

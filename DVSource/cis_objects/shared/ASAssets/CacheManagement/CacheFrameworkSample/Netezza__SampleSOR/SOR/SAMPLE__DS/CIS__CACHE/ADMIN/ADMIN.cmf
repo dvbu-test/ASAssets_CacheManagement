@@ -2,6 +2,7 @@
 <metadata name="ADMIN" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_SampleSOR/SOR/SAMPLE_DS/CIS_CACHE/ADMIN" type="CONTAINER" subtype="SCHEMA" changeToken="0">
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="autoAddChildren" type="BOOLEAN">false</attribute>
   <attribute name="creationDate" type="LONG">1414101261718</attribute>

@@ -32,6 +32,7 @@
   </parameters>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE"/>
   </security>
   <dependency target="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Netezza_SampleSOR/SOR/TEST_INCR" type="TABLE">
     <datatype type="TABLE" refId="1">

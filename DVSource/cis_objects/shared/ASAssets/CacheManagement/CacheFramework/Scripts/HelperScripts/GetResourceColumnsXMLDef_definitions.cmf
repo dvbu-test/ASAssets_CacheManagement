@@ -114,6 +114,7 @@
   </definitions>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
   </security>
   <attribute name="creationDate" type="LONG">1385053097121</attribute>
   <attribute name="creatorUserDomain" type="STRING">composite</attribute>

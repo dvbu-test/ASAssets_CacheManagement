@@ -54,6 +54,7 @@
   <foreignKeys></foreignKeys>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
   </security>
   <attribute name="creationDate" type="LONG">1414178388536</attribute>
   <attribute name="creatorUserDomain" type="STRING">composite</attribute>

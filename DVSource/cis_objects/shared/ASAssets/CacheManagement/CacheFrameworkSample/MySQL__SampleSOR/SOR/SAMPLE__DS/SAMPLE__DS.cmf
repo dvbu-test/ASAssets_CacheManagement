@@ -3,6 +3,7 @@
   <annotation/>
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="anyCharWildcard" type="STRING">%</attribute>
   <attribute name="autoAddChildren" type="BOOLEAN">true</attribute>

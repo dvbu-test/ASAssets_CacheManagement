@@ -2,6 +2,7 @@
 <metadata name="Oracle_Application" path="/shared/ASAssets/CacheManagement/CacheFrameworkSample/Oracle_Application" type="CONTAINER" subtype="FOLDER" changeToken="0">
   <security>
     <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ EXECUTE SELECT"/>
   </security>
   <attribute name="creationDate" type="LONG">1409329199140</attribute>
   <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
